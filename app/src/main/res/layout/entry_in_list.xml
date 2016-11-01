@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:id="@+id/rss_entry"
-                android:background="@color/itemNotRead">
+                android:background="@color/itemBackGroundNotRead">
 
     <ImageView
             android:layout_width="50dp"

@@ -4,15 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import yuriy.rssreader.data.ReaderContract.RSSEntry;
 import yuriy.rssreader.data.RssDBOpenHelper;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
-
+import java.io.Closeable;
 import java.util.ArrayList;
 
-public final class DBReader {
+public final class DBReader implements Closeable{
     private final ArrayList<SingleRSSEntry> listOfEntries;
     private final SQLiteDatabase database;
     private final RssDBOpenHelper dbOpenHelper;
@@ -29,7 +28,7 @@ public final class DBReader {
     private final static String HAVING_ALL = null;
     private final static String LIMIT_ALL = null;
 
-    public DBReader(final @NonNull Context context) throws SQLException {
+    public DBReader(final Context context) throws SQLException {
         dbOpenHelper = new RssDBOpenHelper(context);
         listOfEntries = new ArrayList<>();
         database = dbOpenHelper.getReadableDatabase();
@@ -46,14 +45,25 @@ public final class DBReader {
         if (cursor.moveToFirst()) {
             for (cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
 
-                listOfEntries.add(new SingleRSSEntry(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_IMAGE_URL)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_DESCRIPTION)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_DESCRIPTION)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE)),
-                        cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED))));
+                final String channelTitle = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE));
+                final String channelImageURL = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_IMAGE_URL));
+                final String channelDescription = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_DESCRIPTION));
+                final String itemLink = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK));
+                final String itemTitle = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE));
+                final String itemDescription = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_DESCRIPTION));
+                final String itemPubDate = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE));
+                final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED));
+
+                listOfEntries.add(new SingleRSSEntry.Builder()
+                .channelTitle(channelTitle)
+                .channelImageURL(channelImageURL)
+                .channelDescription(channelDescription)
+                .itemLink(itemLink)
+                .itemTitle(itemTitle)
+                .itemDescription(itemDescription)
+                .itemPubDate(itemPubDate)
+                .itemBeenViewed(itemBeenViewed)
+                .build());
             }
             closeCursor();
 

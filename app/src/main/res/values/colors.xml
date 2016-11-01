@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="itemWasRead">#0FFF</color>
-    <color name="itemNotRead">#5AAA</color>
+    <color name="itemBackgroundWasRead">#0FFF</color>
+    <color name="itemBackGroundNotRead">#5AAA</color>
+    <color name="itemTitleWasRead">#5111</color>
+    <color name="itemTitleWasNotRead">#000</color>
+
 </resources>

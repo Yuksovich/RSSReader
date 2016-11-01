@@ -3,6 +3,9 @@ package yuriy.rssreader.data;
 
 public final class SingleRSSEntry {
 
+    private static final String TRUE_FLAG = "true";
+    private static final String EMPTY_STRING = "";
+
     private final String channelTitle;
     private final String channelImageURL;
     private final String channelDescription;
@@ -10,20 +13,78 @@ public final class SingleRSSEntry {
     private final String itemTitle;
     private final String itemDescription;
     private final String itemPubDate;
-    private final String beenViewed;
+    private final String itemBeenViewed;
 
-    public SingleRSSEntry(final String channelTitle, final String channelImageURL,
-                          final String channelDescription, final String itemLink, final String itemTitle,
-                          final String itemDescription, final String itemPubDate, final String beenViewed) {
+    private SingleRSSEntry(Builder builder) {
 
-        this.channelTitle = channelTitle;
-        this.channelImageURL = channelImageURL;
-        this.channelDescription = channelDescription;
-        this.itemLink = itemLink;
-        this.itemTitle = itemTitle;
-        this.itemDescription = itemDescription;
-        this.itemPubDate = itemPubDate;
-        this.beenViewed = beenViewed;
+        this.channelTitle = builder.channelTitle;
+        this.channelImageURL = builder.channelImageURL;
+        this.channelDescription = builder.channelDescription;
+        this.itemLink = builder.itemLink;
+        this.itemTitle = builder.itemTitle;
+        this.itemDescription = builder.itemDescription;
+        this.itemPubDate = builder.itemPubDate;
+        this.itemBeenViewed = builder.itemBeenViewed;
+    }
+
+    public final static class Builder {
+        private String channelTitle = EMPTY_STRING;
+        private String channelImageURL = EMPTY_STRING;
+        private String channelDescription = EMPTY_STRING;
+        private String itemLink = EMPTY_STRING;
+        private String itemTitle = EMPTY_STRING;
+        private String itemDescription = EMPTY_STRING;
+        private String itemPubDate = EMPTY_STRING;
+        private String itemBeenViewed = EMPTY_STRING;
+
+        public Builder() {
+
+        }
+
+        public Builder channelTitle(final String val) {
+            this.channelTitle = val;
+            return this;
+        }
+
+        public Builder channelImageURL(final String val) {
+            this.channelImageURL = val;
+            return this;
+        }
+
+        public Builder channelDescription(final String val) {
+            this.channelDescription = val;
+            return this;
+        }
+
+        public Builder itemLink(final String val) {
+            this.itemLink = val;
+            return this;
+        }
+
+        public Builder itemTitle(final String val) {
+            this.itemTitle = val;
+            return this;
+        }
+
+        public Builder itemDescription(final String val) {
+            this.itemDescription = val;
+            return this;
+        }
+
+        public Builder itemPubDate(final String val) {
+            this.itemPubDate = val;
+            return this;
+        }
+
+        public Builder itemBeenViewed(final String val) {
+            this.itemBeenViewed = val;
+            return this;
+        }
+
+        public SingleRSSEntry build() {
+            return new SingleRSSEntry(this);
+        }
+
     }
 
     public String getChannelTitle() {
@@ -55,6 +116,6 @@ public final class SingleRSSEntry {
     }
 
     public boolean itemBeenViewed() {
-        return "true".equals(beenViewed);
+        return TRUE_FLAG.equals(itemBeenViewed);
     }
 }

@@ -16,12 +16,17 @@ public final class DataReciever {
 
     private static final int CONNECT_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 5000;
+    private static final String ENCODING_ATTRIBUTE = "encoding";
+    private static final String START_XML_TAG = "<?xml";
+    private static final String EMPTY_STRING = "";
+    private static final char TAG_CLOSING_BRACKET = '>';
+    private static final char QUOTE_SIGN = '"';
 
     public String getTextFromURL(final URL url) throws IOException, XmlPullParserException {
 
         final Integer[] recievedData = getData(url);
         final Charset charset = getCharset(recievedData);
-        final byte[] outputReadyData = getByteArrayFromRecivedData(recievedData);
+        final byte[] outputReadyData = getByteArrayFromReceivedData(recievedData);
         return new String(outputReadyData, charset);
 
     }
@@ -58,14 +63,13 @@ public final class DataReciever {
         return byteData.toArray(new Integer[byteData.size()]);
     }
 
-    private Charset getCharset(final Integer[] recievedByteData) {
-        final String ENCODING_ATTRIBUTE = "encoding";
-        final String START_XML_TAG = "<?xml";
+    private Charset getCharset(final Integer[] receivedByteData) {
 
-        String data = "";
 
-        for (int currentByte : recievedByteData) {
-            if ((char) currentByte == '>') {
+        String data = EMPTY_STRING;
+
+        for (int currentByte : receivedByteData) {
+            if ((char) currentByte == QUOTE_SIGN) {
                 data += (char) currentByte;
                 break;
             } else {
@@ -77,10 +81,10 @@ public final class DataReciever {
             int index = data.indexOf(ENCODING_ATTRIBUTE);
             StringBuilder encoding = new StringBuilder();
 
-            while (data.charAt(++index) != '>') {
+            while (data.charAt(++index) != TAG_CLOSING_BRACKET) {
 
-                if (data.charAt(index) == '"') {
-                    while (data.charAt(++index) != '"') {
+                if (data.charAt(index) == QUOTE_SIGN) {
+                    while (data.charAt(++index) != QUOTE_SIGN) {
                         encoding.append(data.charAt(index));
                     }
 
@@ -93,11 +97,11 @@ public final class DataReciever {
         }
     }
 
-    private byte[] getByteArrayFromRecivedData(final Integer[] recievedData) {
-        byte[] outputBytes = new byte[recievedData.length];
+    private byte[] getByteArrayFromReceivedData(final Integer[] receivedData) {
+        byte[] outputBytes = new byte[receivedData.length];
 
-        for (int i = 0; i < recievedData.length; i++) {
-            outputBytes[i] = recievedData[i].byteValue();
+        for (int i = 0; i < receivedData.length; i++) {
+            outputBytes[i] = receivedData[i].byteValue();
         }
         return outputBytes;
     }

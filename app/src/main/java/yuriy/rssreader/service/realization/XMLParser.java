@@ -1,8 +1,6 @@
 package yuriy.rssreader.service.realization;
 
 
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -38,8 +36,10 @@ public final class XMLParser {
     final private static String CHANNEL_IMAGE_TAG = "image";
     final private static String CHANNEL_IMAGE_URL_TAG = "url";
     final private static String INPUT_DATE_PATTERN = "EEE, d MMM yyyy HH:mm:ss Z";
+    final private static String EMPTY_STRING = "";
+    final private static String SPACER = " ";
 
-    public XMLParser(@NonNull final String recievedStringData) {
+    public XMLParser(final String recievedStringData) {
         this.recievedStringData = recievedStringData;
     }
 
@@ -58,7 +58,7 @@ public final class XMLParser {
 
     }
 
-    private String getChannelInfo(@NonNull final String tagType) throws XmlPullParserException, IOException, NoRSSContentException {
+    private String getChannelInfo(final String tagType) throws XmlPullParserException, IOException, NoRSSContentException {
 
 
         XmlPullParser xmlParser = Xml.newPullParser();
@@ -71,7 +71,6 @@ public final class XMLParser {
         }
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
-
 
 
             if (eventType == XmlPullParser.START_TAG && xmlParser.getName().equals(CHANNEL_TAG)) {
@@ -118,10 +117,10 @@ public final class XMLParser {
         while (eventType != XmlPullParser.END_DOCUMENT) {
 
             if (eventType == XmlPullParser.START_TAG && xmlParser.getName().equals(ITEM_TAG)) {
-                itemLink = "";
-                itemTitle = "";
-                itemDescription = "";
-                itemPubDate = "";
+                itemLink = EMPTY_STRING;
+                itemTitle = EMPTY_STRING;
+                itemDescription = EMPTY_STRING;
+                itemPubDate = EMPTY_STRING;
                 while (!(eventType == XmlPullParser.END_TAG && xmlParser.getName().equals(ITEM_TAG))) {
                     eventType = xmlParser.next();
                     if (eventType == XmlPullParser.START_TAG) {
@@ -147,7 +146,16 @@ public final class XMLParser {
 
                     }
                 }
-                entries.add(new SingleRSSEntry(channelTitle, channelImageURL, channelDescription, itemLink, itemTitle, itemDescription, formatPubDate(itemPubDate), ITEM_BEEN_VIEWED_FALSE));
+                entries.add(new SingleRSSEntry.Builder()
+                        .channelTitle(channelTitle)
+                        .channelDescription(channelDescription)
+                        .channelImageURL(channelImageURL)
+                        .itemLink(itemLink)
+                        .itemTitle(itemTitle)
+                        .itemDescription(itemDescription)
+                        .itemPubDate(itemPubDate)
+                        .itemBeenViewed(ITEM_BEEN_VIEWED_FALSE)
+                        .build());
             } else {
                 eventType = xmlParser.next();
             }
@@ -155,7 +163,7 @@ public final class XMLParser {
         return entries;
     }
 
-    private String formatPubDate(@NonNull final String inputDate) {
+    private String formatPubDate(final String inputDate) {
 
 
         try {
@@ -164,7 +172,7 @@ public final class XMLParser {
             final Date date = new Date(timeInMillis);
             final Time time = new Time(timeInMillis);
 
-            return date.toString() + " " + time.toString();
+            return date.toString() + SPACER + time.toString();
 
         } catch (ParseException e) {
             return null;

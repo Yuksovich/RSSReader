@@ -2,9 +2,7 @@ package yuriy.rssreader.service;
 
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,7 @@ import android.widget.TextView;
 import yuriy.rssreader.R;
 import yuriy.rssreader.data.ReaderContract.RSSEntry;
 
-public final class RssListAdapter extends CursorAdapter{
+public final class RssListAdapter extends CursorAdapter {
 
     RssListAdapter(final Context context, final Cursor cursor, final boolean autoRequery) {
         super(context, cursor, autoRequery);
@@ -47,15 +45,14 @@ public final class RssListAdapter extends CursorAdapter{
         final boolean itemWasRead = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED)));
         if (itemWasRead) {
 
-            itemTitle.setTextColor(ColorStateList.valueOf(Color.BLACK));
-            view.setBackgroundColor(Color.argb(0, 150, 150, 150));
+            itemTitle.setTextColor(context.getResources().getColor(R.color.itemTitleWasRead));
+            view.setBackgroundColor(context.getResources().getColor(R.color.itemBackgroundWasRead));
         } else {
-            itemTitle.setTextColor(ColorStateList.valueOf(Color.BLUE));
-            view.setBackgroundColor(Color.argb(150, 150, 150, 150));
+            itemTitle.setTextColor(context.getResources().getColor(R.color.itemTitleWasNotRead));
+            view.setBackgroundColor(context.getResources().getColor(R.color.itemBackGroundNotRead));
         }
 
     }
-
 
 
 }

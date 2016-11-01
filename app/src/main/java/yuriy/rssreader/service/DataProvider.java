@@ -7,9 +7,7 @@ import android.database.SQLException;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.widget.ListView;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
-import yuriy.rssreader.rssexceptions.NoRSSContentException;
 import yuriy.rssreader.service.realization.DBReader;
 
 final public class DataProvider implements Runnable {
@@ -17,6 +15,8 @@ final public class DataProvider implements Runnable {
     public final static int STATE_SUCCESS = 0;
     public final static int STATE_FAILURE = 1;
     public final static int STATE_EMPTY = 2;
+
+    public final static String []CURSOR_ALL_ENRTRIES = null;
 
     private final Context context;
     private final Handler handler;
@@ -35,21 +35,20 @@ final public class DataProvider implements Runnable {
         try {
             dbReader = new DBReader(context);
 
-            final Cursor cursor = dbReader.getCursor(null);
+            final Cursor cursor = dbReader.getCursor(CURSOR_ALL_ENRTRIES);
 
             final RssListAdapter adapter = new RssListAdapter(context, cursor, false);
 
             final Message completeMessage = handler.obtainMessage(STATE_SUCCESS, adapter);
             completeMessage.sendToTarget();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Message completeMessage = handler.obtainMessage(STATE_FAILURE, null);
             completeMessage.sendToTarget();
-        }catch (DatabaseIsEmptyException e){
+        } catch (DatabaseIsEmptyException e) {
             Message completeMessage = handler.obtainMessage(STATE_EMPTY, null);
             completeMessage.sendToTarget();
-        }
-        finally {
-            if(dbReader!=null) {
+        } finally {
+            if (dbReader != null) {
                 dbReader.close();
             }
         }
