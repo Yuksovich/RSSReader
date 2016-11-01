@@ -18,6 +18,7 @@ public final class DBPopulator implements Closeable{
     private final static String FALSE_FLAG = "false";
     private final RssDBOpenHelper dbOpenHelper;
     private final DuplicateChecker duplicateChecker;
+    private int newEntriesCount = 0;
 
     public DBPopulator(final Context context) {
         dbOpenHelper = new RssDBOpenHelper(context);
@@ -27,7 +28,7 @@ public final class DBPopulator implements Closeable{
     public void populate(final ArrayList<SingleRSSEntry> dataArrayList) throws SQLException {
 
 
-        ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
+        final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
         final SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
         final ContentValues values = new ContentValues();
 
@@ -43,19 +44,23 @@ public final class DBPopulator implements Closeable{
             try {
                 database.beginTransaction();
                 database.insert(RSSEntry.TABLE_NAME, RSSEntry.COLUMN_NAME_NULLABLE, values);
+                newEntriesCount++;
                 database.setTransactionSuccessful();
             }finally {
                 database.endTransaction();
             }
         }
+        database.close();
 
     }
 
     public void close() {
-        if(dbOpenHelper!=null) {
             dbOpenHelper.close();
-        }
     }
 
+    public int getNewEntriesCount(){
+        return newEntriesCount;
+    }
 
 }
+

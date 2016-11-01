@@ -1,6 +1,7 @@
 package yuriy.rssreader;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import yuriy.rssreader.service.DataProvider;
 import yuriy.rssreader.service.RssListAdapter;
+import yuriy.rssreader.service.RssProviderService;
 
 public final class MainActivity extends AppCompatActivity {
 
@@ -52,6 +54,8 @@ public final class MainActivity extends AppCompatActivity {
         new Thread(new DataProvider(this, handler)).start();
         listView = (ListView) findViewById(R.id.listOfEntries);
         listView.setFastScrollEnabled(true);
+        Intent intent = new Intent(this, RssProviderService.class);
+        startService(intent);
     }
 
 

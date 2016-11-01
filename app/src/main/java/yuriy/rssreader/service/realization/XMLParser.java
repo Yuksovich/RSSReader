@@ -43,14 +43,14 @@ public final class XMLParser {
         this.recievedStringData = recievedStringData;
     }
 
-    public void resolveXmlToEntries() throws NoRSSContentException, IOException {
+    public ArrayList<SingleRSSEntry> resolveXmlToEntries() throws NoRSSContentException, IOException {
 
         try {
 
             channelTitle = getChannelInfo(CHANNEL_TITLE_TAG);
             channelDescription = getChannelInfo(CHANNEL_DESCRIPTION);
             channelImageURL = getChannelInfo(CHANNEL_IMAGE_TAG);
-            channelTotal = recieveAllItems();
+            return recieveAllItems();
 
         } catch (XmlPullParserException e) {
             throw new NoRSSContentException();
@@ -153,7 +153,7 @@ public final class XMLParser {
                         .itemLink(itemLink)
                         .itemTitle(itemTitle)
                         .itemDescription(itemDescription)
-                        .itemPubDate(itemPubDate)
+                        .itemPubDate(formatPubDate(itemPubDate))
                         .itemBeenViewed(ITEM_BEEN_VIEWED_FALSE)
                         .build());
             } else {
@@ -180,9 +180,6 @@ public final class XMLParser {
 
     }
 
-    public ArrayList<SingleRSSEntry> getDataArrayList() {
-        return channelTotal;
-    }
 
 
 }

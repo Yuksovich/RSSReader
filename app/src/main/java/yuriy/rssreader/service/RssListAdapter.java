@@ -21,7 +21,7 @@ public final class RssListAdapter extends CursorAdapter {
     @Override
     public View newView(final Context context, final Cursor cursor, final ViewGroup parent) {
 
-        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = LayoutInflater.from(context);
 
         return inflater.inflate(R.layout.entry_in_list_read, parent, false);
 

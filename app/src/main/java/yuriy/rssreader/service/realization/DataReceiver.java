@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-public final class DataReciever {
+public final class DataReceiver {
 
 
     private static final int CONNECT_TIMEOUT = 5000;
@@ -22,7 +22,7 @@ public final class DataReciever {
     private static final char TAG_CLOSING_BRACKET = '>';
     private static final char QUOTE_SIGN = '"';
 
-    public String getTextFromURL(final URL url) throws IOException, XmlPullParserException {
+    public String getTextFromURL(final URL url) throws IOException {
 
         final Integer[] recievedData = getData(url);
         final Charset charset = getCharset(recievedData);

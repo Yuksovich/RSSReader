@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RSSReader</string>
+    <string name="recievedItemCount">Получено новостей: </string>
+    <string name="noRss">По данному адресу отсутствует RSS</string>
+    <string name="sqlFail">Ошибка доступа к базе данных</string>
+    <string name="httpFail">Ошибка подключения по адресу </string>
+    <string name="incorrectURL">Некорректный адрес </string>
 </resources>

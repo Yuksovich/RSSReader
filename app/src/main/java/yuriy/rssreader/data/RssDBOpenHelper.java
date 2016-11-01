@@ -43,4 +43,5 @@ public final class RssDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(DELETE_TABLE);
         onCreate(db);
     }
+
 }

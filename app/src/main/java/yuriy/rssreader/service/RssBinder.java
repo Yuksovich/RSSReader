@@ -8,3 +8,4 @@ final public class RssBinder extends Binder{
 
         }
 }
+

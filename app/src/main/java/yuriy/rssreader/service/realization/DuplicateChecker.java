@@ -11,7 +11,7 @@ import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 import java.util.ArrayList;
 
 final class DuplicateChecker {
-    private final static String CURSOR_ALL_ENTRIES = null;
+    private final static String[] CURSOR_ALL_ENTRIES = null;
     private final DBReader dbReader;
 
     DuplicateChecker(final Context context) throws SQLException {
@@ -48,6 +48,7 @@ final class DuplicateChecker {
             }
         }
         dbReader.closeCursor();
+        dbReader.close();
         return croppedData;
 
 
