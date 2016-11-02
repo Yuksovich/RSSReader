@@ -12,5 +12,6 @@
     <dimen name="inputUrlPadding">10dp</dimen>
     <dimen name="inputUrlMarginTop">20dp</dimen>
     <dimen name="inputUrlMarginBottom">20dp</dimen>
+    <dimen name="buttonPadding">20dp</dimen>
 
 </resources>

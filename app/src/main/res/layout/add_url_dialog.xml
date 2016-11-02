@@ -18,23 +18,27 @@
               android:padding="@dimen/inputUrlPadding"
               android:layout_marginTop="@dimen/inputUrlMarginTop"/>
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:orientation="horizontal">
-        <Button android:layout_width="wrap_content"
+                  android:orientation="horizontal"
+    android:layout_gravity="center">
+
+        <Button android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/addUrlButton"
-                android:text="@string/checkUrl"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/inputUrlMarginBottom"
+                android:text="@string/addUrlButtonText"
+                android:layout_gravity="left"
+                android:textAllCaps="false"
+                android:padding="@dimen/buttonPadding"
                 android:background="@color/checkUrlButtonColor"/>
 
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/removeUrlButton"
-                android:text="@string/checkUrl"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/inputUrlMarginBottom"
+                android:id="@+id/cancelUrlButton"
+                android:text="@string/cancelUrlAddButtonText"
+                android:layout_gravity="right"
+                android:textAllCaps="false"
+                android:padding="@dimen/buttonPadding"
                 android:background="@color/checkUrlButtonColor"/>
     </LinearLayout>
 
