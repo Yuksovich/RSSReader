@@ -10,4 +10,5 @@
     <string name="addUrlButtonText">Добавить URL</string>
     <string name="cancelUrlAddButtonText">Отменить</string>
     <string name="checkUrl">Проверить URL</string>
+    <string name="correctURL">Корректный URL</string>
 </resources>

@@ -9,4 +9,5 @@
     <color name="itemTitleWasNotRead">#000</color>
 
     <color name="addNewUrlTitleBackground">#5AAA</color>
+    <color name="checkUrlButtonColor">#FFF</color>
 </resources>

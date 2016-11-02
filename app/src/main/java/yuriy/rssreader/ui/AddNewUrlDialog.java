@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +21,14 @@ import java.net.URL;
 
 public final class AddNewUrlDialog extends DialogFragment implements View.OnClickListener {
 
-    private static final String SPACER = " ";
+    private static final int FAIL_CASE = 1;
+    private static final int SUCCES_CASE = 0;
+
     private EditText editText;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_url_dialog, null);
@@ -35,7 +40,7 @@ public final class AddNewUrlDialog extends DialogFragment implements View.OnClic
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
                         addNewUrl(String.valueOf(editText.getText()));
-
+                        AddNewUrlDialog.this.onClick(view);
                     }
                 })
                 .setNegativeButton(R.string.cancelUrlAddButtonText, new DialogInterface.OnClickListener() {
@@ -45,27 +50,50 @@ public final class AddNewUrlDialog extends DialogFragment implements View.OnClic
                     }
                 });
 
-        final Button checkUrlButton = (Button) view.findViewById(R.id.checkUrlButton);
+        final Button checkUrlButton = (Button) view.findViewById(R.id.addUrlButton);
         checkUrlButton.setOnClickListener(this);
 
         return builder.create();
     }
 
     private void addNewUrl(final String stringUrl) {
-        //Intent intent = new Intent(context, RssProviderService.class);
 
     }
 
-    @Override
-    public void onClick(View v) {
-        final String inputUrl = String.valueOf(editText.getText());
-        try {
-            final URL url = new URL(inputUrl);
-            final DataReceiver dataReceiver = new DataReceiver();
-            new XMLParser(dataReceiver.getTextFromURL(url)).resolveXmlToEntries();
 
-        } catch (Exception e) {
-            Toast.makeText(v.getContext(), getString(R.string.incorrectURL) + SPACER + inputUrl, Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onClick(final View v) {
+
+        final String inputUrl = String.valueOf(editText.getText());
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case (FAIL_CASE):
+                        Toast.makeText(v.getContext(), getString(R.string.incorrectURL), Toast.LENGTH_SHORT).show();
+
+                        break;
+                    case (SUCCES_CASE):
+                        Toast.makeText(v.getContext(), getString(R.string.correctURL), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final URL url = new URL(inputUrl);
+                    final DataReceiver dataReceiver = new DataReceiver();
+                    new XMLParser(dataReceiver.getTextFromURL(url)).resolveXmlToEntries();
+                    handler.sendEmptyMessage(SUCCES_CASE);
+                } catch (Exception e) {
+                    handler.sendEmptyMessage(FAIL_CASE);
+                }
+            }
+        }).start();
+
     }
 }
