@@ -8,4 +8,5 @@
     <color name="itemTitleWasRead">#5111</color>
     <color name="itemTitleWasNotRead">#000</color>
 
+    <color name="addNewUrlTitleBackground">#5AAA</color>
 </resources>

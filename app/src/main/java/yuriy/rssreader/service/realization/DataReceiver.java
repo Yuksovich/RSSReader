@@ -6,6 +6,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -31,11 +32,14 @@ public final class DataReceiver {
 
     }
 
-    private Integer[] getData(final URL url) throws IOException {
+    private Integer[] getData(final URL url) throws IOException{
         HttpURLConnection connection = null;
         BufferedInputStream bufferedInputStream = null;
         ArrayList<Integer> byteData;
         try {
+            if(url==null){
+                throw new MalformedURLException();
+            }
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);

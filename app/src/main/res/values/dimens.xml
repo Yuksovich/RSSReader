@@ -8,4 +8,9 @@
     <dimen name="image_padding">5dp</dimen>
     <dimen name="text_padding">5dp</dimen>
 
+    <dimen name="titleInAddUrlPadding">10dp</dimen>
+    <dimen name="inputUrlPadding">10dp</dimen>
+    <dimen name="inputUrlMarginTop">20dp</dimen>
+    <dimen name="inputUrlMarginBottom">20dp</dimen>
+
 </resources>

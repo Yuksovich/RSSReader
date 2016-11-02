@@ -5,4 +5,9 @@
     <string name="sqlFail">Ошибка доступа к базе данных</string>
     <string name="httpFail">Ошибка подключения по адресу </string>
     <string name="incorrectURL">Некорректный адрес </string>
+    <string name="addUrlDialog">Введите адрес RSS</string>
+    <string name="httpInput">http://</string>
+    <string name="addUrlButtonText">Добавить URL</string>
+    <string name="cancelUrlAddButtonText">Отменить</string>
+    <string name="checkUrl">Проверить URL</string>
 </resources>

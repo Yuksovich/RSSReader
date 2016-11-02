@@ -35,19 +35,19 @@ final public class RssProviderService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case (0):
-                    Toast.makeText(RssProviderService.this, getResources().getString(R.string.recievedItemCount) + SPACER + (int) msg.obj, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RssProviderService.this, getString(R.string.recievedItemCount) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
                 case (1):
-                    Toast.makeText(RssProviderService.this, getResources().getString(R.string.noRss) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RssProviderService.this, getString(R.string.noRss) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
                 case (2):
-                    Toast.makeText(RssProviderService.this, getResources().getString(R.string.incorrectURL) + SPACER + (int) msg.obj, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RssProviderService.this, getString(R.string.incorrectURL) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
                 case (3):
-                    Toast.makeText(RssProviderService.this, getResources().getString(R.string.httpFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RssProviderService.this, getString(R.string.httpFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
                 case (4):
-                    Toast.makeText(RssProviderService.this, getResources().getString(R.string.sqlFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RssProviderService.this, getString(R.string.sqlFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -66,42 +66,42 @@ final public class RssProviderService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-        URL urlHabr = null;                                   //this code must be replaced
-        try {
-            urlHabr = new URL("https://habrahabr.ru/rss");
-        } catch (MalformedURLException e) {
-        }
 
-        final ArrayList<URL> urls = new ArrayList<>();
-        urls.add(urlHabr);                                  //to here is just to check service working
+            String urlStr = "https://habrahabr.ru/rss";
+
+
+        final ArrayList<String> urls = new ArrayList<>();
+        urls.add(urlStr);                                  //to here is just to check service working
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         new Thread(new Runnable() {
             @Override
             public void run() {
                 DataReceiver dataReceiver;
                 String data;
+                URL url;
                 XMLParser xmlParser;
                 ArrayList<SingleRSSEntry> entriesArray;
                 DBPopulator dbPopulator = null;
                 int newEntriesCount = 0;
 
-                for (URL url : urls) {
+                for (String urlString : urls) {
                     try {
+                        url = new URL(urlString);
                         dataReceiver = new DataReceiver();
-
                         data = dataReceiver.getTextFromURL(url);
                         xmlParser = new XMLParser(data);
                         entriesArray = xmlParser.resolveXmlToEntries();
                         dbPopulator = new DBPopulator(RssProviderService.this);
                         dbPopulator.populate(entriesArray);
                         newEntriesCount += dbPopulator.getNewEntriesCount();
-
+                    }catch (MalformedURLException e){
+                        handler.sendMessage(Message.obtain(handler, INCORRECT_URL, urlString));
                     } catch (IOException e) {
-                        handler.sendMessage(Message.obtain(handler, HTTP_CONNECTION_FAIL, url));
+                        handler.sendMessage(Message.obtain(handler, HTTP_CONNECTION_FAIL, urlString));
                     } catch (NoRSSContentException e) {
-                        handler.sendMessage(Message.obtain(handler, NO_RSS, url));
+                        handler.sendMessage(Message.obtain(handler, NO_RSS, urlString));
                     } catch (SQLException e) {
-                        handler.sendMessage(Message.obtain(handler, DATABASE_FAIL, url));
+                        handler.sendMessage(Message.obtain(handler, DATABASE_FAIL, urlString));
                     } finally {
                         if (dbPopulator != null) {
                             dbPopulator.close();
