@@ -1,6 +1,5 @@
 package yuriy.rssreader.ui;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -14,16 +13,13 @@ import yuriy.rssreader.service.InputedUrlCheckerAndSaver;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
-
-    private EditText editText;
-
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_url_dialog, null);
-        editText = (EditText) view.findViewById(R.id.urlInput);
+        final EditText editText = (EditText) view.findViewById(R.id.urlInput);
         editText.setSelection(editText.getText().toString().length());
         builder.setView(view);
 
@@ -40,7 +36,7 @@ public final class AddNewUrlDialog extends DialogFragment {
             @Override
             public void onClick(final View v) {
                 final String inputUrl = String.valueOf(editText.getText());
-                new InputedUrlCheckerAndSaver(getContext(), view, inputUrl);
+                new InputedUrlCheckerAndSaver(AddNewUrlDialog.this, view, inputUrl);
             }
         });
 
