@@ -11,7 +11,7 @@ import android.widget.Toast;
 import yuriy.rssreader.R;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.NoRSSContentException;
-import yuriy.rssreader.service.realization.DBPopulator;
+import yuriy.rssreader.service.realization.DBWriter;
 import yuriy.rssreader.service.realization.DataReceiver;
 import yuriy.rssreader.service.realization.XMLParser;
 
@@ -81,7 +81,7 @@ final public class RssProviderService extends Service {
                 URL url;
                 XMLParser xmlParser;
                 ArrayList<SingleRSSEntry> entriesArray;
-                DBPopulator dbPopulator = null;
+                DBWriter dbWriter = null;
                 int newEntriesCount = 0;
 
                 for (String urlString : urls) {
@@ -91,9 +91,9 @@ final public class RssProviderService extends Service {
                         data = dataReceiver.getTextFromURL(url);
                         xmlParser = new XMLParser(data);
                         entriesArray = xmlParser.resolveXmlToEntries();
-                        dbPopulator = new DBPopulator(RssProviderService.this);
-                        dbPopulator.populate(entriesArray);
-                        newEntriesCount += dbPopulator.getNewEntriesCount();
+                        dbWriter = new DBWriter(RssProviderService.this);
+                        dbWriter.populate(entriesArray);
+                        newEntriesCount += dbWriter.getNewEntriesCount();
                     }catch (MalformedURLException e){
                         handler.sendMessage(Message.obtain(handler, INCORRECT_URL, urlString));
                     } catch (IOException e) {
@@ -103,8 +103,8 @@ final public class RssProviderService extends Service {
                     } catch (SQLException e) {
                         handler.sendMessage(Message.obtain(handler, DATABASE_FAIL, urlString));
                     } finally {
-                        if (dbPopulator != null) {
-                            dbPopulator.close();
+                        if (dbWriter != null) {
+                            dbWriter.close();
                         }
                     }
                 }

@@ -1,14 +1,15 @@
 package yuriy.rssreader.ui;
 
-import android.support.v7.app.AppCompatActivity;
+import android.database.SQLException;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 import yuriy.rssreader.R;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.service.realization.DBReader;
+import yuriy.rssreader.service.realization.DBWriter;
 
 public class SingleRssView extends AppCompatActivity {
 
@@ -20,33 +21,51 @@ public class SingleRssView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_rss_view);
-        final String itemLink = (String)getIntent().getExtras().get(KEY_ITEM_LINK);
+        final String itemLink = (String) getIntent().getExtras().get(KEY_ITEM_LINK);
         SingleRSSEntry entry = findEntryByItemLink(itemLink);
-        if(entry!=null) {
-            ((TextView)findViewById(R.id.item_title_show)).setText(entry.getItemTitle());
-            ((TextView)findViewById(R.id.item_pubDate_show)).setText(entry.getItemPubDate());
-            ((TextView)findViewById(R.id.channel_title_show)).setText(entry.getChannelTitle());
-            ((TextView)findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
-            WebView webView = (WebView)findViewById(R.id.item_descriprion_show);
+        if (entry != null) {
+            ((TextView) findViewById(R.id.item_title_show)).setText(entry.getItemTitle());
+            ((TextView) findViewById(R.id.item_pubDate_show)).setText(entry.getItemPubDate());
+            ((TextView) findViewById(R.id.channel_title_show)).setText(entry.getChannelTitle());
+            ((TextView) findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
+            WebView webView = (WebView) findViewById(R.id.item_descriprion_show);
 
             final String HTML_STYLE = getString(R.string.html_style_css);
-            webView.loadDataWithBaseURL(null, HTML_STYLE+entry.getItemDescription(), MIME_TYPE, ENCODING, null);
-
+            webView.loadDataWithBaseURL(null, HTML_STYLE + entry.getItemDescription(), MIME_TYPE, ENCODING, null);
+            if (!entry.itemBeenViewed()) {
+                entryWasRead(itemLink);
+            }
         }
     }
 
-    private SingleRSSEntry findEntryByItemLink(final String itemLink){
+    private SingleRSSEntry findEntryByItemLink(final String itemLink) {
         DBReader dbReader = new DBReader(this);
         try {
             return dbReader.readSingleEntry(itemLink);
-
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, getText(R.string.sqlFail), Toast.LENGTH_SHORT).show();
             this.finish();
-        }finally {
+        } finally {
             dbReader.close();
 
         }
         return null;
+    }
+
+    private void entryWasRead(final String itemUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBWriter dbWriter = new DBWriter(SingleRssView.this);
+                try {
+                    dbWriter.setEntryBeenViewed(itemUrl);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    dbWriter.close();
+                }
+            }
+        }).start();
+
     }
 }

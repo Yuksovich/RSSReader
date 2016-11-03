@@ -9,14 +9,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            >
+    >
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/item_title_show"
                   android:textAppearance="?android:attr/textAppearanceLarge"
                   android:textColor="@color/toolbar_color"
                   android:textAlignment="gravity"
-        android:padding="@dimen/text_padding"/>
+                  android:padding="@dimen/text_padding"/>
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -41,9 +41,7 @@
         <WebView android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:id="@+id/item_descriprion_show"
-
-
-        />
+                 android:padding="@dimen/text_padding"/>
 
 
     </LinearLayout>
