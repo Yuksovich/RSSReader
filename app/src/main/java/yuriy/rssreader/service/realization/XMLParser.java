@@ -17,11 +17,10 @@ import java.util.ArrayList;
 
 public final class XMLParser {
 
-    private final String recievedStringData;
+    private final String receivedStringData;
     private String channelTitle;
     private String channelImageURL;
     private String channelDescription;
-    private ArrayList<SingleRSSEntry> channelTotal;
 
     final private static String ITEM_TITLE_TAG = "title";
     final private static String ITEM_LINK_TAG = "link";
@@ -39,18 +38,18 @@ public final class XMLParser {
     final private static String EMPTY_STRING = "";
     final private static String SPACER = " ";
 
-    public XMLParser(final String recievedStringData) {
-        this.recievedStringData = recievedStringData;
+    public XMLParser(final String receivedStringData) throws NoRSSContentException, IOException {
+        this.receivedStringData = receivedStringData;
+        getChannelOrThrow();
     }
 
-    public ArrayList<SingleRSSEntry> resolveXmlToEntries() throws NoRSSContentException, IOException {
+    private void getChannelOrThrow() throws NoRSSContentException, IOException {
 
         try {
 
             channelTitle = getChannelInfo(CHANNEL_TITLE_TAG);
             channelDescription = getChannelInfo(CHANNEL_DESCRIPTION);
             channelImageURL = getChannelInfo(CHANNEL_IMAGE_TAG);
-            return recieveAllItems();
 
         } catch (XmlPullParserException e) {
             throw new NoRSSContentException();
@@ -62,7 +61,7 @@ public final class XMLParser {
 
 
         XmlPullParser xmlParser = Xml.newPullParser();
-        xmlParser.setInput(new StringReader(recievedStringData));
+        xmlParser.setInput(new StringReader(receivedStringData));
         int eventType = xmlParser.next();
 
 
@@ -104,61 +103,64 @@ public final class XMLParser {
         return "";
     }
 
-    private ArrayList<SingleRSSEntry> recieveAllItems() throws XmlPullParserException, IOException {
-
+    public ArrayList<SingleRSSEntry> receiveAllItems() throws NoRSSContentException, IOException {
 
         String itemLink, itemTitle, itemDescription, itemPubDate;
         final ArrayList<SingleRSSEntry> entries = new ArrayList<>();
-        final XmlPullParser xmlParser = Xml.newPullParser();
-        xmlParser.setInput(new StringReader(recievedStringData));
-        int eventType = xmlParser.getEventType();
+        try {
+            final XmlPullParser xmlParser = Xml.newPullParser();
+            xmlParser.setInput(new StringReader(receivedStringData));
 
+            int eventType = xmlParser.getEventType();
 
-        while (eventType != XmlPullParser.END_DOCUMENT) {
+            while (eventType != XmlPullParser.END_DOCUMENT) {
 
-            if (eventType == XmlPullParser.START_TAG && xmlParser.getName().equals(ITEM_TAG)) {
-                itemLink = EMPTY_STRING;
-                itemTitle = EMPTY_STRING;
-                itemDescription = EMPTY_STRING;
-                itemPubDate = EMPTY_STRING;
-                while (!(eventType == XmlPullParser.END_TAG && xmlParser.getName().equals(ITEM_TAG))) {
-                    eventType = xmlParser.next();
-                    if (eventType == XmlPullParser.START_TAG) {
+                if (eventType == XmlPullParser.START_TAG && xmlParser.getName().equals(ITEM_TAG)) {
+                    itemLink = EMPTY_STRING;
+                    itemTitle = EMPTY_STRING;
+                    itemDescription = EMPTY_STRING;
+                    itemPubDate = EMPTY_STRING;
+                    while (!(eventType == XmlPullParser.END_TAG && xmlParser.getName().equals(ITEM_TAG))) {
+                        eventType = xmlParser.next();
+                        if (eventType == XmlPullParser.START_TAG) {
 
-                        switch (xmlParser.getName()) {
+                            switch (xmlParser.getName()) {
 
-                            case (ITEM_LINK_TAG):
-                                itemLink = xmlParser.nextText();
-                                break;
+                                case (ITEM_LINK_TAG):
+                                    itemLink = xmlParser.nextText();
+                                    break;
 
-                            case (ITEM_TITLE_TAG):
-                                itemTitle = xmlParser.nextText();
-                                break;
+                                case (ITEM_TITLE_TAG):
+                                    itemTitle = xmlParser.nextText();
+                                    break;
 
-                            case (ITEM_DESCRIPTION_TAG):
-                                itemDescription = xmlParser.nextText();
-                                break;
+                                case (ITEM_DESCRIPTION_TAG):
+                                    itemDescription = xmlParser.nextText();
+                                    break;
 
-                            case (ITEM_PUBLIC_DATE_TAG):
-                                itemPubDate = xmlParser.nextText();
-                                break;
+                                case (ITEM_PUBLIC_DATE_TAG):
+                                    itemPubDate = xmlParser.nextText();
+                                    break;
+                            }
+
                         }
-
                     }
+                    entries.add(new SingleRSSEntry.Builder()
+                            .channelTitle(channelTitle)
+                            .channelDescription(channelDescription)
+                            .channelImageURL(channelImageURL)
+                            .itemLink(itemLink)
+                            .itemTitle(itemTitle)
+                            .itemDescription(itemDescription)
+                            .itemPubDate(formatPubDate(itemPubDate))
+                            .itemBeenViewed(ITEM_BEEN_VIEWED_FALSE)
+                            .build());
+                } else {
+                    eventType = xmlParser.next();
                 }
-                entries.add(new SingleRSSEntry.Builder()
-                        .channelTitle(channelTitle)
-                        .channelDescription(channelDescription)
-                        .channelImageURL(channelImageURL)
-                        .itemLink(itemLink)
-                        .itemTitle(itemTitle)
-                        .itemDescription(itemDescription)
-                        .itemPubDate(formatPubDate(itemPubDate))
-                        .itemBeenViewed(ITEM_BEEN_VIEWED_FALSE)
-                        .build());
-            } else {
-                eventType = xmlParser.next();
             }
+        } catch (XmlPullParserException e) {
+            throw new NoRSSContentException();
         }
         return entries;
     }
@@ -180,8 +182,9 @@ public final class XMLParser {
 
     }
 
-
-
+    public String getChannelTitle(){
+        return channelTitle;
+    }
 }
 
 

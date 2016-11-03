@@ -2,6 +2,7 @@ package yuriy.rssreader.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 
 final public class RssProviderService extends Service {
@@ -29,6 +32,7 @@ final public class RssProviderService extends Service {
     private static final int HTTP_CONNECTION_FAIL = 3;
     private static final int DATABASE_FAIL = 4;
     private static final String SPACER = " ";
+    private static final String CHANNELS = "channels";
     private final Handler handler = new Handler() {
 
         @Override
@@ -63,16 +67,22 @@ final public class RssProviderService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            String urlStr = "https://habrahabr.ru/rss";
-
-
+        final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
+        final Map<String, ?>map = sharedPreferences.getAll();
         final ArrayList<String> urls = new ArrayList<>();
-        urls.add(urlStr);                                  //to here is just to check service working
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if(map.isEmpty()) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+
+        final Set<String>set = map.keySet();
+        for (String urlAddress:set){
+            urls.add(urlAddress);
+        }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -90,7 +100,7 @@ final public class RssProviderService extends Service {
                         dataReceiver = new DataReceiver();
                         data = dataReceiver.getTextFromURL(url);
                         xmlParser = new XMLParser(data);
-                        entriesArray = xmlParser.resolveXmlToEntries();
+                        entriesArray = xmlParser.receiveAllItems();
                         dbWriter = new DBWriter(RssProviderService.this);
                         dbWriter.populate(entriesArray);
                         newEntriesCount += dbWriter.getNewEntriesCount();

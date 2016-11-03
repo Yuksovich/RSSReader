@@ -23,4 +23,5 @@
                }
         </style>]]>
     </string>
+    <string name="duplicateURL">Этот URL уже в списке</string>
 </resources>
