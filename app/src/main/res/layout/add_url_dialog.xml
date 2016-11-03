@@ -30,7 +30,8 @@
                 android:layout_gravity="left"
                 android:textAllCaps="false"
                 android:padding="@dimen/buttonPadding"
-                android:background="@color/checkUrlButtonColor"/>
+                android:background="@android:color/transparent"
+                android:textColor="@color/dialog_refresh_button_selector"/>
 
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +40,8 @@
                 android:layout_gravity="right"
                 android:textAllCaps="false"
                 android:padding="@dimen/buttonPadding"
-                android:background="@color/checkUrlButtonColor"/>
+                android:background="@android:color/transparent"
+                android:textColor="@color/dialog_refresh_button_selector"/>
     </LinearLayout>
 
 </LinearLayout>

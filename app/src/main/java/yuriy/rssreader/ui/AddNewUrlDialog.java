@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import yuriy.rssreader.R;
-import yuriy.rssreader.service.InputedUrlCheckerAndSaver;
+import yuriy.rssreader.service.InputUrlCheckerAndSaver;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
@@ -36,7 +36,7 @@ public final class AddNewUrlDialog extends DialogFragment {
             @Override
             public void onClick(final View v) {
                 final String inputUrl = String.valueOf(editText.getText());
-                new InputedUrlCheckerAndSaver(AddNewUrlDialog.this, view, inputUrl);
+                new InputUrlCheckerAndSaver(AddNewUrlDialog.this, view, inputUrl);
             }
         });
 

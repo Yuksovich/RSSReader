@@ -18,17 +18,17 @@ public final class RssListAdapter extends CursorAdapter {
         cursor.moveToFirst();
     }
 
+
     @Override
     public View newView(final Context context, final Cursor cursor, final ViewGroup parent) {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
-
-        return inflater.inflate(R.layout.entry_in_list_read, parent, false);
+        return inflater.inflate(R.layout.entry_in_list, parent, false);
 
     }
 
     @Override
-    public void bindView(View view, final Context context, final Cursor cursor) {
+    public void bindView(final View view, final Context context, final Cursor cursor) {
 
 
         final TextView itemTitle = (TextView) view.findViewById(R.id.item_title);
@@ -43,13 +43,14 @@ public final class RssListAdapter extends CursorAdapter {
         itemLink.setText(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK)));
 
         final boolean itemWasRead = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED)));
+
         if (itemWasRead) {
 
             itemTitle.setTextColor(context.getResources().getColor(R.color.itemTitleWasRead));
             view.setBackgroundColor(context.getResources().getColor(R.color.itemBackgroundWasRead));
         } else {
             itemTitle.setTextColor(context.getResources().getColor(R.color.itemTitleWasNotRead));
-            view.setBackgroundColor(context.getResources().getColor(R.color.itemBackGroundNotRead));
+            view.setBackgroundColor(context.getResources().getColor(R.color.item_background_not_read));
         }
 
     }

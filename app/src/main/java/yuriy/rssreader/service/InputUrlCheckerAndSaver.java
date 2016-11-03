@@ -11,7 +11,7 @@ import yuriy.rssreader.service.realization.XMLParser;
 
 import java.net.URL;
 
-public final class InputedUrlCheckerAndSaver {
+public final class InputUrlCheckerAndSaver {
 
     private static final int FAIL_CASE = 1;
     private static final int SUCCES_CASE = 0;
@@ -19,7 +19,7 @@ public final class InputedUrlCheckerAndSaver {
     private final View view;
     private final String inputUrl;
 
-    public InputedUrlCheckerAndSaver(DialogFragment dialog, final View view, final String inputUrl) {
+    public InputUrlCheckerAndSaver(DialogFragment dialog, final View view, final String inputUrl) {
         this.dialog = dialog;
         this.view = view;
         this.inputUrl = inputUrl;

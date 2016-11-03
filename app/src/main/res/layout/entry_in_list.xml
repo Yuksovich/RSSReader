@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/list_entry_height"
                 android:id="@+id/rss_entry"
-                android:background="@color/itemBackGroundNotRead">
+                android:background="@color/item_background_not_read">
 
     <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/channel_pic"
-            android:padding="5dp"
+            android:padding="@dimen/image_padding"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_alignBottom="@+id/item_pubDate"
-            android:src="#CCCCCC" android:layout_alignTop="@+id/channel_title"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignBottom="@+id/item_pubDate"
+            android:src="#CCCCCC"
+            android:layout_alignTop="@+id/channel_title"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
+            android:paddingLeft="@dimen/text_padding"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:id="@+id/item_title" android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/channel_pic" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_toRightOf="@+id/channel_pic"/>
+            android:id="@+id/item_title"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/channel_pic"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toRightOf="@+id/channel_pic"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/item_pubDate"
-            android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:paddingLeft="5dp"
+            android:paddingLeft="@dimen/text_padding"
             android:id="@+id/channel_title"
             android:layout_above="@+id/item_pubDate"
             android:layout_toRightOf="@+id/channel_pic"

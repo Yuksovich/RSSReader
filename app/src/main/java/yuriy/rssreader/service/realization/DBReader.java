@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import yuriy.rssreader.data.ReaderContract.RSSEntry;
 import yuriy.rssreader.data.RssDBOpenHelper;
 import yuriy.rssreader.data.SingleRSSEntry;
@@ -17,9 +18,9 @@ public final class DBReader implements Closeable{
     private final RssDBOpenHelper dbOpenHelper;
     private Cursor cursor;
 
-    private static final String WITHOUT_ARGUMENTS = null;
+    private static final String []WITHOUT_ARGUMENTS = null;
 
-    private final static String SELECTION = RSSEntry.COLUMN_NAME_ITEM_LINK + " = ?";
+    private final static String SELECTION_BY_ITEM_LINK = RSSEntry.COLUMN_NAME_ITEM_LINK + " = ?";
     private final static String SORT_ORDER = RSSEntry.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
     private final static String [] COLUMNS_ALL = null;
     private final static String SELECTION_ALL = null;
@@ -35,12 +36,7 @@ public final class DBReader implements Closeable{
     }
 
     public ArrayList<SingleRSSEntry> read() throws SQLException, DatabaseIsEmptyException {
-        return read(WITHOUT_ARGUMENTS);
-    }
-
-    public ArrayList<SingleRSSEntry> read(final String... selectionArgs) throws SQLException, DatabaseIsEmptyException {
-
-        cursor = getCursor(selectionArgs);
+        cursor = getCursor(WITHOUT_ARGUMENTS);
 
         if (cursor.moveToFirst()) {
             for (cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
@@ -55,15 +51,15 @@ public final class DBReader implements Closeable{
                 final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED));
 
                 listOfEntries.add(new SingleRSSEntry.Builder()
-                .channelTitle(channelTitle)
-                .channelImageURL(channelImageURL)
-                .channelDescription(channelDescription)
-                .itemLink(itemLink)
-                .itemTitle(itemTitle)
-                .itemDescription(itemDescription)
-                .itemPubDate(itemPubDate)
-                .itemBeenViewed(itemBeenViewed)
-                .build());
+                        .channelTitle(channelTitle)
+                        .channelImageURL(channelImageURL)
+                        .channelDescription(channelDescription)
+                        .itemLink(itemLink)
+                        .itemTitle(itemTitle)
+                        .itemDescription(itemDescription)
+                        .itemPubDate(itemPubDate)
+                        .itemBeenViewed(itemBeenViewed)
+                        .build());
             }
             closeCursor();
 
@@ -72,8 +68,28 @@ public final class DBReader implements Closeable{
         } else {
             closeCursor();
             throw new DatabaseIsEmptyException();
-
         }
+    }
+
+    public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException{
+        cursor = getCursor(new String[]{itemLink});
+        if (cursor.moveToFirst()) {
+            return new SingleRSSEntry.Builder()
+                    .channelTitle(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE)))
+                    .channelImageURL(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_IMAGE_URL)))
+                    .channelDescription(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_DESCRIPTION)))
+                    .itemLink(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK)))
+                    .itemTitle(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE)))
+                    .itemDescription(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_DESCRIPTION)))
+                    .itemPubDate(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE)))
+                    .itemBeenViewed(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED)))
+                    .build();
+        } else {
+            closeCursor();
+            throw new DatabaseIsEmptyException();
+        }
+
+
     }
 
     public Cursor getCursor(final String... selectionArgs) throws DatabaseIsEmptyException {
@@ -86,7 +102,7 @@ public final class DBReader implements Closeable{
                 throw new DatabaseIsEmptyException();
             }
         } else {
-            return database.query(RSSEntry.TABLE_NAME, COLUMNS_ALL, SELECTION, selectionArgs, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
+            return database.query(RSSEntry.TABLE_NAME, COLUMNS_ALL, SELECTION_BY_ITEM_LINK, selectionArgs, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
         }
 
     }

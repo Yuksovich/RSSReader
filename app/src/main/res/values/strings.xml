@@ -1,14 +1,26 @@
 <resources>
     <string name="app_name">RSSReader</string>
-    <string name="recievedItemCount">Получено новостей: </string>
+    <string name="recievedItemCount">Получено новостей:</string>
     <string name="noRss">По данному адресу отсутствует RSS</string>
     <string name="sqlFail">Ошибка доступа к базе данных</string>
-    <string name="httpFail">Ошибка подключения по адресу </string>
-    <string name="incorrectURL">Некорректный адрес </string>
+    <string name="httpFail">Ошибка подключения по адресу</string>
+    <string name="incorrectURL">Некорректный адрес</string>
     <string name="addUrlDialog">Введите адрес RSS</string>
     <string name="httpInput">http://</string>
     <string name="addUrlButtonText">Добавить URL</string>
     <string name="cancelUrlAddButtonText">Отменить</string>
     <string name="checkUrl">Проверить URL</string>
     <string name="correctURL">Корректный URL</string>
+    <string name="refresh_go">Обновить</string>
+    <string name="add_go">Добавить URL</string>
+    <string name="html_style_css"><![CDATA[
+        <style>
+            body{
+                text-align: justify;
+                }
+            img{
+                max-width: 100%;
+               }
+        </style>]]>
+    </string>
 </resources>
