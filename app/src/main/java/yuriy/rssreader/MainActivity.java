@@ -76,7 +76,7 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_acttivity_main, menu);
         return true;
     }
@@ -98,7 +98,7 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
         startActivity(intent);
     }
 
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(final View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.inflate(R.menu.filter_popup);
         popupMenu.show();

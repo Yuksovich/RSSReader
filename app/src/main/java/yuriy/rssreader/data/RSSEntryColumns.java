@@ -3,7 +3,7 @@ package yuriy.rssreader.data;
 
 import android.provider.BaseColumns;
 
-public abstract class RSSEntryColumns implements BaseColumns {
+public final class RSSEntryColumns implements BaseColumns {
     private RSSEntryColumns() {
 
     }
