@@ -45,8 +45,9 @@
             android:layout_above="@+id/item_pubDate"
             android:layout_toRightOf="@+id/channel_pic"
             android:layout_toEndOf="@+id/channel_pic"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:visibility="invisible"
-              android:id="@+id/item_link"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:id="@+id/item_link"/>
 </RelativeLayout>

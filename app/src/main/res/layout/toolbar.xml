@@ -13,6 +13,15 @@
             android:gravity="right"
             android:paddingRight="@dimen/buttonToolbarPadding">
         <ImageButton
+                android:id="@+id/filterButton_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/toolbar_filter_button_selector"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:paddingRight="@dimen/buttonToolbarPadding"
+                android:paddingLeft="@dimen/buttonToolbarPadding"/>
+        <ImageButton
                 android:id="@+id/addUrlButton_toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

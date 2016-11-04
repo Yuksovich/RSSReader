@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Toast;
 import yuriy.rssreader.R;
 import yuriy.rssreader.rssexceptions.DuplicateChannelUrlException;
-import yuriy.rssreader.service.realization.DataReceiver;
-import yuriy.rssreader.service.realization.XMLParser;
+import yuriy.rssreader.service.controllers.DataReceiver;
+import yuriy.rssreader.service.controllers.XMLParser;
 
 import java.net.URL;
 import java.util.Map;
@@ -23,17 +23,16 @@ public final class InputUrlCheckerAndSaver {
     private static final String CHANNELS = "channels";
 
     private final DialogFragment dialog;
-    private final View view;
     private final String inputUrl;
     private final SharedPreferences sharedPreferences;
     private final Context context;
 
     public InputUrlCheckerAndSaver(final DialogFragment dialog, final View view, final String inputUrl) {
         this.dialog = dialog;
-        this.view = view;
         this.inputUrl = inputUrl;
         this.context = view.getContext();
-        sharedPreferences = view.getContext().getSharedPreferences(CHANNELS, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(CHANNELS, Context.MODE_PRIVATE);
+
         checkAndSave();
     }
 
@@ -65,7 +64,7 @@ public final class InputUrlCheckerAndSaver {
                     final String channelTitle = new XMLParser(dataReceiver.getTextFromURL(url)).getChannelTitle();
                     saveUrl(inputUrl, channelTitle);
                     handler.sendEmptyMessage(SUCCESS_CASE);
-                }catch (DuplicateChannelUrlException e){
+                } catch (DuplicateChannelUrlException e) {
                     handler.sendEmptyMessage(DUPLICATE_URL_CASE);
                 } catch (Exception e) {
                     handler.sendEmptyMessage(FAIL_CASE);
@@ -76,15 +75,15 @@ public final class InputUrlCheckerAndSaver {
 
     private void saveUrl(final String inputUrl, final String channelTitle) throws DuplicateChannelUrlException {
         Map<String, ?> map = sharedPreferences.getAll();
-        if(map!=null){
-            if(map.containsKey(inputUrl)){
+        if (map != null) {
+            if (map.containsKey(inputUrl)) {
                 throw new DuplicateChannelUrlException();
             }
         }
         writeUrlToSharedPreferences(inputUrl, channelTitle);
     }
 
-    private void writeUrlToSharedPreferences(final String inputUrl, final String channelTitle){
+    private void writeUrlToSharedPreferences(final String inputUrl, final String channelTitle) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(inputUrl, channelTitle);
         editor.apply();

@@ -8,8 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import yuriy.rssreader.R;
 import yuriy.rssreader.data.SingleRSSEntry;
-import yuriy.rssreader.service.realization.DBReader;
-import yuriy.rssreader.service.realization.DBWriter;
+import yuriy.rssreader.service.controllers.DBReader;
+import yuriy.rssreader.service.controllers.DBWriter;
 
 public class SingleRssView extends AppCompatActivity {
 
@@ -35,6 +35,8 @@ public class SingleRssView extends AppCompatActivity {
             if (!entry.itemBeenViewed()) {
                 entryWasRead(itemLink);
             }
+        }else{
+            finish();
         }
     }
 

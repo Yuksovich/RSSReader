@@ -8,9 +8,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
-import yuriy.rssreader.service.realization.DBReader;
+import yuriy.rssreader.service.controllers.DBReader;
 
-final public class DataProvider implements Runnable {
+final public class ListViewDataProvider implements Runnable {
 
     public final static int STATE_SUCCESS = 0;
     public final static int STATE_FAILURE = 1;
@@ -22,7 +22,7 @@ final public class DataProvider implements Runnable {
     private final Handler handler;
     private DBReader dbReader = null;
 
-    public DataProvider(final Context context, final Handler handler) {
+    public ListViewDataProvider(final Context context, final Handler handler) {
 
         this.context = context;
         this.handler = handler;

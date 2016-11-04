@@ -1,4 +1,4 @@
-package yuriy.rssreader.service.realization;
+package yuriy.rssreader.service.controllers;
 
 
 import android.util.Xml;
@@ -182,7 +182,7 @@ public final class XMLParser {
 
     }
 
-    public String getChannelTitle(){
+    public String getChannelTitle() {
         return channelTitle;
     }
 }

@@ -31,7 +31,7 @@
                 android:textAllCaps="false"
                 android:padding="@dimen/buttonPadding"
                 android:background="@android:color/transparent"
-                android:textColor="@color/dialog_refresh_button_selector"/>
+                android:textColor="@color/button_selector"/>
 
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:textAllCaps="false"
                 android:padding="@dimen/buttonPadding"
                 android:background="@android:color/transparent"
-                android:textColor="@color/dialog_refresh_button_selector"/>
+                android:textColor="@color/button_selector"/>
     </LinearLayout>
 
 </LinearLayout>

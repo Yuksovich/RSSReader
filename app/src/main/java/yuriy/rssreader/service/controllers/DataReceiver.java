@@ -1,7 +1,5 @@
-package yuriy.rssreader.service.realization;
+package yuriy.rssreader.service.controllers;
 
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,9 +23,9 @@ public final class DataReceiver {
 
     public String getTextFromURL(final URL url) throws IOException {
 
-        final Integer[] recievedData = getData(url);
-        final Charset charset = getCharset(recievedData);
-        final byte[] outputReadyData = getByteArrayFromReceivedData(recievedData);
+        final Integer[] receivedData = getData(url);
+        final Charset charset = getCharset(receivedData);
+        final byte[] outputReadyData = getByteArrayFromReceivedData(receivedData);
         return new String(outputReadyData, charset);
 
     }
@@ -73,7 +71,7 @@ public final class DataReceiver {
         String data = EMPTY_STRING;
 
         for (int currentByte : receivedByteData) {
-            if ((char) currentByte == QUOTE_SIGN) {
+            if ((char) currentByte == TAG_CLOSING_BRACKET) {
                 data += (char) currentByte;
                 break;
             } else {
@@ -94,9 +92,11 @@ public final class DataReceiver {
 
                 }
             }
+
             return Charset.forName(encoding.toString());
 
         } else {
+
             return Charset.defaultCharset();
         }
     }

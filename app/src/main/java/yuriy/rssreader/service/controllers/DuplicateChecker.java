@@ -1,4 +1,4 @@
-package yuriy.rssreader.service.realization;
+package yuriy.rssreader.service.controllers;
 
 
 import android.content.Context;

@@ -12,9 +12,9 @@ import android.widget.Toast;
 import yuriy.rssreader.R;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.NoRSSContentException;
-import yuriy.rssreader.service.realization.DBWriter;
-import yuriy.rssreader.service.realization.DataReceiver;
-import yuriy.rssreader.service.realization.XMLParser;
+import yuriy.rssreader.service.controllers.DBWriter;
+import yuriy.rssreader.service.controllers.DataReceiver;
+import yuriy.rssreader.service.controllers.XMLParser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -67,7 +67,7 @@ final public class RssProviderService extends Service {
     }
 
     @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
 
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?>map = sharedPreferences.getAll();

@@ -1,30 +1,30 @@
-package yuriy.rssreader.service.realization;
+package yuriy.rssreader.service.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import yuriy.rssreader.data.ReaderContract.RSSEntry;
 import yuriy.rssreader.data.RssDBOpenHelper;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
+
 import java.io.Closeable;
 import java.util.ArrayList;
 
-public final class DBReader implements Closeable{
+public final class DBReader implements Closeable {
     private final ArrayList<SingleRSSEntry> listOfEntries;
     private final SQLiteDatabase database;
     private final RssDBOpenHelper dbOpenHelper;
     private Cursor cursor;
 
-    private static final String []WITHOUT_ARGUMENTS = null;
+    private static final String[] WITHOUT_ARGUMENTS = null;
 
     private final static String SELECTION_BY_ITEM_LINK = RSSEntry.COLUMN_NAME_ITEM_LINK + " = ?";
     private final static String SORT_ORDER = RSSEntry.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
-    private final static String [] COLUMNS_ALL = null;
+    private final static String[] COLUMNS_ALL = null;
     private final static String SELECTION_ALL = null;
-    private final static String [] SELECTION_ARGS_ALL = null;
+    private final static String[] SELECTION_ARGS_ALL = null;
     private final static String GROUP_BY_ALL = null;
     private final static String HAVING_ALL = null;
     private final static String LIMIT_ALL = null;
@@ -71,7 +71,7 @@ public final class DBReader implements Closeable{
         }
     }
 
-    public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException{
+    public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException {
         cursor = getCursor(new String[]{itemLink});
         if (cursor.moveToFirst()) {
             return new SingleRSSEntry.Builder()

@@ -1,20 +1,20 @@
 package yuriy.rssreader;
 
-
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
-import yuriy.rssreader.service.DataProvider;
+import android.widget.*;
+import yuriy.rssreader.service.ChannelSelectionPopup;
+import yuriy.rssreader.service.ListViewDataProvider;
 import yuriy.rssreader.service.RssListAdapter;
 import yuriy.rssreader.service.RssProviderService;
 import yuriy.rssreader.ui.AddNewUrlDialog;
@@ -31,14 +31,14 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
         @Override
         public void handleMessage(final Message msg) {
             switch (msg.what) {
-                case (DataProvider.STATE_SUCCESS):
+                case (ListViewDataProvider.STATE_SUCCESS):
                     final RssListAdapter adapter = (RssListAdapter) msg.obj;
                     listView.setAdapter(adapter);
                     listView.setOnItemClickListener(MainActivity.this);
                     break;
-                case (DataProvider.STATE_FAILURE):
+                case (ListViewDataProvider.STATE_FAILURE):
                     break;
-                case (DataProvider.STATE_EMPTY):
+                case (ListViewDataProvider.STATE_EMPTY):
                     break;
             }
         }
@@ -68,6 +68,14 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
                 dialog.show(getFragmentManager(), DIALOG_NEW_URL);
             }
         });
+
+        final ImageButton filterButton = (ImageButton)findViewById(R.id.filterButton_toolbar);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                showPopupMenu(view);
+            }
+        });
     }
 
     @Override
@@ -77,11 +85,12 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
     }
 
     private void refreshList(){
-        new Thread(new DataProvider(this, handler)).start();
+        new Thread(new ListViewDataProvider(this, handler)).start();
         listView = (ListView) findViewById(R.id.listOfEntries);
         listView.setFastScrollEnabled(true);
         Intent intent = new Intent(this, RssProviderService.class);
         startService(intent);
+        listView.showContextMenu();
     }
 
     @Override
@@ -91,6 +100,17 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
         Intent intent = new Intent(this, SingleRssView.class);
         intent.putExtra(KEY_ITEM_LINK, itemLink);
         startActivity(intent);
+    }
+
+    private void showPopupMenu(View view){
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.inflate(R.menu.filter_popup);
+        popupMenu.show();
+        Menu menu = popupMenu.getMenu();
+        ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(this, menu);
+        menu = channelSelectionPopup.getMenu();
+        
+
     }
 
    }
