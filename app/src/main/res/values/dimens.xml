@@ -13,7 +13,7 @@
     <dimen name="inputUrlMarginTop">20dp</dimen>
     <dimen name="inputUrlMarginBottom">20dp</dimen>
     <dimen name="buttonPadding">20dp</dimen>
-    <dimen name="buttonToolbarPadding">10dp</dimen>
+    <dimen name="buttonToolbarPadding">20dp</dimen>
     <dimen name="divider_height">1dp</dimen>
 
     <dimen name="list_entry_height">100dp</dimen>

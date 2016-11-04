@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
-    
+
     <style name="AppTheme.list_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -41,8 +41,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:padding">@dimen/inputUrlPadding</item>
-
-
     </style>
 
     <style name="AppTheme.url_dialog.title">
@@ -57,6 +55,23 @@
         <item name="android:textColor">@color/button_selector</item>
     </style>
 
+    <style name="AppTheme.entry_in_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right</item>
+    </style>
+    <style name="AppTheme.entry_in_list.item_title">
+        <item name="android:layout_gravity">left</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.toolbar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:paddingRight">@dimen/buttonToolbarPadding</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
 
 </resources>

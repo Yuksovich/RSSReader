@@ -16,9 +16,9 @@
             style="@style/AppTheme.url_dialog"/>
 
     <LinearLayout
-                    style="@style/AppTheme.url_dialog"
-                  android:orientation="horizontal"
-                  android:layout_gravity="center">
+            style="@style/AppTheme.url_dialog"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
         <Button
                 android:id="@+id/addUrlButton"
