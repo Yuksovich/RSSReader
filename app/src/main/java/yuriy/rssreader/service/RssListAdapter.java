@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import yuriy.rssreader.R;
-import yuriy.rssreader.data.ReaderContract.RSSEntry;
+import yuriy.rssreader.data.RSSEntryColumns;
 
 public final class RssListAdapter extends CursorAdapter {
 
@@ -37,12 +37,12 @@ public final class RssListAdapter extends CursorAdapter {
         final TextView itemLink = (TextView) view.findViewById(R.id.item_link);
 
 
-        itemTitle.setText(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE)));
-        channelTitle.setText(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE)));
-        itemPubDate.setText(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE)));
-        itemLink.setText(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK)));
+        itemTitle.setText(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_TITLE)));
+        channelTitle.setText(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE)));
+        itemPubDate.setText(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE)));
+        itemLink.setText(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK)));
 
-        final boolean itemWasRead = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED)));
+        final boolean itemWasRead = Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_BEEN_VIEWED)));
 
         if (itemWasRead) {
 

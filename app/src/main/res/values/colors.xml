@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="itemBackgroundWasRead">#0FFF</color>
     <color name="item_background_not_read">#0Ff56f2c</color>
     <color name="itemTitleWasRead">#5111</color>
@@ -16,4 +17,6 @@
     <color name="dialog_button_text">@android:color/black</color>
     <color name="dialog_button_text_pressed">@android:color/tertiary_text_light</color>
     <color name="list_divider_color">#50f56f2c</color>
+
+    <color name="dialog_title">#FFFFFF</color>
 </resources>

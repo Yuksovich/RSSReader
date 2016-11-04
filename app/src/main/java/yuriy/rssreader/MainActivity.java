@@ -108,8 +108,8 @@ public final class MainActivity extends AppCompatActivity implements AdapterView
         popupMenu.show();
         Menu menu = popupMenu.getMenu();
         ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(this, menu);
-        menu = channelSelectionPopup.getMenu();
-        
+
+
 
     }
 

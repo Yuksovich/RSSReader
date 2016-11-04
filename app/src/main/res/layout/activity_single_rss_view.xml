@@ -10,38 +10,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
     >
-        <TextView android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/item_title_show"
-                  android:textAppearance="?android:attr/textAppearanceLarge"
-                  android:textColor="@color/toolbar_color"
-                  android:textAlignment="gravity"
-                  android:padding="@dimen/text_padding"/>
+        <TextView android:id="@+id/item_title_show"
+                  style="@style/AppTheme.rss_view.item_title"/>
 
-        <TextView android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/item_pubDate_show"
-                  android:gravity="right"
-                  android:textAppearance="?android:attr/textAppearanceSmall"
-                  android:padding="@dimen/text_padding"/>
+        <TextView android:id="@+id/item_pubDate_show"
+                  style="@style/AppTheme.rss_view"/>
 
-        <TextView android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/channel_title_show"
-                  android:textStyle="bold"
-                  android:paddingLeft="@dimen/text_padding"/>
+        <TextView android:id="@+id/channel_title_show"
+                  style="@style/AppTheme.rss_view.channel_title"/>
 
-        <TextView android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/channel_description_show"
-                  android:textAppearance="?android:attr/textAppearanceSmall"
-                  android:gravity="right"
-                  android:paddingRight="@dimen/text_padding"/>
+        <TextView android:id="@+id/channel_description_show"
+                  style="@style/AppTheme.rss_view"/>
 
-        <WebView android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/item_descriprion_show"
-                 android:padding="@dimen/text_padding"/>
+        <WebView android:id="@+id/item_descriprion_show"
+                 style="@style/AppTheme.rss_view"/>
 
 
     </LinearLayout>

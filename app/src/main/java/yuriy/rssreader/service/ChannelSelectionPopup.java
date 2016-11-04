@@ -1,6 +1,5 @@
 package yuriy.rssreader.service;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.Menu;

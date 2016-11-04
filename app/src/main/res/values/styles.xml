@@ -9,6 +9,54 @@
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
+    
+    <style name="AppTheme.list_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:divider">@color/list_divider_color</item>
+        <item name="android:dividerHeight">@dimen/divider_height</item>
+    </style>
+
+    <style name="AppTheme.rss_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:padding">@dimen/text_padding</item>
+    </style>
+
+    <style name="AppTheme.rss_view.item_title">
+        <item name="android:textColor">@color/toolbar_color</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="AppTheme.rss_view.channel_title">
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.url_dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">@dimen/inputUrlPadding</item>
+
+
+    </style>
+
+    <style name="AppTheme.url_dialog.title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/dialog_title</item>
+        <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="AppTheme.url_dialog.button">
+        <item name="android:textColor">@color/button_selector</item>
+    </style>
+
 
 
 </resources>

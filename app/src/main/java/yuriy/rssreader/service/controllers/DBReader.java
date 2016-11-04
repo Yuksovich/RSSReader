@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import yuriy.rssreader.data.ReaderContract.RSSEntry;
+import yuriy.rssreader.data.RSSEntryColumns;
 import yuriy.rssreader.data.RssDBOpenHelper;
 import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
@@ -20,8 +20,8 @@ public final class DBReader implements Closeable {
 
     private static final String[] WITHOUT_ARGUMENTS = null;
 
-    private final static String SELECTION_BY_ITEM_LINK = RSSEntry.COLUMN_NAME_ITEM_LINK + " = ?";
-    private final static String SORT_ORDER = RSSEntry.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
+    private final static String SELECTION_BY_ITEM_LINK = RSSEntryColumns.COLUMN_NAME_ITEM_LINK + " = ?";
+    private final static String SORT_ORDER = RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
     private final static String[] COLUMNS_ALL = null;
     private final static String SELECTION_ALL = null;
     private final static String[] SELECTION_ARGS_ALL = null;
@@ -41,14 +41,14 @@ public final class DBReader implements Closeable {
         if (cursor.moveToFirst()) {
             for (cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
 
-                final String channelTitle = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE));
-                final String channelImageURL = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_IMAGE_URL));
-                final String channelDescription = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_DESCRIPTION));
-                final String itemLink = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK));
-                final String itemTitle = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE));
-                final String itemDescription = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_DESCRIPTION));
-                final String itemPubDate = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE));
-                final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED));
+                final String channelTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE));
+                final String channelImageURL = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_IMAGE_URL));
+                final String channelDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_DESCRIPTION));
+                final String itemLink = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK));
+                final String itemTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_TITLE));
+                final String itemDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_DESCRIPTION));
+                final String itemPubDate = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE));
+                final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_BEEN_VIEWED));
 
                 listOfEntries.add(new SingleRSSEntry.Builder()
                         .channelTitle(channelTitle)
@@ -75,14 +75,14 @@ public final class DBReader implements Closeable {
         cursor = getCursor(new String[]{itemLink});
         if (cursor.moveToFirst()) {
             return new SingleRSSEntry.Builder()
-                    .channelTitle(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_TITLE)))
-                    .channelImageURL(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_IMAGE_URL)))
-                    .channelDescription(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_CHANNEL_DESCRIPTION)))
-                    .itemLink(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_LINK)))
-                    .itemTitle(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_TITLE)))
-                    .itemDescription(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_DESCRIPTION)))
-                    .itemPubDate(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_ITEM_PUB_DATE)))
-                    .itemBeenViewed(cursor.getString(cursor.getColumnIndex(RSSEntry.COLUMN_NAME_BEEN_VIEWVED)))
+                    .channelTitle(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE)))
+                    .channelImageURL(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_IMAGE_URL)))
+                    .channelDescription(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_DESCRIPTION)))
+                    .itemLink(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK)))
+                    .itemTitle(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_TITLE)))
+                    .itemDescription(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_DESCRIPTION)))
+                    .itemPubDate(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE)))
+                    .itemBeenViewed(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_BEEN_VIEWED)))
                     .build();
         } else {
             closeCursor();
@@ -95,14 +95,14 @@ public final class DBReader implements Closeable {
     public Cursor getCursor(final String... selectionArgs) throws DatabaseIsEmptyException {
 
         if (selectionArgs == null) {
-            final Cursor currentCursor = database.query(RSSEntry.TABLE_NAME, COLUMNS_ALL, SELECTION_ALL, SELECTION_ARGS_ALL, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
+            final Cursor currentCursor = database.query(RSSEntryColumns.TABLE_NAME, COLUMNS_ALL, SELECTION_ALL, SELECTION_ARGS_ALL, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
             if (currentCursor.moveToFirst()) {
                 return currentCursor;
             } else {
                 throw new DatabaseIsEmptyException();
             }
         } else {
-            return database.query(RSSEntry.TABLE_NAME, COLUMNS_ALL, SELECTION_BY_ITEM_LINK, selectionArgs, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
+            return database.query(RSSEntryColumns.TABLE_NAME, COLUMNS_ALL, SELECTION_BY_ITEM_LINK, selectionArgs, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
         }
 
     }
