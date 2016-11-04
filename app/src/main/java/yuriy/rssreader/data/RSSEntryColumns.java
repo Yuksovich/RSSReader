@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 
 public final class RSSEntryColumns implements BaseColumns {
     private RSSEntryColumns() {
-
+        throw new UnsupportedOperationException();
     }
 
     public static final String TABLE_NAME = "rssTable";
