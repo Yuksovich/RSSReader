@@ -7,23 +7,39 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_height="?android:actionBarSize"
         android:background="@color/toolbar_color">
-    <LinearLayout
+
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="right">
+    >
+        <ImageButton
+                android:id="@+id/settingsButton_toolbar"
+                android:src="@color/toolbar_settings_button_selector"
+                style="@style/AppTheme.toolbar"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                />
         <ImageButton
                 android:id="@+id/filterButton_toolbar"
                 android:src="@color/toolbar_filter_button_selector"
-                style="@style/AppTheme.toolbar"/>
+                style="@style/AppTheme.toolbar"
+                android:layout_toLeftOf="@+id/addUrlButton_toolbar"
+                android:layout_toStartOf="@+id/addUrlButton_toolbar"/>
         <ImageButton
                 android:id="@+id/addUrlButton_toolbar"
                 android:src="@color/toolbar_add_button_selector"
-                style="@style/AppTheme.toolbar"/>
+                style="@style/AppTheme.toolbar"
+                android:layout_toLeftOf="@+id/refreshButton_toolbar"
+                android:layout_toStartOf="@+id/refreshButton_toolbar"
+        />
         <ImageButton
                 android:id="@+id/refreshButton_toolbar"
                 android:src="@color/toolbar_refresh_button_selector"
-                style="@style/AppTheme.toolbar"/>
-    </LinearLayout>
+                style="@style/AppTheme.toolbar"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+        />
+
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>
 

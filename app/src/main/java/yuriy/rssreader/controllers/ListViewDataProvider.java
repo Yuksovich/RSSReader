@@ -1,4 +1,4 @@
-package yuriy.rssreader.service;
+package yuriy.rssreader.controllers;
 
 
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
-import yuriy.rssreader.service.controllers.DBReader;
+import yuriy.rssreader.database.DBReader;
 
 final public class ListViewDataProvider implements Runnable {
 

@@ -1,4 +1,4 @@
-package yuriy.rssreader.service;
+package yuriy.rssreader.controllers;
 
 
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import yuriy.rssreader.R;
-import yuriy.rssreader.data.RSSEntryColumns;
+import yuriy.rssreader.database.RSSEntryColumns;
 
 public final class RssListAdapter extends CursorAdapter {
 

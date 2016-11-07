@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">RSSReader</string>
-    <string name="recievedItemCount">Получено новостей:</string>
+    <string name="receivedItemCount">Получено новостей:</string>
     <string name="noRss">По данному адресу отсутствует RSS</string>
     <string name="sqlFail">Ошибка доступа к базе данных</string>
     <string name="httpFail">Ошибка подключения по адресу</string>
@@ -24,5 +24,11 @@
         </style>]]>
     </string>
     <string name="duplicateURL">Этот URL уже в списке</string>
+
+    <string name="auto_refresh">Автообновление</string>
+    <string name="erase_all_entries">Удалить все записи</string>
+    <string name="databaseIsEmpty">База данныъ пуста</string>
+    <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
+    <string name="input_url_hint">https://www.habrahabr.ru/rss</string>
 
 </resources>

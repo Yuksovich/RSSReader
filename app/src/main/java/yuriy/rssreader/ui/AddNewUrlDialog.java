@@ -1,33 +1,53 @@
 package yuriy.rssreader.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import yuriy.rssreader.R;
-import yuriy.rssreader.service.InputUrlCheckerAndSaver;
+import yuriy.rssreader.services.UrlSaverService;
+import yuriy.rssreader.services.receivers.UrlSaverReceiver;
 
 public final class AddNewUrlDialog extends DialogFragment {
+    private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+    private final IntentFilter intentFilter = new IntentFilter();
+    private UrlSaverReceiver receiver;
+
 
     @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+    public void onResume() {
+        super.onResume();
+        intentFilter.addAction(UrlSaverService.FAIL);
+        intentFilter.addAction(UrlSaverService.SUCCESS);
+        broadcastManager.registerReceiver(receiver, intentFilter);
+    }
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.add_url_dialog, null);
+    @Override
+    public void onPause() {
+        broadcastManager.unregisterReceiver(receiver);
+        super.onPause();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(final LayoutInflater inflater, @Nullable final  ViewGroup container, final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.add_url_dialog, container);
         final EditText editText = (EditText) view.findViewById(R.id.urlInput);
+
+        receiver = new UrlSaverReceiver(this);
+
         editText.setSelection(editText.getText().toString().length());
-        builder.setView(view);
 
         final Button cancelButton = (Button) view.findViewById(R.id.cancelUrlButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 dismiss();
             }
         });
@@ -37,11 +57,9 @@ public final class AddNewUrlDialog extends DialogFragment {
             @Override
             public void onClick(final View v) {
                 final String inputUrl = String.valueOf(editText.getText());
-                new InputUrlCheckerAndSaver(AddNewUrlDialog.this, view, inputUrl);
+                UrlSaverService.checkAndSave(view.getContext(), inputUrl);
             }
         });
-
-        return builder.create();
+        return view;
     }
-
- }
+}

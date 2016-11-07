@@ -1,4 +1,4 @@
-package yuriy.rssreader.service;
+package yuriy.rssreader.controllers;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,11 +10,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 import yuriy.rssreader.R;
-import yuriy.rssreader.data.SingleRSSEntry;
+import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.NoRSSContentException;
-import yuriy.rssreader.service.controllers.DBWriter;
-import yuriy.rssreader.service.controllers.DataReceiver;
-import yuriy.rssreader.service.controllers.XMLParser;
+import yuriy.rssreader.database.DBWriter;
+import yuriy.rssreader.controllers.processors.DataReceiver;
+import yuriy.rssreader.controllers.processors.XMLParser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,8 +39,11 @@ final public class RssProviderService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case (0):
-                    Toast.makeText(RssProviderService.this, getString(R.string.recievedItemCount) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    if ((int) msg.obj != 0) {
+                        Toast.makeText(RssProviderService.this, getString(R.string.receivedItemCount) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    }
                     break;
+
                 case (1):
                     Toast.makeText(RssProviderService.this, getString(R.string.noRss) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
                     break;
@@ -70,16 +73,16 @@ final public class RssProviderService extends Service {
     public int onStartCommand(final Intent intent, final int flags, final int startId) {
 
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
-        final Map<String, ?>map = sharedPreferences.getAll();
+        final Map<String, ?> map = sharedPreferences.getAll();
         final ArrayList<String> urls = new ArrayList<>();
 
-        if(map.isEmpty()) {
+        if (map.isEmpty()) {
             stopSelf();
             return START_NOT_STICKY;
         }
 
-        final Set<String>set = map.keySet();
-        for (String urlAddress:set){
+        final Set<String> set = map.keySet();
+        for (String urlAddress : set) {
             urls.add(urlAddress);
         }
 
@@ -104,7 +107,7 @@ final public class RssProviderService extends Service {
                         dbWriter = new DBWriter(RssProviderService.this);
                         dbWriter.populate(entriesArray);
                         newEntriesCount += dbWriter.getNewEntriesCount();
-                    }catch (MalformedURLException e){
+                    } catch (MalformedURLException e) {
                         handler.sendMessage(Message.obtain(handler, INCORRECT_URL, urlString));
                     } catch (IOException e) {
                         handler.sendMessage(Message.obtain(handler, HTTP_CONNECTION_FAIL, urlString));

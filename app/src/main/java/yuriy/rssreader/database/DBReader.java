@@ -1,12 +1,9 @@
-package yuriy.rssreader.service.controllers;
+package yuriy.rssreader.database;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import yuriy.rssreader.data.RSSEntryColumns;
-import yuriy.rssreader.data.RssDBOpenHelper;
-import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
 import java.io.Closeable;
@@ -19,7 +16,6 @@ public final class DBReader implements Closeable {
     private Cursor cursor;
 
     private static final String[] WITHOUT_ARGUMENTS = null;
-
     private final static String SELECTION_BY_ITEM_LINK = RSSEntryColumns.COLUMN_NAME_ITEM_LINK + " = ?";
     private final static String SORT_ORDER = RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
     private final static String[] COLUMNS_ALL = null;
@@ -72,6 +68,7 @@ public final class DBReader implements Closeable {
     }
 
     public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException {
+        //TODO: check for possible itemLink without array
         cursor = getCursor(new String[]{itemLink});
         if (cursor.moveToFirst()) {
             return new SingleRSSEntry.Builder()

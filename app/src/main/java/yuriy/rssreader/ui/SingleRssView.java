@@ -1,17 +1,17 @@
 package yuriy.rssreader.ui;
 
+import android.app.Activity;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 import yuriy.rssreader.R;
-import yuriy.rssreader.data.SingleRSSEntry;
-import yuriy.rssreader.service.controllers.DBReader;
-import yuriy.rssreader.service.controllers.DBWriter;
+import yuriy.rssreader.database.SingleRSSEntry;
+import yuriy.rssreader.database.DBReader;
+import yuriy.rssreader.database.DBWriter;
 
-public class SingleRssView extends AppCompatActivity {
+public class SingleRssView extends Activity {
 
     private static final String KEY_ITEM_LINK = "itemLink";
     private static final String MIME_TYPE = "text/html";
@@ -22,6 +22,7 @@ public class SingleRssView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_rss_view);
         final String itemLink = (String) getIntent().getExtras().get(KEY_ITEM_LINK);
+
         SingleRSSEntry entry = findEntryByItemLink(itemLink);
         if (entry != null) {
             ((TextView) findViewById(R.id.item_title_show)).setText(entry.getItemTitle());

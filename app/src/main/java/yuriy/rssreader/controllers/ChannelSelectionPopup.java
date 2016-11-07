@@ -1,4 +1,4 @@
-package yuriy.rssreader.service;
+package yuriy.rssreader.controllers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,13 +9,10 @@ import java.util.Set;
 
 public final class ChannelSelectionPopup {
     private final static String CHANNELS = "channels";
-
-    private final Context context;
     private final Menu menu;
     private final SharedPreferences sharedPreferences;
     public ChannelSelectionPopup(final Context context, final Menu menu) {
-        this.context = context;
-        this.menu = menu;
+          this.menu = menu;
         sharedPreferences = context.getSharedPreferences(CHANNELS, Context.MODE_PRIVATE);
     }
 

@@ -1,11 +1,9 @@
-package yuriy.rssreader.service.controllers;
+package yuriy.rssreader.database;
 
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import yuriy.rssreader.data.RSSEntryColumns;
-import yuriy.rssreader.data.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
 import java.util.ArrayList;

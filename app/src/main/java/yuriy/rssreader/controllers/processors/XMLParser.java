@@ -1,10 +1,10 @@
-package yuriy.rssreader.service.controllers;
+package yuriy.rssreader.controllers.processors;
 
 
 import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import yuriy.rssreader.data.SingleRSSEntry;
+import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.NoRSSContentException;
 
 import java.io.IOException;

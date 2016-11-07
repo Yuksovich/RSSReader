@@ -1,4 +1,4 @@
-package yuriy.rssreader.data;
+package yuriy.rssreader.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 
-public final class RssDBOpenHelper extends SQLiteOpenHelper {
+final class RssDBOpenHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String CREATE_TABLE = "CREATE TABLE " +
             RSSEntryColumns.TABLE_NAME + " (" + RSSEntryColumns._ID + " integer primary key autoincrement, " +
@@ -23,7 +23,7 @@ public final class RssDBOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "RssReader.db";
     private static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + RSSEntryColumns.TABLE_NAME;
 
-    public RssDBOpenHelper(final @NonNull Context context) {
+    RssDBOpenHelper(final @NonNull Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

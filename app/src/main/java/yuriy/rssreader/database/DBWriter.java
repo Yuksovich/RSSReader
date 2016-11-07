@@ -1,13 +1,10 @@
-package yuriy.rssreader.service.controllers;
+package yuriy.rssreader.database;
 
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import yuriy.rssreader.data.RSSEntryColumns;
-import yuriy.rssreader.data.RssDBOpenHelper;
-import yuriy.rssreader.data.SingleRSSEntry;
 
 import java.io.Closeable;
 import java.util.ArrayList;

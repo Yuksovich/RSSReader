@@ -1,4 +1,4 @@
-package yuriy.rssreader.service.controllers;
+package yuriy.rssreader.controllers.processors;
 
 
 import java.io.BufferedInputStream;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 
 public final class DataReceiver {
-
 
     private static final int CONNECT_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 5000;
@@ -66,7 +65,6 @@ public final class DataReceiver {
     }
 
     private Charset getCharset(final Integer[] receivedByteData) {
-
 
         String data = EMPTY_STRING;
 
