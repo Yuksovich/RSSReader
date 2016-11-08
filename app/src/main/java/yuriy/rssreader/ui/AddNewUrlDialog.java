@@ -19,12 +19,15 @@ public final class AddNewUrlDialog extends DialogFragment {
     private final IntentFilter intentFilter = new IntentFilter();
     private UrlSaverReceiver receiver;
 
+    public AddNewUrlDialog() {
+        super();
+        intentFilter.addAction(UrlSaverService.FAIL);
+        intentFilter.addAction(UrlSaverService.SUCCESS);
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        intentFilter.addAction(UrlSaverService.FAIL);
-        intentFilter.addAction(UrlSaverService.SUCCESS);
         broadcastManager.registerReceiver(receiver, intentFilter);
     }
 
@@ -36,7 +39,7 @@ public final class AddNewUrlDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final  ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.add_url_dialog, container);
         final EditText editText = (EditText) view.findViewById(R.id.urlInput);
 
@@ -57,9 +60,10 @@ public final class AddNewUrlDialog extends DialogFragment {
             @Override
             public void onClick(final View v) {
                 final String inputUrl = String.valueOf(editText.getText());
-                UrlSaverService.checkAndSave(view.getContext(), inputUrl);
+                UrlSaverService.checkAndSave(getActivity(), inputUrl);
             }
         });
+
         return view;
     }
 }

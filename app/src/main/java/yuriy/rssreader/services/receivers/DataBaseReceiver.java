@@ -3,16 +3,20 @@ package yuriy.rssreader.services.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.widget.ListView;
+import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseRefresherService;
+import yuriy.rssreader.utils.ShortToast;
 
 import java.util.ArrayList;
 
 public final class DataBaseReceiver extends BroadcastReceiver {
-    private ArrayList<SingleRSSEntry> entriesList = null;
+    private final ListView listView;
 
-    public DataBaseReceiver() {
+
+    public DataBaseReceiver(final ListView listView) {
+        this.listView = listView;
     }
 
     @Override
@@ -21,20 +25,23 @@ public final class DataBaseReceiver extends BroadcastReceiver {
         final String message = intent.getStringExtra(action);
         switch (action) {
             case (DatabaseRefresherService.FAIL):
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                ShortToast.makeText(context, message);
                 break;
             case (DatabaseRefresherService.SUCCESS):
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                ShortToast.makeText(context, message);
                 break;
             case (DatabaseRefresherService.ON_DATA_RECEIVED):
-                entriesList = intent.getParcelableArrayListExtra(DatabaseRefresherService.DATA);
+                final ArrayList<SingleRSSEntry> entriesList = intent.getParcelableArrayListExtra(DatabaseRefresherService.DATA);
+                if (entriesList == null) {
+                    return;
+                }
+
+                RssListAdapter adapter = new RssListAdapter(context, entriesList);
+                listView.setAdapter(adapter);
                 break;
             default:
                 break;
         }
     }
 
-    public ArrayList<SingleRSSEntry> getEntriesList() {
-        return entriesList;
-    }
 }

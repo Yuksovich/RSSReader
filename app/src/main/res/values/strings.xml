@@ -10,7 +10,7 @@
     <string name="addUrlButtonText">Добавить URL</string>
     <string name="cancelUrlAddButtonText">Отменить</string>
     <string name="checkUrl">Проверить URL</string>
-    <string name="correctURL">Корректный URL</string>
+    <string name="correctURL">Добавлен в список каналов</string>
     <string name="refresh_go">Обновить</string>
     <string name="add_go">Добавить URL</string>
     <string name="html_style_css"><![CDATA[

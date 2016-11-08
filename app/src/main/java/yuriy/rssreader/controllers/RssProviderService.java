@@ -8,13 +8,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 import yuriy.rssreader.R;
-import yuriy.rssreader.database.SingleRSSEntry;
-import yuriy.rssreader.rssexceptions.NoRSSContentException;
-import yuriy.rssreader.database.DBWriter;
 import yuriy.rssreader.controllers.processors.DataReceiver;
 import yuriy.rssreader.controllers.processors.XMLParser;
+import yuriy.rssreader.database.DBWriter;
+import yuriy.rssreader.database.SingleRSSEntry;
+import yuriy.rssreader.rssexceptions.NoRSSContentException;
+import yuriy.rssreader.utils.ShortToast;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -40,21 +40,21 @@ final public class RssProviderService extends Service {
             switch (msg.what) {
                 case (0):
                     if ((int) msg.obj != 0) {
-                        Toast.makeText(RssProviderService.this, getString(R.string.receivedItemCount) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                        ShortToast.makeText(RssProviderService.this, getString(R.string.receivedItemCount) + SPACER + msg.obj);
                     }
                     break;
 
                 case (1):
-                    Toast.makeText(RssProviderService.this, getString(R.string.noRss) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    ShortToast.makeText(RssProviderService.this, getString(R.string.noRss) + SPACER + msg.obj);
                     break;
                 case (2):
-                    Toast.makeText(RssProviderService.this, getString(R.string.incorrectURL) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    ShortToast.makeText(RssProviderService.this, getString(R.string.incorrectURL) + SPACER + msg.obj);
                     break;
                 case (3):
-                    Toast.makeText(RssProviderService.this, getString(R.string.httpFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    ShortToast.makeText(RssProviderService.this, getString(R.string.httpFail) + SPACER + msg.obj);
                     break;
                 case (4):
-                    Toast.makeText(RssProviderService.this, getString(R.string.sqlFail) + SPACER + msg.obj, Toast.LENGTH_SHORT).show();
+                    ShortToast.makeText(RssProviderService.this, getString(R.string.sqlFail) + SPACER + msg.obj);
 
             }
         }

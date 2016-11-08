@@ -8,13 +8,9 @@ import android.widget.Toast;
 import yuriy.rssreader.services.UrlSaverService;
 
 public final class UrlSaverReceiver extends BroadcastReceiver {
-    private DialogFragment dialog;
+    private final DialogFragment dialog;
 
-    public UrlSaverReceiver(){
-
-    }
-
-    public UrlSaverReceiver(DialogFragment dialog) {
+    public UrlSaverReceiver(final DialogFragment dialog) {
         this.dialog = dialog;
     }
 
@@ -23,6 +19,9 @@ public final class UrlSaverReceiver extends BroadcastReceiver {
 
         final String action = intent.getAction();
         final String message = intent.getStringExtra(action);
+        if(message == null){
+            return;
+        }
         switch (action) {
             case (UrlSaverService.FAIL):
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();

@@ -10,7 +10,7 @@
     <include layout="@layout/toolbar"/>
 
     <ListView
-            android:id="@+id/listOfEntries"
+            android:id="@+id/list_view_main_activity"
             style="@style/AppTheme.list_view">
 
     </ListView>

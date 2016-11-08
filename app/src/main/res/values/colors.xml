@@ -4,10 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="itemBackgroundWasRead">#0FFF</color>
-    <color name="item_background_not_read">#0Ff56f2c</color>
-    <color name="itemTitleWasRead">#5111</color>
-    <color name="itemTitleWasNotRead">#000</color>
+    <color name="item_background_was_read_listView_entry">#0FFF</color>
+    <color name="item_background_not_read_listView_entry">#0Ff56f2c</color>
+    <color name="item_title_was_read_listView_entry">#5111</color>
+    <color name="item_title_not_read_listView_entry">#000</color>
 
     <color name="addNewUrlTitleBackground">#5AAA</color>
     <color name="checkUrlButtonColor">#FFF</color>

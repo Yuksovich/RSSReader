@@ -1,3 +1,4 @@
+/*
 package yuriy.rssreader.controllers;
 
 
@@ -56,3 +57,4 @@ final public class ListViewDataProvider implements Runnable {
     }
 
 }
+*/

@@ -26,9 +26,9 @@ public final class DatabaseRefresherService extends IntentService {
 
     private static final String CHANNELS = "channels";
     private static final String SPACER = " ";
-    public static final String SUCCESS = "yuriy.rssreader.services.action.SUCCESS";
-    public static final String FAIL = "yuriy.rssreader.services.action.FAIL";
-    public static final String DATA = "yuriy.rssreader.services.extra.DATA";
+    public static final String SUCCESS = "yuriy.rssreader.services.DatabaseRefresherService.action.SUCCESS";
+    public static final String FAIL = "yuriy.rssreader.services.DatabaseRefresherService.action.FAIL";
+    public static final String DATA = "yuriy.rssreader.services.DatabaseRefresherService.extra.DATA";
     private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseRefresherService";
     private static final String REQUEST_ENTRIES_ACTION = "REQUEST_ENTRIES_ACTION";
     private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";

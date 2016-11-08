@@ -35,16 +35,16 @@ public final class DBReader implements Closeable {
         cursor = getCursor(WITHOUT_ARGUMENTS);
 
         if (cursor.moveToFirst()) {
-            for (cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()) {
+            while (!cursor.isAfterLast()) {
 
-                final String channelTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE));
-                final String channelImageURL = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_IMAGE_URL));
-                final String channelDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_DESCRIPTION));
-                final String itemLink = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK));
-                final String itemTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_TITLE));
-                final String itemDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_DESCRIPTION));
-                final String itemPubDate = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE));
-                final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_BEEN_VIEWED));
+                String channelTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE));
+                String channelImageURL = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_IMAGE_URL));
+                String channelDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_DESCRIPTION));
+                String itemLink = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK));
+                String itemTitle = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_TITLE));
+                String itemDescription = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_DESCRIPTION));
+                String itemPubDate = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE));
+                String itemBeenViewed = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_BEEN_VIEWED));
 
                 listOfEntries.add(new SingleRSSEntry.Builder()
                         .channelTitle(channelTitle)
@@ -56,6 +56,7 @@ public final class DBReader implements Closeable {
                         .itemPubDate(itemPubDate)
                         .itemBeenViewed(itemBeenViewed)
                         .build());
+                cursor.moveToNext();
             }
             closeCursor();
 

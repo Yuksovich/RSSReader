@@ -33,24 +33,19 @@
 
         <service
                 android:name=".services.AlarmService"
-                android:enabled="true"
-                android:exported="true">
-        </service>
+                android:exported="true"
+                android:enabled="true"/>
+
         <service
                 android:name=".services.DatabaseRefresherService"
-                android:exported="false">
-        </service>
+                android:exported="false"
+                android:enabled="true"/>
 
-        <receiver
-                android:name=".services.receivers.DataBaseReceiver"
-                android:enabled="true"
-                android:exported="false">
-        </receiver>
-        <receiver
-                android:name=".services.receivers.UrlSaverReceiver"
-                android:enabled="true"
-                android:exported="false">
-        </receiver>
+        <service
+                android:name=".services.UrlSaverService"
+                android:exported="false"
+                android:enabled="true"/>
+
     </application>
 
 </manifest>

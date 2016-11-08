@@ -5,49 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public final class SingleRSSEntry implements Parcelable {
-    private static final int NUMBER_OF_FIELDS = 8;
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        final String[] fields = {
-                channelTitle,
-                channelImageURL,
-                channelDescription,
-                itemLink,
-                itemTitle,
-                itemDescription,
-                itemPubDate,
-                itemBeenViewed};
-        dest.writeStringArray(fields);
-    }
-
-    public static final Parcelable.Creator<SingleRSSEntry> CREATOR = new Parcelable.Creator<SingleRSSEntry>() {
-        @Override
-        public SingleRSSEntry createFromParcel(Parcel source) {
-            final String[] fields = new String[NUMBER_OF_FIELDS];
-            source.readStringArray(fields);
-            return new SingleRSSEntry.Builder()
-                    .channelTitle(fields[0])
-                    .channelImageURL(fields[1])
-                    .channelDescription(fields[2])
-                    .itemLink(fields[3])
-                    .itemTitle(fields[4])
-                    .itemDescription(fields[5])
-                    .itemPubDate(fields[6])
-                    .itemBeenViewed(fields[7])
-                    .build();
-        }
-
-        @Override
-        public SingleRSSEntry[] newArray(int size) {
-            return new SingleRSSEntry[size];
-        }
-    };
 
 
     private static final String TRUE_FLAG = "true";
@@ -138,7 +96,7 @@ public final class SingleRSSEntry implements Parcelable {
         return channelTitle;
     }
 
-    public String getChannelImageURL() {
+    String getChannelImageURL() {
         return channelImageURL;
     }
 
@@ -165,4 +123,49 @@ public final class SingleRSSEntry implements Parcelable {
     public boolean itemBeenViewed() {
         return TRUE_FLAG.equals(itemBeenViewed);
     }
+
+
+    private static final int NUMBER_OF_FIELDS = 8;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        final String[] fields = {
+                channelTitle,
+                channelImageURL,
+                channelDescription,
+                itemLink,
+                itemTitle,
+                itemDescription,
+                itemPubDate,
+                itemBeenViewed};
+        dest.writeStringArray(fields);
+    }
+
+    public static final Parcelable.Creator<SingleRSSEntry> CREATOR = new Parcelable.Creator<SingleRSSEntry>() {
+        @Override
+        public SingleRSSEntry createFromParcel(Parcel source) {
+            final String[] fields = new String[NUMBER_OF_FIELDS];
+            source.readStringArray(fields);
+            return new SingleRSSEntry.Builder()
+                    .channelTitle(fields[0])
+                    .channelImageURL(fields[1])
+                    .channelDescription(fields[2])
+                    .itemLink(fields[3])
+                    .itemTitle(fields[4])
+                    .itemDescription(fields[5])
+                    .itemPubDate(fields[6])
+                    .itemBeenViewed(fields[7])
+                    .build();
+        }
+
+        @Override
+        public SingleRSSEntry[] newArray(int size) {
+            return new SingleRSSEntry[size];
+        }
+    };
 }
