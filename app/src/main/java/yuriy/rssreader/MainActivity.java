@@ -15,7 +15,7 @@ import android.widget.*;
 import yuriy.rssreader.controllers.ChannelSelectionPopup;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
-import yuriy.rssreader.services.DatabaseRefresherService;
+import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.AddNewUrlDialog;
 import yuriy.rssreader.ui.SettingsActivity;
 import yuriy.rssreader.ui.SingleRssView;
@@ -26,29 +26,34 @@ import java.util.ArrayList;
 public final class MainActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private final static String DIALOG_NEW_URL = "dialogNewUrl";
-    private static final String KEY_ITEM_LINK = "itemLink";
+    public static final String KEY_ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
     private static final int DIALOG_THEME = 0;
+    private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver receiver;
     private final IntentFilter intentFilter = new IntentFilter();
+    private ArrayList<SingleRSSEntry> entriesList;
+    private RssListAdapter adapter = null;
 
-    public MainActivity(){
+    public MainActivity() {
         super();
-        intentFilter.addAction(DatabaseRefresherService.SUCCESS);
-        intentFilter.addAction(DatabaseRefresherService.FAIL);
-        intentFilter.addAction(DatabaseRefresherService.ON_DATA_RECEIVED);
+        intentFilter.addAction(DatabaseOperationService.SUCCESS);
+        intentFilter.addAction(DatabaseOperationService.FAIL);
+        intentFilter.addAction(DatabaseOperationService.ON_DATA_RECEIVED);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         broadcastManager = LocalBroadcastManager.getInstance(this);
+        DatabaseOperationService.requestEntries(this);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.list_view_main_activity);
+        listView.setFastScrollEnabled(true);
+        listView.setOnItemClickListener(this);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -56,18 +61,18 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                 final String action = intent.getAction();
                 final String message = intent.getStringExtra(action);
                 switch (action) {
-                    case (DatabaseRefresherService.FAIL):
+                    case (DatabaseOperationService.FAIL):
                         ShortToast.makeText(context, message);
                         break;
-                    case (DatabaseRefresherService.SUCCESS):
+                    case (DatabaseOperationService.SUCCESS):
                         ShortToast.makeText(context, message);
                         break;
-                    case (DatabaseRefresherService.ON_DATA_RECEIVED):
-                        final ArrayList<SingleRSSEntry> entriesList = intent.getParcelableArrayListExtra(DatabaseRefresherService.DATA);
+                    case (DatabaseOperationService.ON_DATA_RECEIVED):
+                        entriesList = intent.getParcelableArrayListExtra(DatabaseOperationService.DATA);
                         if (entriesList == null) {
                             return;
                         }
-                        RssListAdapter adapter = new RssListAdapter(context, entriesList);
+                        adapter = new RssListAdapter(MainActivity.this, entriesList);
                         listView.setAdapter(adapter);
                         break;
                     default:
@@ -76,17 +81,13 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             }
         };
 
-
-
-        DatabaseRefresherService.requestEntries(this);
-
         final ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton_toolbar);
         refreshButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                DatabaseRefresherService.refreshDatabase(MainActivity.this);
-                DatabaseRefresherService.requestEntries(MainActivity.this);
+                DatabaseOperationService.refreshDatabase(MainActivity.this, NOTIFY_IF_NOTHING_NEW);
+                DatabaseOperationService.requestEntries(MainActivity.this);
             }
         });
 
@@ -119,10 +120,9 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
 
     /*@Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_acttivity_main, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         return true;
     }*/
-
 
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {

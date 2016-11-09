@@ -7,13 +7,14 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 import yuriy.rssreader.R;
-import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.database.DBReader;
 import yuriy.rssreader.database.DBWriter;
+import yuriy.rssreader.database.SingleRSSEntry;
+
+import static yuriy.rssreader.MainActivity.KEY_ITEM_LINK;
 
 public class SingleRssView extends Activity {
-
-    private static final String KEY_ITEM_LINK = "itemLink";
+    private final String HTML_STYLE = getString(R.string.html_style_css);
     private static final String MIME_TYPE = "text/html";
     private static final String ENCODING = "UTF-8";
 
@@ -31,12 +32,11 @@ public class SingleRssView extends Activity {
             ((TextView) findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
             WebView webView = (WebView) findViewById(R.id.item_descriprion_show);
 
-            final String HTML_STYLE = getString(R.string.html_style_css);
             webView.loadDataWithBaseURL(null, HTML_STYLE + entry.getItemDescription(), MIME_TYPE, ENCODING, null);
             if (!entry.itemBeenViewed()) {
                 entryWasRead(itemLink);
             }
-        }else{
+        } else {
             finish();
         }
     }

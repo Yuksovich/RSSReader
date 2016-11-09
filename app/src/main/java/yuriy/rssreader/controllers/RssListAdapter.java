@@ -1,6 +1,5 @@
 package yuriy.rssreader.controllers;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import yuriy.rssreader.R;
 import yuriy.rssreader.database.SingleRSSEntry;
-
 import java.util.ArrayList;
 
 public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
@@ -24,6 +22,7 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
+
             convertView = inflater.inflate(R.layout.entry_in_list, parent, false);
 
             viewHolder = new ViewHolder();
@@ -47,7 +46,6 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         } else {
             convertView.setBackgroundColor(getContext().getResources().getColor(R.color.item_background_not_read_listView_entry));
         }
-
         return convertView;
     }
 
@@ -57,4 +55,5 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         TextView channelTitle;
         TextView itemLink;
     }
+
 }

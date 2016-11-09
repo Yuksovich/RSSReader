@@ -6,8 +6,6 @@ import android.os.Parcelable;
 
 public final class SingleRSSEntry implements Parcelable {
 
-
-
     private static final String TRUE_FLAG = "true";
     private static final String EMPTY_STRING = "";
 

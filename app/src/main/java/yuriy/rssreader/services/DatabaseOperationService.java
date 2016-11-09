@@ -22,34 +22,37 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public final class DatabaseRefresherService extends IntentService {
+public final class DatabaseOperationService extends IntentService {
 
     private static final String CHANNELS = "channels";
     private static final String SPACER = " ";
-    public static final String SUCCESS = "yuriy.rssreader.services.DatabaseRefresherService.action.SUCCESS";
-    public static final String FAIL = "yuriy.rssreader.services.DatabaseRefresherService.action.FAIL";
-    public static final String DATA = "yuriy.rssreader.services.DatabaseRefresherService.extra.DATA";
-    private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseRefresherService";
+    public static final String SUCCESS = "yuriy.rssreader.services.DatabaseOperationService.action.SUCCESS";
+    public static final String FAIL = "yuriy.rssreader.services.DatabaseOperationService.action.FAIL";
+    public static final String DATA = "yuriy.rssreader.services.DatabaseOperationService.extra.DATA";
+    private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseOperationService";
     private static final String REQUEST_ENTRIES_ACTION = "REQUEST_ENTRIES_ACTION";
     private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";
     public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
+    private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
+    private static final boolean NOTIFY_BY_DEFAULT = true;
 
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
     private final Intent intent = new Intent();
 
-    public DatabaseRefresherService() {
+    public DatabaseOperationService() {
         super(SERVICE_NAME);
     }
 
     public static void requestEntries(final Context context) {
-        final Intent requestIntent = new Intent(context, DatabaseRefresherService.class);
+        final Intent requestIntent = new Intent(context, DatabaseOperationService.class);
         requestIntent.setAction(REQUEST_ENTRIES_ACTION);
         context.startService(requestIntent);
     }
 
-    public static void refreshDatabase(final Context context) {
-        final Intent refreshIntent = new Intent(context, DatabaseRefresherService.class);
+    public static void refreshDatabase(final Context context, boolean notifyIfNothingNew) {
+        final Intent refreshIntent = new Intent(context, DatabaseOperationService.class);
         refreshIntent.setAction(REFRESH_DATABASE_ACTION);
+        refreshIntent.putExtra(NOTIFY_IF_NOTHING, notifyIfNothingNew);
         context.startService(refreshIntent);
     }
 
@@ -57,7 +60,7 @@ public final class DatabaseRefresherService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         switch (intent.getAction()) {
             case (REFRESH_DATABASE_ACTION):
-                handleActionRefresh();
+                handleActionRefresh(intent.getBooleanExtra(NOTIFY_IF_NOTHING, NOTIFY_BY_DEFAULT));
                 break;
             case (REQUEST_ENTRIES_ACTION):
                 handleActionRequest();
@@ -68,14 +71,13 @@ public final class DatabaseRefresherService extends IntentService {
     }
 
 
-    private void handleActionRefresh() {
+    private void handleActionRefresh(final boolean notifyIfNothingNew) {
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
         final ArrayList<String> urls = new ArrayList<>();
 
-
-
         if (map.isEmpty()) {
+            intent.setAction(FAIL);
             intent.putExtra(FAIL, getString(R.string.noChannelsToRead));
             broadcastManager.sendBroadcast(intent);
             stopSelf();
@@ -130,10 +132,11 @@ public final class DatabaseRefresherService extends IntentService {
                 }
             }
         }
-        intent.setAction(SUCCESS);
-        intent.putExtra(SUCCESS, getString(R.string.receivedItemCount) + SPACER + newEntriesCount);
-        broadcastManager.sendBroadcast(intent);
-
+        if(newEntriesCount!=0||notifyIfNothingNew) {
+            intent.setAction(SUCCESS);
+            intent.putExtra(SUCCESS, getString(R.string.receivedItemCount) + SPACER + newEntriesCount);
+            broadcastManager.sendBroadcast(intent);
+        }
     }
 
     private void handleActionRequest() {

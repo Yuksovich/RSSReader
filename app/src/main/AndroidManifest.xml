@@ -37,7 +37,7 @@
                 android:enabled="true"/>
 
         <service
-                android:name=".services.DatabaseRefresherService"
+                android:name=".services.DatabaseOperationService"
                 android:exported="false"
                 android:enabled="true"/>
 

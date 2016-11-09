@@ -90,7 +90,7 @@ public final class DBReader implements Closeable {
 
     }
 
-    public Cursor getCursor(final String... selectionArgs) throws DatabaseIsEmptyException {
+    Cursor getCursor(final String... selectionArgs) throws DatabaseIsEmptyException {
 
         if (selectionArgs == null) {
             final Cursor currentCursor = database.query(RSSEntryColumns.TABLE_NAME, COLUMNS_ALL, SELECTION_ALL, SELECTION_ARGS_ALL, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
