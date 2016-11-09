@@ -1,74 +1,78 @@
 package yuriy.rssreader.ui;
 
 import android.app.Activity;
-import android.database.SQLException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 import yuriy.rssreader.R;
-import yuriy.rssreader.database.DBReader;
-import yuriy.rssreader.database.DBWriter;
-import yuriy.rssreader.database.SingleRSSEntry;
+import yuriy.rssreader.services.DatabaseOperationService;
+import yuriy.rssreader.services.SingleEntryOperationService;
+import yuriy.rssreader.utils.EntrySerializer;
 
-import static yuriy.rssreader.MainActivity.KEY_ITEM_LINK;
+import static yuriy.rssreader.MainActivity.ITEM_LINK;
+import static yuriy.rssreader.services.SingleEntryOperationService.SINGLE_ENTRY;
 
 public class SingleRssView extends Activity {
-    private final String HTML_STYLE = getString(R.string.html_style_css);
+
     private static final String MIME_TYPE = "text/html";
     private static final String ENCODING = "UTF-8";
+    private BroadcastReceiver receiver;
+    private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
+    private LocalBroadcastManager broadcastManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_rss_view);
-        final String itemLink = (String) getIntent().getExtras().get(KEY_ITEM_LINK);
 
-        SingleRSSEntry entry = findEntryByItemLink(itemLink);
-        if (entry != null) {
-            ((TextView) findViewById(R.id.item_title_show)).setText(entry.getItemTitle());
-            ((TextView) findViewById(R.id.item_pubDate_show)).setText(entry.getItemPubDate());
-            ((TextView) findViewById(R.id.channel_title_show)).setText(entry.getChannelTitle());
-            ((TextView) findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
-            WebView webView = (WebView) findViewById(R.id.item_descriprion_show);
+        broadcastManager = LocalBroadcastManager.getInstance(this);
 
-            webView.loadDataWithBaseURL(null, HTML_STYLE + entry.getItemDescription(), MIME_TYPE, ENCODING, null);
-            if (!entry.itemBeenViewed()) {
-                entryWasRead(itemLink);
-            }
-        } else {
+        final String itemLink = (String) getIntent().getExtras().get(ITEM_LINK);
+        if(itemLink==null){
             finish();
         }
-    }
 
-    private SingleRSSEntry findEntryByItemLink(final String itemLink) {
-        DBReader dbReader = new DBReader(this);
-        try {
-            return dbReader.readSingleEntry(itemLink);
-        } catch (Exception e) {
-            Toast.makeText(this, getText(R.string.sqlFail), Toast.LENGTH_SHORT).show();
-            this.finish();
-        } finally {
-            dbReader.close();
-
-        }
-        return null;
-    }
-
-    private void entryWasRead(final String itemUrl) {
-        new Thread(new Runnable() {
+        receiver = new BroadcastReceiver() {
             @Override
-            public void run() {
-                DBWriter dbWriter = new DBWriter(SingleRssView.this);
-                try {
-                    dbWriter.setEntryBeenViewed(itemUrl);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } finally {
-                    dbWriter.close();
+            public void onReceive(Context context, Intent intent) {
+
+                final String HTML_STYLE = getString(R.string.html_style_css);
+                final String READ_MORE_STRING = getString(R.string.html_read_more_link);
+
+                final EntrySerializer.SerializableEntry entry = (EntrySerializer.SerializableEntry) intent.getSerializableExtra(SINGLE_ENTRY);
+                if (entry != null) {
+                    ((TextView) findViewById(R.id.item_title_show)).setText(entry.getItemTitle());
+                    ((TextView) findViewById(R.id.item_pubDate_show)).setText(entry.getItemPubDate());
+                    ((TextView) findViewById(R.id.channel_title_show)).setText(entry.getChannelTitle());
+                    ((TextView) findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
+                    WebView webView = (WebView) findViewById(R.id.item_description_show);
+
+                    final String readMoreLink = String.format(READ_MORE_STRING, itemLink);
+                    webView.loadDataWithBaseURL(null, HTML_STYLE + entry.getItemDescription() + readMoreLink, MIME_TYPE, ENCODING, null);
+
+
+                    if (!entry.isItemBeenViewed()) {
+                        DatabaseOperationService.setEntryBeenViewed(SingleRssView.this, itemLink);
+                    }
+                } else {
+                    finish();
                 }
             }
-        }).start();
+        };
+        broadcastManager.registerReceiver(receiver, intentFilter);
+        SingleEntryOperationService.singleEntryRequest(this, itemLink);
+    }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        broadcastManager.unregisterReceiver(receiver);
     }
 }

@@ -20,12 +20,9 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <service android:name=".controllers.RssProviderService"/>
 
         <activity android:name=".ui.SingleRssView">
         </activity>
@@ -33,19 +30,21 @@
 
         <service
                 android:name=".services.AlarmService"
-                android:exported="true"
-                android:enabled="true"/>
-
+                android:enabled="true"
+                android:exported="true"/>
         <service
                 android:name=".services.DatabaseOperationService"
-                android:exported="false"
-                android:enabled="true"/>
-
+                android:enabled="true"
+                android:exported="false"/>
         <service
                 android:name=".services.UrlSaverService"
-                android:exported="false"
-                android:enabled="true"/>
-
+                android:enabled="true"
+                android:exported="false"/>
+        <service
+                android:name=".services.SingleEntryOperationService"
+                android:enabled="true"
+                android:exported="false">
+        </service>
     </application>
 
 </manifest>

@@ -4,9 +4,9 @@
     <item
             android:state_pressed="true"
             android:drawable="@drawable/ic_add_black_24dp"
-            android:color="@android:color/transparent"/>/>
+            android:color="@android:color/transparent"/>
 
     <item android:drawable="@drawable/ic_add_white_24dp"
-          android:color="@android:color/transparent"/>/>
+          android:color="@android:color/transparent"/>
 
 </selector>

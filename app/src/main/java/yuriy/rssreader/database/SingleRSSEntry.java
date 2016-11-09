@@ -4,7 +4,7 @@ package yuriy.rssreader.database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public final class SingleRSSEntry implements Parcelable {
+public final class SingleRSSEntry implements Parcelable{
 
     private static final String TRUE_FLAG = "true";
     private static final String EMPTY_STRING = "";
@@ -16,7 +16,7 @@ public final class SingleRSSEntry implements Parcelable {
     private final String itemTitle;
     private final String itemDescription;
     private final String itemPubDate;
-    private final String itemBeenViewed;
+    private String itemBeenViewed;
 
     private SingleRSSEntry(Builder builder) {
 
@@ -118,12 +118,15 @@ public final class SingleRSSEntry implements Parcelable {
         return itemPubDate;
     }
 
-    public boolean itemBeenViewed() {
+    public boolean isBeenViewed() {
         return TRUE_FLAG.equals(itemBeenViewed);
     }
 
+    public void setBeenViewed(){
+        itemBeenViewed=TRUE_FLAG;
+    }
 
-    private static final int NUMBER_OF_FIELDS = 8;
+    private static final int NUMBER_OF_FIELDS = 5;
 
     @Override
     public int describeContents() {
@@ -134,11 +137,8 @@ public final class SingleRSSEntry implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         final String[] fields = {
                 channelTitle,
-                channelImageURL,
-                channelDescription,
                 itemLink,
                 itemTitle,
-                itemDescription,
                 itemPubDate,
                 itemBeenViewed};
         dest.writeStringArray(fields);
@@ -151,13 +151,10 @@ public final class SingleRSSEntry implements Parcelable {
             source.readStringArray(fields);
             return new SingleRSSEntry.Builder()
                     .channelTitle(fields[0])
-                    .channelImageURL(fields[1])
-                    .channelDescription(fields[2])
-                    .itemLink(fields[3])
-                    .itemTitle(fields[4])
-                    .itemDescription(fields[5])
-                    .itemPubDate(fields[6])
-                    .itemBeenViewed(fields[7])
+                    .itemLink(fields[1])
+                    .itemTitle(fields[2])
+                    .itemPubDate(fields[3])
+                    .itemBeenViewed(fields[4])
                     .build();
         }
 

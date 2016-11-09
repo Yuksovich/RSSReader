@@ -29,8 +29,8 @@ public final class DBWriter implements Closeable {
 
 
         final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
-        database = dbOpenHelper.getWritableDatabase();
         final ContentValues values = new ContentValues();
+        database = dbOpenHelper.getWritableDatabase();
 
         for (SingleRSSEntry entry : croppedDataArrayList) {
             values.put(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE, entry.getChannelTitle());

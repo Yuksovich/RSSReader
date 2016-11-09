@@ -69,8 +69,8 @@ public final class DBReader implements Closeable {
     }
 
     public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException {
-        //TODO: check for possible itemLink without array
-        cursor = getCursor(new String[]{itemLink});
+
+        cursor = getCursor(itemLink);
         if (cursor.moveToFirst()) {
             return new SingleRSSEntry.Builder()
                     .channelTitle(cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_CHANNEL_TITLE)))

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_toolbar">Настройки</string>
+    <string name="filter_toolbar">Фильтр каналов</string>
+    <string name="add_url_toolbar">Добавить новый канал</string>
+    <string name="refresh_toolbar">Обновить ленту</string>
+</resources>

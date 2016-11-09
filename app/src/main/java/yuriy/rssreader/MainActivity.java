@@ -11,7 +11,10 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import yuriy.rssreader.controllers.ChannelSelectionPopup;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
@@ -26,15 +29,20 @@ import java.util.ArrayList;
 public final class MainActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private final static String DIALOG_NEW_URL = "dialogNewUrl";
-    public static final String KEY_ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
+    public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
+    private final static String KEY_TO_LIST_POSITION = "yuriy.rssreader.MainActivity.KEY_TO_LIST_POSITION";
+    private static final String KEY_TO_LIST_PADDING = "yuriy.rssreader.MainActivity.KEY_TO_LIST_PADDING";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
+
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver receiver;
     private final IntentFilter intentFilter = new IntentFilter();
     private ArrayList<SingleRSSEntry> entriesList;
     private RssListAdapter adapter = null;
+    private int listVisiblePosition=0;
+    private int listPaddingTop=0;
 
     public MainActivity() {
         super();
@@ -46,6 +54,11 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            listVisiblePosition = savedInstanceState.getInt(KEY_TO_LIST_POSITION);
+            listPaddingTop = savedInstanceState.getInt(KEY_TO_LIST_PADDING);
+        }
+
         broadcastManager = LocalBroadcastManager.getInstance(this);
         DatabaseOperationService.requestEntries(this);
 
@@ -74,6 +87,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                         }
                         adapter = new RssListAdapter(MainActivity.this, entriesList);
                         listView.setAdapter(adapter);
+                        listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
                         break;
                     default:
                         break;
@@ -126,15 +140,16 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-        final TextView textView = (TextView) view.findViewById(R.id.item_link_listView_entry);
-        final String itemLink = textView.getText().toString();
-        Intent intent = new Intent(this, SingleRssView.class);
-        intent.putExtra(KEY_ITEM_LINK, itemLink);
+        adapter.getItem(position).setBeenViewed();
+
+        final String itemLink = adapter.getItem(position).getItemLink();
+        final Intent intent = new Intent(this, SingleRssView.class);
+        intent.putExtra(ITEM_LINK, itemLink);
         startActivity(intent);
     }
 
     private void showPopupMenu(final View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
+        final PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.inflate(R.menu.filter_popup);
         popupMenu.show();
         Menu menu = popupMenu.getMenu();
@@ -145,11 +160,28 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     protected void onResume() {
         super.onResume();
         broadcastManager.registerReceiver(receiver, intentFilter);
+
+        if (adapter != null) {
+            listView.setAdapter(adapter);
+        }
+        listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         broadcastManager.unregisterReceiver(receiver);
+        listVisiblePosition = listView.getFirstVisiblePosition();
+        View view = listView.getChildAt(0);
+        listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_TO_LIST_POSITION, listVisiblePosition);
+        outState.putInt(KEY_TO_LIST_PADDING, listPaddingTop);
     }
 }

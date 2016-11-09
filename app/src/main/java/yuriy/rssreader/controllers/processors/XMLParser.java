@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public final class XMLParser {
 
@@ -34,7 +35,7 @@ public final class XMLParser {
     final private static String CHANNEL_TAG = "channel";
     final private static String CHANNEL_IMAGE_TAG = "image";
     final private static String CHANNEL_IMAGE_URL_TAG = "url";
-    final private static String INPUT_DATE_PATTERN = "EEE, d MMM yyyy HH:mm:ss Z";
+    final private static String INPUT_DATE_PATTERN = "EEE, dd MMM yyyy HH:mm:ss Z";
     final private static String EMPTY_STRING = "";
     final private static String SPACER = " ";
 
@@ -142,7 +143,6 @@ public final class XMLParser {
                                     itemPubDate = xmlParser.nextText();
                                     break;
                             }
-
                         }
                     }
                     entries.add(new SingleRSSEntry.Builder()
@@ -166,20 +166,20 @@ public final class XMLParser {
     }
 
     private String formatPubDate(final String inputDate) {
-
+        String formattedDate = inputDate;
 
         try {
-            final SimpleDateFormat dateFormat = new SimpleDateFormat(INPUT_DATE_PATTERN);
+            final SimpleDateFormat dateFormat = new SimpleDateFormat(INPUT_DATE_PATTERN, Locale.ENGLISH);
             final long timeInMillis = dateFormat.parse(inputDate).getTime();
             final Date date = new Date(timeInMillis);
             final Time time = new Time(timeInMillis);
 
-            return date.toString() + SPACER + time.toString();
+            formattedDate = date.toString() + SPACER + time.toString();
 
         } catch (ParseException e) {
-            return null;
+            e.printStackTrace();
         }
-
+        return formattedDate;
     }
 
     public String getChannelTitle() {

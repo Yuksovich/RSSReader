@@ -26,7 +26,8 @@
     </style>
 
     <style name="AppTheme.rss_view.item_title">
-        <item name="android:textColor">@color/toolbar_color</item>
+        <item name="android:background">@color/toolbar_color</item>
+        <item name="android:textColor">@color/single_item_view_title</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:gravity">left</item>
     </style>

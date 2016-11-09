@@ -35,6 +35,8 @@ public final class DatabaseOperationService extends IntentService {
     public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
     private static final boolean NOTIFY_BY_DEFAULT = true;
+    private static final String SET_ENTRY_BEEN_SEEN = "yuriy.rssreader.services.DatabaseOperationService.action.SET_ENTRY_BEEN_SEEN";
+    private static final boolean DO_NOT_NOTIFY_IF_NOTHING_NEW = false;
 
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
     private final Intent intent = new Intent();
@@ -56,6 +58,13 @@ public final class DatabaseOperationService extends IntentService {
         context.startService(refreshIntent);
     }
 
+    public static void setEntryBeenViewed(final Context context, final String itemLink) {
+        final Intent setSeenIntent = new Intent(context, DatabaseOperationService.class);
+        setSeenIntent.setAction(SET_ENTRY_BEEN_SEEN);
+        setSeenIntent.putExtra(SET_ENTRY_BEEN_SEEN, itemLink);
+        context.startService(setSeenIntent);
+    }
+
     @Override
     protected void onHandleIntent(final Intent intent) {
         switch (intent.getAction()) {
@@ -64,6 +73,9 @@ public final class DatabaseOperationService extends IntentService {
                 break;
             case (REQUEST_ENTRIES_ACTION):
                 handleActionRequest();
+                break;
+            case (SET_ENTRY_BEEN_SEEN):
+                handleSetSeenAction(intent.getStringExtra(SET_ENTRY_BEEN_SEEN));
                 break;
             default:
                 break;
@@ -132,7 +144,7 @@ public final class DatabaseOperationService extends IntentService {
                 }
             }
         }
-        if(newEntriesCount!=0||notifyIfNothingNew) {
+        if (newEntriesCount != 0 || notifyIfNothingNew) {
             intent.setAction(SUCCESS);
             intent.putExtra(SUCCESS, getString(R.string.receivedItemCount) + SPACER + newEntriesCount);
             broadcastManager.sendBroadcast(intent);
@@ -140,6 +152,7 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     private void handleActionRequest() {
+        refreshDatabase(this, DO_NOT_NOTIFY_IF_NOTHING_NEW);
         DBReader dbReader = null;
         ArrayList<SingleRSSEntry> entriesArray = null;
         try {
@@ -160,6 +173,20 @@ public final class DatabaseOperationService extends IntentService {
         intent.setAction(ON_DATA_RECEIVED);
         intent.putParcelableArrayListExtra(DATA, entriesArray);
         broadcastManager.sendBroadcast(intent);
+    }
+
+    private void handleSetSeenAction(final String itemLink) {
+        DBWriter dbWriter = null;
+        try {
+            dbWriter = new DBWriter(this);
+            dbWriter.setEntryBeenViewed(itemLink);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (dbWriter != null) {
+                dbWriter.close();
+            }
+        }
     }
 
 }

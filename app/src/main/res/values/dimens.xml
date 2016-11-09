@@ -1,21 +1,11 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="entry_height">80dp</dimen>
-    <dimen name="channel_image_width">50dp</dimen>
-    <dimen name="channel_image_height">50dp</dimen>
-    <dimen name="image_padding">5dp</dimen>
-    <dimen name="text_padding">5dp</dimen>
 
-    <dimen name="titleInAddUrlPadding">10dp</dimen>
+    <dimen name="text_padding">5dp</dimen>
     <dimen name="inputUrlPadding">10dp</dimen>
-    <dimen name="inputUrlMarginTop">20dp</dimen>
     <dimen name="inputUrlMarginBottom">20dp</dimen>
-    <dimen name="buttonPadding">20dp</dimen>
     <dimen name="buttonToolbarPadding">20dp</dimen>
     <dimen name="divider_height">1dp</dimen>
-
     <dimen name="list_entry_height">100dp</dimen>
 
 </resources>

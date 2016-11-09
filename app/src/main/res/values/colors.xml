@@ -9,11 +9,11 @@
     <color name="item_title_was_read_listView_entry">#5111</color>
     <color name="item_title_not_read_listView_entry">#000</color>
 
-    <color name="addNewUrlTitleBackground">#5AAA</color>
-    <color name="checkUrlButtonColor">#FFF</color>
+    <color name="single_item_view_title">#FFF</color>
+
     <color name="toolbar_color">#f56f2c</color>
 
-    <color name="toolbar_button_pressed">#5FFF</color>
+
     <color name="dialog_button_text">@android:color/black</color>
     <color name="dialog_button_text_pressed">@android:color/tertiary_text_light</color>
     <color name="list_divider_color">#50f56f2c</color>

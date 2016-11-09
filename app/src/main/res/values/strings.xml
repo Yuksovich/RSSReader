@@ -9,10 +9,7 @@
     <string name="httpInput">http://</string>
     <string name="addUrlButtonText">Добавить URL</string>
     <string name="cancelUrlAddButtonText">Отменить</string>
-    <string name="checkUrl">Проверить URL</string>
     <string name="correctURL">Добавлен в список каналов</string>
-    <string name="refresh_go">Обновить</string>
-    <string name="add_go">Добавить URL</string>
     <string name="html_style_css"><![CDATA[
         <style>
             body{
@@ -30,5 +27,8 @@
     <string name="databaseIsEmpty">База данныъ пуста</string>
     <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
     <string name="input_url_hint">https://www.habrahabr.ru/rss</string>
+    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Читать далее</a>]]></string>
+    <string name="refresh_go">Обновить</string>
+    <string name="add_go">Добавить</string>
 
 </resources>

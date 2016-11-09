@@ -7,6 +7,6 @@
             android:color="@android:color/transparent"/>
 
     <item android:drawable="@drawable/ic_settings_white_24dp"
-          android:color="@android:color/transparent"/>/>
+          android:color="@android:color/transparent"/>
 
 </selector>
