@@ -33,8 +33,8 @@ public final class AddNewUrlDialog extends DialogFragment {
 
     @Override
     public void onPause() {
-        broadcastManager.unregisterReceiver(receiver);
         super.onPause();
+        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Nullable

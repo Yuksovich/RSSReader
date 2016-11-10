@@ -70,7 +70,6 @@ public final class SingleEntryOperationService extends IntentService {
                 dbReader.close();
             }
         }
-
     }
 
     private void handleDeleteSingleEntry(final String itemLink){

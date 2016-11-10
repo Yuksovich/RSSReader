@@ -47,9 +47,9 @@ public final class UrlSaverService extends IntentService {
 
                     final URL url = new URL(inputUrl);
                     final DataReceiver dataReceiver = new DataReceiver();
-                    final String channelTitle = new XMLParser(dataReceiver.getTextFromURL(url)).getChannelTitle();
+                    final String channelDescription = new XMLParser(dataReceiver.getTextFromURL(url)).getChannelDescription();
 
-                    saveUrl(inputUrl, channelTitle);
+                    saveUrl(inputUrl, channelDescription);
                     intent.setAction(SUCCESS);
                     intent.putExtra(SUCCESS, getString(R.string.correctURL));
                     broadcastManager.sendBroadcast(intent);
@@ -68,7 +68,7 @@ public final class UrlSaverService extends IntentService {
 
     }
 
-    private void saveUrl(final String inputUrl, final String channelTitle) throws DuplicateChannelUrlException {
+    private void saveUrl(final String inputUrl, final String channelDescription) throws DuplicateChannelUrlException {
         sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
         if (map != null) {
@@ -76,7 +76,7 @@ public final class UrlSaverService extends IntentService {
                 throw new DuplicateChannelUrlException();
             }
         }
-        writeUrlToSharedPreferences(inputUrl, channelTitle);
+        writeUrlToSharedPreferences(inputUrl, channelDescription);
     }
 
     private void writeUrlToSharedPreferences(final String inputUrl, final String channelTitle) {

@@ -2,6 +2,7 @@ package yuriy.rssreader;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -34,7 +36,6 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     private static final String KEY_TO_LIST_PADDING = "yuriy.rssreader.MainActivity.KEY_TO_LIST_PADDING";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
-
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver receiver;
@@ -54,13 +55,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ProgressDialog waitingDialog = new ProgressDialog(this);
         if (savedInstanceState != null) {
             listVisiblePosition = savedInstanceState.getInt(KEY_TO_LIST_POSITION);
             listPaddingTop = savedInstanceState.getInt(KEY_TO_LIST_PADDING);
         }
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-        DatabaseOperationService.requestEntries(this);
+        DatabaseOperationService.requestEntries(this, DatabaseOperationService.ALL_CHANNELS);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
@@ -68,9 +70,11 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         listView.setFastScrollEnabled(true);
         listView.setOnItemClickListener(this);
 
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                waitingDialog.dismiss();
                 final String action = intent.getAction();
                 final String message = intent.getStringExtra(action);
                 switch (action) {
@@ -79,6 +83,8 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                         break;
                     case (DatabaseOperationService.SUCCESS):
                         ShortToast.makeText(context, message);
+                        listVisiblePosition = 0;
+                        listPaddingTop = 0;
                         break;
                     case (DatabaseOperationService.ON_DATA_RECEIVED):
                         entriesList = intent.getParcelableArrayListExtra(DatabaseOperationService.DATA);
@@ -86,6 +92,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                             return;
                         }
                         adapter = new RssListAdapter(MainActivity.this, entriesList);
+                        adapter.notifyDataSetChanged();
                         listView.setAdapter(adapter);
                         listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
                         break;
@@ -101,7 +108,10 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 DatabaseOperationService.refreshDatabase(MainActivity.this, NOTIFY_IF_NOTHING_NEW);
-                DatabaseOperationService.requestEntries(MainActivity.this);
+                DatabaseOperationService.requestEntries(MainActivity.this, DatabaseOperationService.ALL_CHANNELS);
+                waitingDialog.show();
+                waitingDialog.setCanceledOnTouchOutside(true);
+                waitingDialog.setMessage(getString(R.string.wait_dialog_message));
             }
         });
 
@@ -136,16 +146,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 if (adapter != null) {
-                    if(adapter.isShowDeleteButton()) {
+                    if (adapter.isShowDeleteButton()) {
                         adapter.setShowDeleteButton(false);
                         adapter.notifyDataSetChanged();
-                    }
-                    else{
+                    } else {
                         adapter.setShowDeleteButton(true);
                         adapter.notifyDataSetChanged();
                     }
                 }
-
             }
         });
     }
@@ -153,7 +161,6 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
         adapter.getItem(position).setBeenViewed();
-
         final String itemLink = adapter.getItem(position).getItemLink();
         final Intent intent = new Intent(this, SingleRssView.class);
         intent.putExtra(ITEM_LINK, itemLink);
@@ -163,9 +170,24 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     private void showPopupMenu(final View view) {
         final PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.inflate(R.menu.filter_popup);
-        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final MenuItem item) {
+                if(item.getItemId()==R.id.show_all_popup_item) {
+                    DatabaseOperationService.requestEntries(MainActivity.this, DatabaseOperationService.ALL_CHANNELS);
+                }
+                else {
+                    DatabaseOperationService.requestEntries(MainActivity.this, item.getTitle().toString());
+                }
+
+                return true;
+            }
+        });
+
         Menu menu = popupMenu.getMenu();
         ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(this, menu);
+        channelSelectionPopup.getMenu();
+        popupMenu.show();
     }
 
     @Override
@@ -175,7 +197,6 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
 
         if (adapter != null) {
             adapter.notifyDataSetChanged();
-            listView.setAdapter(adapter);
         }
         listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
     }
@@ -187,7 +208,6 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         listVisiblePosition = listView.getFirstVisiblePosition();
         View view = listView.getChildAt(0);
         listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
-
     }
 
     @Override
@@ -206,4 +226,5 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             super.onBackPressed();
         }
     }
+
 }

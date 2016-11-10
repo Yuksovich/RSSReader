@@ -182,8 +182,8 @@ public final class XMLParser {
         return formattedDate;
     }
 
-    public String getChannelTitle() {
-        return channelTitle;
+    public String getChannelDescription() {
+        return channelDescription;
     }
 }
 

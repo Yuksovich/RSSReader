@@ -3,6 +3,7 @@ package yuriy.rssreader.controllers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import yuriy.rssreader.R;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,11 +18,12 @@ public final class ChannelSelectionPopup {
     }
 
     public Menu getMenu(){
-        final Map<String, ?>map = sharedPreferences.getAll();
-        final Set<?> channelsSet = map.entrySet();
-        for(Object channel:channelsSet){
-            menu.add((String)channel);
+        final Map<String, ?>channelsMap = sharedPreferences.getAll();
+        final Set<String>channelUrlsSet = channelsMap.keySet();
+        for(String channelUrl:channelUrlsSet){
+            menu.add(R.id.channels_list_filter, Menu.NONE, Menu.NONE, sharedPreferences.getString(channelUrl, channelUrl));
         }
+
         return menu;
     }
 

@@ -26,7 +26,6 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         final SingleRSSEntry entry = getItem(position);
         ViewHolder viewHolder;
 
-
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.entry_in_list_not_seen, parent, false);
@@ -87,12 +86,16 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
     }
 
 
-    public void setShowDeleteButton(boolean showDeleteButton) {
+    public void setShowDeleteButton(final boolean showDeleteButton) {
         this.showDeleteButton = showDeleteButton;
     }
 
     public boolean isShowDeleteButton() {
         return showDeleteButton;
+    }
+
+    public void setFilter(final String channel){
+
     }
 
 }

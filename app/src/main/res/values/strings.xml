@@ -24,12 +24,14 @@
 
     <string name="auto_refresh">Автообновление</string>
     <string name="erase_all_entries">Удалить все записи</string>
-    <string name="databaseIsEmpty">База данныъ пуста</string>
+    <string name="databaseIsEmpty">База данных пуста</string>
     <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
     <string name="input_url_hint">https://www.habrahabr.ru/rss</string>
-    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Читать далее</a>]]></string>
+    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Открыть в источнике</a>]]></string>
     <string name="refresh_go">Обновить</string>
     <string name="add_go">Добавить</string>
     <string name="delete_toolbar">Удалить записи</string>
+    <string name="wait_dialog_message">Идет обновление списка новостей...</string>
+    <string name="show_all_popup_item">Показать все</string>
 
 </resources>

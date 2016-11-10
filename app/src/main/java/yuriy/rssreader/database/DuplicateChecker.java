@@ -4,7 +4,6 @@ package yuriy.rssreader.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
 import java.util.ArrayList;
@@ -32,8 +31,8 @@ final class DuplicateChecker {
             for (SingleRSSEntry entry : entriesList) {
                 cursor.moveToFirst();
                 while (true) {
-                    String dbEntryPubDate = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_PUB_DATE));
-                    String dbEntryItemLink = cursor.getString(cursor.getColumnIndex(RSSEntryColumns.COLUMN_NAME_ITEM_LINK));
+                    String dbEntryPubDate = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_PUB_DATE));
+                    String dbEntryItemLink = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_LINK));
                     if (entry.getItemLink().equals(dbEntryItemLink)) {
                         croppedData.remove(entry);
                         break;

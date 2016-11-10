@@ -36,7 +36,7 @@ public final class DatabaseOperationService extends IntentService {
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
     private static final boolean NOTIFY_BY_DEFAULT = true;
     private static final String SET_ENTRY_BEEN_SEEN = "yuriy.rssreader.services.DatabaseOperationService.action.SET_ENTRY_BEEN_SEEN";
-    private static final boolean DO_NOT_NOTIFY_IF_NOTHING_NEW = false;
+    public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
 
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
     private final Intent intent = new Intent();
@@ -45,9 +45,10 @@ public final class DatabaseOperationService extends IntentService {
         super(SERVICE_NAME);
     }
 
-    public static void requestEntries(final Context context) {
+    public static void requestEntries(final Context context, String channel) {
         final Intent requestIntent = new Intent(context, DatabaseOperationService.class);
         requestIntent.setAction(REQUEST_ENTRIES_ACTION);
+        requestIntent.putExtra(REQUEST_ENTRIES_ACTION, channel);
         context.startService(requestIntent);
     }
 
@@ -72,7 +73,7 @@ public final class DatabaseOperationService extends IntentService {
                 handleActionRefresh(intent.getBooleanExtra(NOTIFY_IF_NOTHING, NOTIFY_BY_DEFAULT));
                 break;
             case (REQUEST_ENTRIES_ACTION):
-                handleActionRequest();
+                handleActionRequest(intent.getStringExtra(REQUEST_ENTRIES_ACTION));
                 break;
             case (SET_ENTRY_BEEN_SEEN):
                 handleSetSeenAction(intent.getStringExtra(SET_ENTRY_BEEN_SEEN));
@@ -151,28 +152,36 @@ public final class DatabaseOperationService extends IntentService {
         }
     }
 
-    private void handleActionRequest() {
-        refreshDatabase(this, DO_NOT_NOTIFY_IF_NOTHING_NEW);
+    private void handleActionRequest(final String channelDescription) {
+
         DBReader dbReader = null;
         ArrayList<SingleRSSEntry> entriesArray = null;
         try {
             dbReader = new DBReader(this);
-            entriesArray = dbReader.read();
+            if (ALL_CHANNELS.equals(channelDescription)) {
+                entriesArray = dbReader.read();
+            } else {
+                entriesArray = dbReader.read(channelDescription);
+            }
+
         } catch (DatabaseIsEmptyException e) {
             intent.setAction(FAIL);
             intent.putExtra(FAIL, getString(R.string.databaseIsEmpty));
+            broadcastManager.sendBroadcast(intent);
         } catch (SQLException e) {
             intent.setAction(FAIL);
             intent.putExtra(FAIL, getString(R.string.sqlFail));
+            broadcastManager.sendBroadcast(intent);
         } finally {
             if (dbReader != null) {
                 dbReader.close();
             }
         }
-
-        intent.setAction(ON_DATA_RECEIVED);
-        intent.putParcelableArrayListExtra(DATA, entriesArray);
-        broadcastManager.sendBroadcast(intent);
+        if (entriesArray != null) {
+            intent.setAction(ON_DATA_RECEIVED);
+            intent.putParcelableArrayListExtra(DATA, entriesArray);
+            broadcastManager.sendBroadcast(intent);
+        }
     }
 
     private void handleSetSeenAction(final String itemLink) {

@@ -25,6 +25,5 @@
         <WebView android:id="@+id/item_description_show"
                  style="@style/AppTheme.rss_view"/>
 
-
     </LinearLayout>
 </ScrollView>

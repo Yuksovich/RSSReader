@@ -3,8 +3,8 @@ package yuriy.rssreader.database;
 
 import android.provider.BaseColumns;
 
-final class RSSEntryColumns implements BaseColumns {
-    private RSSEntryColumns() {
+final class TableColumns implements BaseColumns {
+    private TableColumns() {
         throw new UnsupportedOperationException();
     }
 
