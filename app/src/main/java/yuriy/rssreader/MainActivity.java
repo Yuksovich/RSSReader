@@ -41,8 +41,8 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     private final IntentFilter intentFilter = new IntentFilter();
     private ArrayList<SingleRSSEntry> entriesList;
     private RssListAdapter adapter = null;
-    private int listVisiblePosition=0;
-    private int listPaddingTop=0;
+    private int listVisiblePosition = 0;
+    private int listPaddingTop = 0;
 
     public MainActivity() {
         super();
@@ -95,8 +95,8 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             }
         };
 
-        final ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton_toolbar);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        final ImageButton refreshButtonToolbar = (ImageButton) findViewById(R.id.refreshButton_toolbar);
+        refreshButtonToolbar.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -105,8 +105,8 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             }
         });
 
-        final ImageButton addNewUrlButton = (ImageButton) findViewById(R.id.addUrlButton_toolbar);
-        addNewUrlButton.setOnClickListener(new View.OnClickListener() {
+        final ImageButton addNewUrlButtonToolbar = (ImageButton) findViewById(R.id.addUrlButton_toolbar);
+        addNewUrlButtonToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment dialog = new AddNewUrlDialog();
@@ -115,28 +115,40 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             }
         });
 
-        final ImageButton filterButton = (ImageButton) findViewById(R.id.filterButton_toolbar);
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        final ImageButton filterButtonToolbar = (ImageButton) findViewById(R.id.filterButton_toolbar);
+        filterButtonToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 showPopupMenu(view);
             }
         });
 
-        final ImageButton settingsButton = (ImageButton) findViewById(R.id.settingsButton_toolbar);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        final ImageButton settingsButtonToolbar = (ImageButton) findViewById(R.id.settingsButton_toolbar);
+        settingsButtonToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
-    }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-        return true;
-    }*/
+        final ImageButton deleteButtonToolbar = (ImageButton) findViewById(R.id.deleteButton_toolbar);
+        deleteButtonToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (adapter != null) {
+                    if(adapter.isShowDeleteButton()) {
+                        adapter.setShowDeleteButton(false);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else{
+                        adapter.setShowDeleteButton(true);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        });
+    }
 
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
@@ -162,10 +174,10 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         broadcastManager.registerReceiver(receiver, intentFilter);
 
         if (adapter != null) {
+            adapter.notifyDataSetChanged();
             listView.setAdapter(adapter);
         }
         listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
-
     }
 
     @Override
@@ -183,5 +195,15 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_TO_LIST_POSITION, listVisiblePosition);
         outState.putInt(KEY_TO_LIST_PADDING, listPaddingTop);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (adapter != null && adapter.isShowDeleteButton()) {
+            adapter.setShowDeleteButton(false);
+            adapter.notifyDataSetChanged();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

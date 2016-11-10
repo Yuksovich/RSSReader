@@ -30,5 +30,6 @@
     <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Читать далее</a>]]></string>
     <string name="refresh_go">Обновить</string>
     <string name="add_go">Добавить</string>
+    <string name="delete_toolbar">Удалить записи</string>
 
 </resources>

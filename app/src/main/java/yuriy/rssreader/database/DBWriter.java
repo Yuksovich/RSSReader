@@ -12,21 +12,22 @@ import java.util.ArrayList;
 
 public final class DBWriter implements Closeable {
 
-    private final static String FALSE_FLAG = "false";
+       private final static String FALSE_FLAG = "false";
     private static final String TRUE_FLAG = "true";
     private static final String WHERE_CLAUSE = RSSEntryColumns.COLUMN_NAME_ITEM_LINK + " = ?";
     private final RssDBOpenHelper dbOpenHelper;
-    private final DuplicateChecker duplicateChecker;
+    private final Context context;
     private int newEntriesCount = 0;
     private SQLiteDatabase database;
 
     public DBWriter(final Context context) {
+        this.context = context;
         dbOpenHelper = new RssDBOpenHelper(context);
-        duplicateChecker = new DuplicateChecker(context);
+
     }
 
     public void populate(final ArrayList<SingleRSSEntry> dataArrayList) throws SQLException {
-
+        final DuplicateChecker duplicateChecker = new DuplicateChecker(context);
 
         final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
         final ContentValues values = new ContentValues();
@@ -67,6 +68,17 @@ public final class DBWriter implements Closeable {
 
     public int getNewEntriesCount() {
         return newEntriesCount;
+    }
+
+    public void delete(final String itemLink) throws SQLException{
+        try {
+            String[] whereArgs = {itemLink};
+            database = dbOpenHelper.getWritableDatabase();
+            database.delete(RSSEntryColumns.TABLE_NAME, WHERE_CLAUSE, whereArgs);
+        }finally {
+            database.close();
+        }
+
     }
 
 }

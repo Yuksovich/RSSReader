@@ -40,6 +40,14 @@
                 android:src="@color/toolbar_refresh_button_selector"
                 android:contentDescription="@string/refresh_toolbar"
                 style="@style/AppTheme.toolbar"
+                android:layout_toLeftOf="@+id/deleteButton_toolbar"
+                android:layout_toStartOf="@+id/deleteButton_toolbar"
+        />
+        <ImageButton
+                android:id="@+id/deleteButton_toolbar"
+                android:src="@color/toolbar_delete_button_selector"
+                android:contentDescription="@string/delete_toolbar"
+                style="@style/AppTheme.toolbar"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
         />
