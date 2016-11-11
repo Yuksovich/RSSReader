@@ -24,14 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SingleRssView">
-        </activity>
-        <activity android:name=".ui.SettingsActivity"/>
+        <activity
+                android:name=".ui.SingleRssView"/>
+        <activity
+                android:name=".ui.SettingsActivity"
+                android:label="@string/settings_screen_label"/>
 
-        <service
-                android:name=".services.AlarmService"
-                android:enabled="true"
-                android:exported="true"/>
         <service
                 android:name=".services.DatabaseOperationService"
                 android:enabled="true"

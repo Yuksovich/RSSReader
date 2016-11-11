@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import yuriy.rssreader.R;
-import yuriy.rssreader.controllers.processors.DataReceiver;
-import yuriy.rssreader.controllers.processors.XMLParser;
+import yuriy.rssreader.controllers.data_input.DataReceiver;
+import yuriy.rssreader.controllers.data_input.XMLParser;
 import yuriy.rssreader.rssexceptions.DuplicateChannelUrlException;
 
 import java.net.URL;

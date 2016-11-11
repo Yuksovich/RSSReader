@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="auto_refresh_to_show">
+        <item>@string/refresh_period_1min</item>
+        <item>@string/refresh_period_30min</item>
+        <item>@string/refresh_period_1hour</item>
+        <item>@string/refresh_period_3hours</item>
+        <item>@string/refresh_period_6hours</item>
+        <item>@string/refresh_period_12hours</item>
+        <item>@string/refresh_period_24hours</item>
+    </string-array>
+
+    <string-array name="auto_refresh_values">
+        <item>1</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+
+</resources>

@@ -13,17 +13,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.PopupMenu;
+import android.widget.*;
 import yuriy.rssreader.controllers.ChannelSelectionPopup;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseOperationService;
-import yuriy.rssreader.ui.AddNewUrlDialog;
 import yuriy.rssreader.ui.SettingsActivity;
 import yuriy.rssreader.ui.SingleRssView;
+import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 import yuriy.rssreader.utils.ShortToast;
 
 import java.util.ArrayList;
@@ -34,6 +31,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
     private final static String KEY_TO_LIST_POSITION = "yuriy.rssreader.MainActivity.KEY_TO_LIST_POSITION";
     private static final String KEY_TO_LIST_PADDING = "yuriy.rssreader.MainActivity.KEY_TO_LIST_PADDING";
+    private static final String KEY_TO_LIST_FILTER = "yuriy.rssreader.MainActivity.KEY_TO_LIST_FILTER";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private ListView listView;
@@ -44,12 +42,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
     private RssListAdapter adapter = null;
     private int listVisiblePosition = 0;
     private int listPaddingTop = 0;
+    private String currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
 
     public MainActivity() {
         super();
         intentFilter.addAction(DatabaseOperationService.SUCCESS);
         intentFilter.addAction(DatabaseOperationService.FAIL);
         intentFilter.addAction(DatabaseOperationService.ON_DATA_RECEIVED);
+        intentFilter.addAction(DatabaseOperationService.DATABASE_EMPTY);
     }
 
     @Override
@@ -59,13 +59,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         if (savedInstanceState != null) {
             listVisiblePosition = savedInstanceState.getInt(KEY_TO_LIST_POSITION);
             listPaddingTop = savedInstanceState.getInt(KEY_TO_LIST_PADDING);
+            currentChannelFilter = savedInstanceState.getString(KEY_TO_LIST_FILTER);
         }
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-        DatabaseOperationService.requestEntries(this, DatabaseOperationService.ALL_CHANNELS);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
+        final TextView emptyText = (TextView) findViewById(R.id.database_is_empty_message_screen);
         listView = (ListView) findViewById(R.id.list_view_main_activity);
         listView.setFastScrollEnabled(true);
         listView.setOnItemClickListener(this);
@@ -81,10 +82,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                     case (DatabaseOperationService.FAIL):
                         ShortToast.makeText(context, message);
                         break;
+                    case (DatabaseOperationService.DATABASE_EMPTY):
+                        ShortToast.makeText(context, message);
+                        listView.setVisibility(View.INVISIBLE);
+                        emptyText.setVisibility(View.VISIBLE);
+                        break;
                     case (DatabaseOperationService.SUCCESS):
                         ShortToast.makeText(context, message);
-                        listVisiblePosition = 0;
-                        listPaddingTop = 0;
+                        resetListPosition();
                         break;
                     case (DatabaseOperationService.ON_DATA_RECEIVED):
                         entriesList = intent.getParcelableArrayListExtra(DatabaseOperationService.DATA);
@@ -95,6 +100,8 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                         adapter.notifyDataSetChanged();
                         listView.setAdapter(adapter);
                         listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
+                        listView.setVisibility(View.VISIBLE);
+                        emptyText.setVisibility(View.INVISIBLE);
                         break;
                     default:
                         break;
@@ -149,6 +156,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
                     if (adapter.isShowDeleteButton()) {
                         adapter.setShowDeleteButton(false);
                         adapter.notifyDataSetChanged();
+
                     } else {
                         adapter.setShowDeleteButton(true);
                         adapter.notifyDataSetChanged();
@@ -160,6 +168,9 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+        if (adapter == null) {
+            return;
+        }
         adapter.getItem(position).setBeenViewed();
         final String itemLink = adapter.getItem(position).getItemLink();
         final Intent intent = new Intent(this, SingleRssView.class);
@@ -173,13 +184,13 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(final MenuItem item) {
-                if(item.getItemId()==R.id.show_all_popup_item) {
-                    DatabaseOperationService.requestEntries(MainActivity.this, DatabaseOperationService.ALL_CHANNELS);
+                if (item.getItemId() == R.id.show_all_popup_item) {
+                    currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
+                } else {
+                    currentChannelFilter = item.getTitle().toString();
+                    resetListPosition();
                 }
-                else {
-                    DatabaseOperationService.requestEntries(MainActivity.this, item.getTitle().toString());
-                }
-
+                DatabaseOperationService.requestEntries(MainActivity.this, currentChannelFilter);
                 return true;
             }
         });
@@ -199,15 +210,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
             adapter.notifyDataSetChanged();
         }
         listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
+        DatabaseOperationService.requestEntries(this, currentChannelFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         broadcastManager.unregisterReceiver(receiver);
-        listVisiblePosition = listView.getFirstVisiblePosition();
-        View view = listView.getChildAt(0);
-        listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
+        setListPosition();
     }
 
     @Override
@@ -215,6 +225,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_TO_LIST_POSITION, listVisiblePosition);
         outState.putInt(KEY_TO_LIST_PADDING, listPaddingTop);
+        outState.putString(KEY_TO_LIST_FILTER, currentChannelFilter);
     }
 
     @Override
@@ -227,4 +238,14 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         }
     }
 
+    private void resetListPosition() {
+        listPaddingTop = 0;
+        listVisiblePosition = 0;
+    }
+
+    private void setListPosition() {
+        listVisiblePosition = listView.getFirstVisiblePosition();
+        View view = listView.getChildAt(0);
+        listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
+    }
 }

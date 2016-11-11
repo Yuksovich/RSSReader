@@ -22,16 +22,29 @@
     </string>
     <string name="duplicateURL">Этот URL уже в списке</string>
 
-    <string name="auto_refresh">Автообновление</string>
-    <string name="erase_all_entries">Удалить все записи</string>
+
+
     <string name="databaseIsEmpty">База данных пуста</string>
     <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
-    <string name="input_url_hint">https://www.habrahabr.ru/rss</string>
+    <string name="input_url_hint">введите URL RSS канала</string>
     <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Открыть в источнике</a>]]></string>
     <string name="refresh_go">Обновить</string>
     <string name="add_go">Добавить</string>
     <string name="delete_toolbar">Удалить записи</string>
     <string name="wait_dialog_message">Идет обновление списка новостей...</string>
     <string name="show_all_popup_item">Показать все</string>
+    <string name="settings_screen_label">Настройки</string>
+    <string name="title_todo_dialog">Выберете действие</string>
+    <string name="remove_channel_todo_dialog">Удалить данный канал</string>
+    <string name="remove_channel_news_todo_dialog">Удалить все новости данного канала</string>
+    <string name="remove_channel_and_news_todo_dialog">Удалить канал и все новости</string>
+    <string name="cancel_todo_dialog">Отмена</string>
+    <string name="yes_button_confirm_dialog">Да</string>
+    <string name="no_button_confirm_dialog">Нет</string>
+    <string name="text_confirm_dialog">Вы уверены, что хотите удалить все записи?</string>
+    <string name="title_confirm_dialog">Подтверждение удаления</string>
+    <string name="database_is_empty_message_screen">Нет сохраненных RSS записей.</string>
+    <string name="delete_button_listView_entry_description">Удалить запись</string>
+
 
 </resources>

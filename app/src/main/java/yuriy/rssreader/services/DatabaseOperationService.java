@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.support.v4.content.LocalBroadcastManager;
 import yuriy.rssreader.R;
-import yuriy.rssreader.controllers.processors.DataReceiver;
-import yuriy.rssreader.controllers.processors.XMLParser;
+import yuriy.rssreader.controllers.data_input.DataReceiver;
+import yuriy.rssreader.controllers.data_input.XMLParser;
 import yuriy.rssreader.database.DBReader;
 import yuriy.rssreader.database.DBWriter;
 import yuriy.rssreader.database.SingleRSSEntry;
@@ -29,14 +29,17 @@ public final class DatabaseOperationService extends IntentService {
     public static final String SUCCESS = "yuriy.rssreader.services.DatabaseOperationService.action.SUCCESS";
     public static final String FAIL = "yuriy.rssreader.services.DatabaseOperationService.action.FAIL";
     public static final String DATA = "yuriy.rssreader.services.DatabaseOperationService.extra.DATA";
+    public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
+    public static final String DATABASE_EMPTY = "yuriy.rssreader.services.DatabaseOperationService.DATABASE_EMPTY";
+    public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
+
     private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseOperationService";
     private static final String REQUEST_ENTRIES_ACTION = "REQUEST_ENTRIES_ACTION";
     private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";
-    public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
     private static final boolean NOTIFY_BY_DEFAULT = true;
     private static final String SET_ENTRY_BEEN_SEEN = "yuriy.rssreader.services.DatabaseOperationService.action.SET_ENTRY_BEEN_SEEN";
-    public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
+    private static final String DELETE_CHANNEL_ENTRIES = "yuriy.rssreader.services.DatabaseOperationService.DELETE_CHANNEL_ENTRIES";
 
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
     private final Intent intent = new Intent();
@@ -66,6 +69,13 @@ public final class DatabaseOperationService extends IntentService {
         context.startService(setSeenIntent);
     }
 
+    public static void deleteChannelsEntries(final Context context, final String channel) {
+        final Intent deleteEntriesIntent = new Intent(context, DatabaseOperationService.class);
+        deleteEntriesIntent.setAction(DELETE_CHANNEL_ENTRIES);
+        deleteEntriesIntent.putExtra(DELETE_CHANNEL_ENTRIES, channel);
+        context.startService(deleteEntriesIntent);
+    }
+
     @Override
     protected void onHandleIntent(final Intent intent) {
         switch (intent.getAction()) {
@@ -78,11 +88,13 @@ public final class DatabaseOperationService extends IntentService {
             case (SET_ENTRY_BEEN_SEEN):
                 handleSetSeenAction(intent.getStringExtra(SET_ENTRY_BEEN_SEEN));
                 break;
+            case (DELETE_CHANNEL_ENTRIES):
+                handleActionDeleteChannelEntries(intent.getStringExtra(DELETE_CHANNEL_ENTRIES));
+                break;
             default:
                 break;
         }
     }
-
 
     private void handleActionRefresh(final boolean notifyIfNothingNew) {
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
@@ -117,7 +129,7 @@ public final class DatabaseOperationService extends IntentService {
                 xmlParser = new XMLParser(data);
                 entriesArray = xmlParser.receiveAllItems();
                 dbWriter = new DBWriter(this);
-                dbWriter.populate(entriesArray);
+                dbWriter.populate(entriesArray, urlString);
                 newEntriesCount += dbWriter.getNewEntriesCount();
             } catch (MalformedURLException e) {
                 intent.setAction(FAIL);
@@ -165,8 +177,8 @@ public final class DatabaseOperationService extends IntentService {
             }
 
         } catch (DatabaseIsEmptyException e) {
-            intent.setAction(FAIL);
-            intent.putExtra(FAIL, getString(R.string.databaseIsEmpty));
+            intent.setAction(DATABASE_EMPTY);
+            intent.putExtra(DATABASE_EMPTY, getString(R.string.databaseIsEmpty));
             broadcastManager.sendBroadcast(intent);
         } catch (SQLException e) {
             intent.setAction(FAIL);
@@ -198,4 +210,24 @@ public final class DatabaseOperationService extends IntentService {
         }
     }
 
+    private void handleActionDeleteChannelEntries(final String channelUrl) {
+        DBWriter dbWriter = null;
+        try {
+            dbWriter = new DBWriter(this);
+            if (ALL_CHANNELS.equals(channelUrl)) {
+                dbWriter.deleteAll();
+
+            } else {
+                dbWriter.deleteAllEntriesOfChannel(channelUrl);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (dbWriter != null) {
+                dbWriter.close();
+            }
+        }
+    }
 }
+
+

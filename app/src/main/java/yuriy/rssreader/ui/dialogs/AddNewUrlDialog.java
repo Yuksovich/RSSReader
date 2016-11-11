@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui;
+package yuriy.rssreader.ui.dialogs;
 
 import android.app.DialogFragment;
 import android.content.IntentFilter;

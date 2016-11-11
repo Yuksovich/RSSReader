@@ -12,9 +12,10 @@ import java.util.ArrayList;
 
 public final class DBWriter implements Closeable {
 
-       private final static String FALSE_FLAG = "false";
+    private final static String FALSE_FLAG = "false";
     private static final String TRUE_FLAG = "true";
-    private static final String WHERE_CLAUSE = TableColumns.COLUMN_NAME_ITEM_LINK + " = ?";
+    private static final String WHERE_CLAUSE_ITEM_LINK = TableColumns.COLUMN_NAME_ITEM_LINK + " = ?";
+    private static final String WHERE_CLAUSE_CHANNEL_LINK = TableColumns.COLUMN_NAME_CHANNEL_URL + " = ?";
     private final DatabaseOpenHelper dbOpenHelper;
     private final Context context;
     private int newEntriesCount = 0;
@@ -26,7 +27,7 @@ public final class DBWriter implements Closeable {
 
     }
 
-    public void populate(final ArrayList<SingleRSSEntry> dataArrayList) throws SQLException {
+    public void populate(final ArrayList<SingleRSSEntry> dataArrayList, final String channelUrl) throws SQLException {
         final DuplicateChecker duplicateChecker = new DuplicateChecker(context);
 
         final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
@@ -34,6 +35,7 @@ public final class DBWriter implements Closeable {
         database = dbOpenHelper.getWritableDatabase();
 
         for (SingleRSSEntry entry : croppedDataArrayList) {
+            values.put(TableColumns.COLUMN_NAME_CHANNEL_URL, channelUrl);
             values.put(TableColumns.COLUMN_NAME_CHANNEL_TITLE, entry.getChannelTitle());
             values.put(TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION, entry.getChannelDescription());
             values.put(TableColumns.COLUMN_NAME_CHANNEL_IMAGE_URL, entry.getChannelImageURL());
@@ -59,7 +61,7 @@ public final class DBWriter implements Closeable {
         ContentValues value = new ContentValues();
         value.put(TableColumns.COLUMN_NAME_BEEN_VIEWED, TRUE_FLAG);
         database = dbOpenHelper.getWritableDatabase();
-        database.update(TableColumns.TABLE_NAME, value, WHERE_CLAUSE, new String[]{itemLink});
+        database.update(TableColumns.TABLE_NAME, value, WHERE_CLAUSE_ITEM_LINK, new String[]{itemLink});
     }
 
     public void close() {
@@ -70,15 +72,34 @@ public final class DBWriter implements Closeable {
         return newEntriesCount;
     }
 
-    public void delete(final String itemLink) throws SQLException{
+    public void deleteEntry(final String itemLink) throws SQLException {
         try {
             String[] whereArgs = {itemLink};
             database = dbOpenHelper.getWritableDatabase();
-            database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE, whereArgs);
-        }finally {
+            database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_ITEM_LINK, whereArgs);
+        } finally {
             database.close();
         }
 
+    }
+
+    public void deleteAll() throws SQLException {
+        try {
+            database = dbOpenHelper.getWritableDatabase();
+            database.delete(TableColumns.TABLE_NAME, null, null);
+        } finally {
+            database.close();
+        }
+    }
+
+    public void deleteAllEntriesOfChannel(final String channel) throws SQLException {
+        try {
+            String[] whereArgs = {channel};
+            database = dbOpenHelper.getWritableDatabase();
+            database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_CHANNEL_LINK, whereArgs);
+        } finally {
+            database.close();
+        }
     }
 
 }

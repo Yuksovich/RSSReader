@@ -9,6 +9,7 @@ final class TableColumns implements BaseColumns {
     }
 
     static final String TABLE_NAME = "rssTable";
+    static final String COLUMN_NAME_CHANNEL_URL = "channelUrl";
     static final String COLUMN_NAME_CHANNEL_TITLE = "channelTitle";
     static final String COLUMN_NAME_CHANNEL_DESCRIPTION = "channelDescription";
     static final String COLUMN_NAME_CHANNEL_IMAGE_URL = "channelImageUrl";

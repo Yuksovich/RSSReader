@@ -8,11 +8,21 @@
         tools:context="yuriy.rssreader.MainActivity">
 
     <include layout="@layout/toolbar"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <TextView
+                android:id="@+id/database_is_empty_message_screen"
+                android:text="@string/database_is_empty_message_screen"
+                style="@style/AppTheme.entry_in_list.item_title"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"
+        />
 
-    <ListView
-            android:id="@+id/list_view_main_activity"
-            style="@style/AppTheme.list_view">
+        <ListView
+                android:id="@+id/list_view_main_activity"
+                style="@style/AppTheme.list_view">
 
-    </ListView>
+        </ListView>
+    </RelativeLayout>
 
 </LinearLayout>

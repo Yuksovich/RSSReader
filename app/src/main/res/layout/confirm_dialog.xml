@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+            android:text="@string/title_confirm_dialog"
+            style="@style/AppTheme.url_dialog.title"
+            android:background="@color/toolbar_color"
+    />
+
+    <TextView
+            android:id="@+id/text_confirm_dialog"
+            android:text="@string/text_confirm_dialog"
+            style="@style/AppTheme.url_dialog"/>
+
+    <LinearLayout
+            style="@style/AppTheme.url_dialog"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+        <Button
+                android:id="@+id/yes_button_confirm_dialog"
+                android:text="@string/yes_button_confirm_dialog"
+                style="@style/AppTheme.url_dialog"
+                android:textColor="@color/button_selector"/>
+
+        <Button
+                android:id="@+id/no_button_confirm_dialog"
+                android:text="@string/no_button_confirm_dialog"
+                style="@style/AppTheme.url_dialog"
+                android:layout_gravity="end"
+                android:textColor="@color/button_selector"/>
+    </LinearLayout>
+
+</LinearLayout>

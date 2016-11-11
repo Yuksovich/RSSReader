@@ -10,6 +10,7 @@ final class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String CREATE_TABLE = "CREATE TABLE " +
             TableColumns.TABLE_NAME + " (" + TableColumns._ID + " integer primary key autoincrement, " +
+            TableColumns.COLUMN_NAME_CHANNEL_URL + TEXT_TYPE + " ," +
             TableColumns.COLUMN_NAME_CHANNEL_TITLE + TEXT_TYPE + " ," +
             TableColumns.COLUMN_NAME_CHANNEL_IMAGE_URL + TEXT_TYPE + " ," +
             TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION + TEXT_TYPE + " ," +

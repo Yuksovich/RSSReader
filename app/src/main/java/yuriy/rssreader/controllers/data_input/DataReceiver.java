@@ -1,4 +1,4 @@
-package yuriy.rssreader.controllers.processors;
+package yuriy.rssreader.controllers.data_input;
 
 
 import java.io.BufferedInputStream;

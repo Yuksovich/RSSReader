@@ -1,12 +1,14 @@
 package yuriy.rssreader.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.SingleEntryOperationService;
@@ -53,6 +55,9 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
                 public void onClick(View v) {
                     remove(entry);
                     SingleEntryOperationService.deleteEntry(getContext(), entry.getItemLink());
+                    if(isEmpty()){
+                       getContext().startActivity(new Intent(getContext(), MainActivity.class));
+                    }
                 }
             });
         } else {
@@ -94,8 +99,5 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         return showDeleteButton;
     }
 
-    public void setFilter(final String channel){
-
-    }
 
 }

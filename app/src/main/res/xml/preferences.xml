@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="key_main_preferences"
+        android:title="@string/main_preferences_title">
     <CheckBoxPreference
-        android:key="autoRefresh"
-        android:title="@string/auto_refresh"
-        android:defaultValue="false"/>
+            android:key="key_autoRefresh_preferences_screen"
+            android:title="@string/auto_refresh_title"
+            android:summary="@string/auto_refresh_summary"
+            android:defaultValue="false"/>
+    <ListPreference
+            android:key="key_autoRefresh_period_preferences_screen"
+            android:title="@string/auto_refresh_period_title"
+            android:summary="@string/auto_refresh_period_summary"
+            android:defaultValue="5"
+            android:entries="@array/auto_refresh_to_show"
+            android:entryValues="@array/auto_refresh_values"
+            android:dependency="key_autoRefresh_preferences_screen"/>
     <Preference
-        android:key="eraseDatabase"
-        android:title="@string/erase_all_entries"/>
+            android:key="key_eraseDatabase_preferences_screen"
+            android:title="@string/erase_all_entries_title"
+            android:summary="@string/erase_all_entries_summary"
+    />
+    <PreferenceCategory
+            android:key="key_channels_list_preferences_screen"
+            android:title="@string/channel_category_title"
+            android:summary="@string/channel_category_summary"/>
 
 
 </PreferenceScreen>

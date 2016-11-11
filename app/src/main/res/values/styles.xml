@@ -52,6 +52,21 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="AppTheme.todo_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">@dimen/inputUrlPadding</item>
+    </style>
+
+    <style name="AppTheme.todo_dialog.title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/dialog_title</item>
+        <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="AppTheme.url_dialog.button">
         <item name="android:textColor">@color/button_selector</item>
     </style>

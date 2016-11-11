@@ -6,7 +6,8 @@
                 android:padding="@dimen/text_padding">
     <ImageButton
             android:id="@+id/delete_button_listView_entry"
-            android:src="@color/listview_entry_delete_button_selector"
+            android:contentDescription="@string/delete_button_listView_entry_description"
+            android:src="@color/list_view_entry_delete_button_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"

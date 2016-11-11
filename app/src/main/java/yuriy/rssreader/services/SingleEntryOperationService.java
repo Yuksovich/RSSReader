@@ -37,7 +37,6 @@ public final class SingleEntryOperationService extends IntentService {
         context.startService(intentDelete);
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
         final String action = intent.getAction();
@@ -76,7 +75,7 @@ public final class SingleEntryOperationService extends IntentService {
         DBWriter dbWriter = null;
         try {
             dbWriter = new DBWriter(this);
-            dbWriter.delete(itemLink);
+            dbWriter.deleteEntry(itemLink);
         }catch (SQLException e){
             e.printStackTrace();
         }finally {
