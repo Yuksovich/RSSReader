@@ -14,15 +14,18 @@
         <style>
             body{
                 text-align: justify;
+                background-color: #65467C;
+                color:#FFFFFF;
                 }
             img{
                 max-width: 100%;
                }
+            a{
+                color:#FF4081;
+            }
         </style>]]>
     </string>
     <string name="duplicateURL">Этот URL уже в списке</string>
-
-
 
     <string name="databaseIsEmpty">База данных пуста</string>
     <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>

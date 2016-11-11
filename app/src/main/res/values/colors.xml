@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#303F9F</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="item_background_was_read_listView_entry">#3F51B5</color>
+    <color name="item_background_was_read_listView_entry">#65467C</color>
     <color name="item_background_not_read_listView_entry">#303F9F</color>
-    <color name="item_title_was_read_listView_entry">#5111</color>
-    <color name="item_title_not_read_listView_entry">#303F9F</color>
+    <color name="item_title_was_read_listView_entry">#FFFFFF</color>
+    <color name="item_title_not_read_listView_entry">#FFFFFF</color>
     <color name="item_text_not_read_listView_entry">#FFF</color>
     <color name="item_text_was_read_listView_entry">#999</color>
 
     <color name="single_item_view_title">#FFF</color>
 
-    <color name="toolbar_color">#f56f2c</color>
+    <color name="toolbar_color">#ED126F</color>
 
 
     <color name="dialog_button_text">@android:color/black</color>
     <color name="dialog_button_text_pressed">@android:color/tertiary_text_light</color>
-    <color name="list_divider_color">#50f56f2c</color>
+    <color name="list_divider_color">#D2D5DD</color>
 
     <color name="dialog_title">#FFFFFF</color>
 

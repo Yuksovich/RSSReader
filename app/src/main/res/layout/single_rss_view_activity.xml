@@ -3,7 +3,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             tools:context="yuriy.rssreader.ui.SingleRssView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/item_background_was_read_listView_entry">
 
     <LinearLayout
             android:layout_width="match_parent"

@@ -29,7 +29,7 @@ public class SingleRssView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_rss_view);
+        setContentView(R.layout.single_rss_view_activity);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
