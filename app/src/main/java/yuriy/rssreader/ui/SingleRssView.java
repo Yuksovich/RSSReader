@@ -25,7 +25,6 @@ public class SingleRssView extends Activity {
     private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
     private LocalBroadcastManager broadcastManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class SingleRssView extends Activity {
 
                 final String HTML_STYLE = getString(R.string.html_style_css);
                 final String READ_MORE_STRING = getString(R.string.html_read_more_link);
-
                 final EntrySerializer.SerializableEntry entry = (EntrySerializer.SerializableEntry) intent.getSerializableExtra(SINGLE_ENTRY);
                 if (entry != null) {
                     ((TextView) findViewById(R.id.item_title_show)).setText(entry.getItemTitle());
@@ -55,7 +53,6 @@ public class SingleRssView extends Activity {
 
                     final String readMoreLink = String.format(READ_MORE_STRING, itemLink);
                     webView.loadDataWithBaseURL(null, HTML_STYLE + entry.getItemDescription() + readMoreLink, MIME_TYPE, ENCODING, null);
-
 
                     if (!entry.isItemBeenViewed()) {
                         DatabaseOperationService.setEntryBeenViewed(SingleRssView.this, itemLink);
@@ -68,7 +65,6 @@ public class SingleRssView extends Activity {
         broadcastManager.registerReceiver(receiver, intentFilter);
         SingleEntryOperationService.singleEntryRequest(this, itemLink);
     }
-
 
     @Override
     protected void onPause() {

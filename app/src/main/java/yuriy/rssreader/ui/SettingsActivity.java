@@ -1,6 +1,5 @@
 package yuriy.rssreader.ui;
 
-
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.preference.PreferenceCategory;
 import yuriy.rssreader.R;
 import yuriy.rssreader.ui.dialogs.ConfirmDialog;
 import yuriy.rssreader.ui.dialogs.ToDoChannelDialog;
-
 import java.util.Map;
 import java.util.Set;
 

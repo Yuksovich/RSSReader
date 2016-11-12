@@ -1,211 +1,74 @@
 package yuriy.rssreader;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
-import yuriy.rssreader.controllers.ChannelSelectionPopup;
+import android.widget.ListView;
 import yuriy.rssreader.controllers.RssListAdapter;
-import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseOperationService;
-import yuriy.rssreader.ui.SettingsActivity;
-import yuriy.rssreader.ui.SingleRssView;
-import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
-import yuriy.rssreader.utils.ShortToast;
+import yuriy.rssreader.ui.activity_controllers.MainActivityReceiver;
+import yuriy.rssreader.ui.activity_controllers.MainActivityReceiverFilter;
+import yuriy.rssreader.ui.activity_controllers.MainActivityToolbarListener;
 
-import java.util.ArrayList;
+public final class MainActivity extends Activity {
 
-public final class MainActivity extends Activity implements AdapterView.OnItemClickListener {
-
-    private final static String DIALOG_NEW_URL = "dialogNewUrl";
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
     private final static String KEY_TO_LIST_POSITION = "yuriy.rssreader.MainActivity.KEY_TO_LIST_POSITION";
     private static final String KEY_TO_LIST_PADDING = "yuriy.rssreader.MainActivity.KEY_TO_LIST_PADDING";
     private static final String KEY_TO_LIST_FILTER = "yuriy.rssreader.MainActivity.KEY_TO_LIST_FILTER";
-    private static final int DIALOG_THEME = 0;
-    private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
-    private BroadcastReceiver receiver;
-    private final IntentFilter intentFilter = new IntentFilter();
-    private ArrayList<SingleRSSEntry> entriesList;
-    private RssListAdapter adapter = null;
-    private int listVisiblePosition = 0;
-    private int listPaddingTop = 0;
-    private String currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
-
-    public MainActivity() {
-        super();
-        intentFilter.addAction(DatabaseOperationService.SUCCESS);
-        intentFilter.addAction(DatabaseOperationService.FAIL);
-        intentFilter.addAction(DatabaseOperationService.ON_DATA_RECEIVED);
-        intentFilter.addAction(DatabaseOperationService.DATABASE_EMPTY);
-    }
+    private MainActivityReceiver receiver;
+    private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
+    private RssListAdapter adapter;
+    private static int listVisiblePosition = 0;
+    private static int listPaddingTop = 0;
+    private static String currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ProgressDialog waitingDialog = new ProgressDialog(this);
         if (savedInstanceState != null) {
             listVisiblePosition = savedInstanceState.getInt(KEY_TO_LIST_POSITION);
             listPaddingTop = savedInstanceState.getInt(KEY_TO_LIST_PADDING);
             currentChannelFilter = savedInstanceState.getString(KEY_TO_LIST_FILTER);
         }
+        setContentView(R.layout.activity_main);
+        listView = (ListView) findViewById(R.id.list_view_main_activity);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        final ProgressDialog waitingDialog = new ProgressDialog(this);
+        final MainActivityToolbarListener toolbarListener = new MainActivityToolbarListener(this, waitingDialog, listView);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        setContentView(R.layout.activity_main);
-        final TextView emptyText = (TextView) findViewById(R.id.database_is_empty_message_screen);
-        listView = (ListView) findViewById(R.id.list_view_main_activity);
-        listView.setFastScrollEnabled(true);
-        listView.setOnItemClickListener(this);
+        receiver = new MainActivityReceiver(this, listView, waitingDialog);
 
+        findViewById(R.id.refreshButton_toolbar)
+                .setOnClickListener(toolbarListener);
 
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                waitingDialog.dismiss();
-                final String action = intent.getAction();
-                final String message = intent.getStringExtra(action);
-                switch (action) {
-                    case (DatabaseOperationService.FAIL):
-                        ShortToast.makeText(context, message);
-                        break;
-                    case (DatabaseOperationService.DATABASE_EMPTY):
-                        ShortToast.makeText(context, message);
-                        listView.setVisibility(View.INVISIBLE);
-                        emptyText.setVisibility(View.VISIBLE);
-                        break;
-                    case (DatabaseOperationService.SUCCESS):
-                        ShortToast.makeText(context, message);
-                        resetListPosition();
-                        break;
-                    case (DatabaseOperationService.ON_DATA_RECEIVED):
-                        entriesList = intent.getParcelableArrayListExtra(DatabaseOperationService.DATA);
-                        if (entriesList == null) {
-                            return;
-                        }
-                        adapter = new RssListAdapter(MainActivity.this, entriesList);
-                        adapter.notifyDataSetChanged();
-                        listView.setAdapter(adapter);
-                        listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
-                        listView.setVisibility(View.VISIBLE);
-                        emptyText.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
+        findViewById(R.id.addUrlButton_toolbar)
+                .setOnClickListener(toolbarListener);
 
-        final ImageButton refreshButtonToolbar = (ImageButton) findViewById(R.id.refreshButton_toolbar);
-        refreshButtonToolbar.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.filterButton_toolbar)
+                .setOnClickListener(toolbarListener);
 
-            @Override
-            public void onClick(View v) {
-                DatabaseOperationService.refreshDatabase(MainActivity.this, NOTIFY_IF_NOTHING_NEW);
-                DatabaseOperationService.requestEntries(MainActivity.this, DatabaseOperationService.ALL_CHANNELS);
-                waitingDialog.show();
-                waitingDialog.setCanceledOnTouchOutside(true);
-                waitingDialog.setMessage(getString(R.string.wait_dialog_message));
-            }
-        });
+        findViewById(R.id.settingsButton_toolbar)
+                .setOnClickListener(toolbarListener);
 
-        final ImageButton addNewUrlButtonToolbar = (ImageButton) findViewById(R.id.addUrlButton_toolbar);
-        addNewUrlButtonToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment dialog = new AddNewUrlDialog();
-                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, DIALOG_THEME);
-                dialog.show(getFragmentManager(), DIALOG_NEW_URL);
-            }
-        });
-
-        final ImageButton filterButtonToolbar = (ImageButton) findViewById(R.id.filterButton_toolbar);
-        filterButtonToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                showPopupMenu(view);
-            }
-        });
-
-        final ImageButton settingsButtonToolbar = (ImageButton) findViewById(R.id.settingsButton_toolbar);
-        settingsButtonToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            }
-        });
-
-        final ImageButton deleteButtonToolbar = (ImageButton) findViewById(R.id.deleteButton_toolbar);
-        deleteButtonToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (adapter != null) {
-                    if (adapter.isShowDeleteButton()) {
-                        adapter.setShowDeleteButton(false);
-                        adapter.notifyDataSetChanged();
-
-                    } else {
-                        adapter.setShowDeleteButton(true);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-        if (adapter == null) {
-            return;
-        }
-        adapter.getItem(position).setBeenViewed();
-        final String itemLink = adapter.getItem(position).getItemLink();
-        final Intent intent = new Intent(this, SingleRssView.class);
-        intent.putExtra(ITEM_LINK, itemLink);
-        startActivity(intent);
-    }
-
-    private void showPopupMenu(final View view) {
-        final PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.filter_popup);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                if (item.getItemId() == R.id.show_all_popup_item) {
-                    currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
-                } else {
-                    currentChannelFilter = item.getTitle().toString();
-                    resetListPosition();
-                }
-                DatabaseOperationService.requestEntries(MainActivity.this, currentChannelFilter);
-                return true;
-            }
-        });
-
-        Menu menu = popupMenu.getMenu();
-        ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(this, menu);
-        channelSelectionPopup.getMenu();
-        popupMenu.show();
+        findViewById(R.id.deleteButton_toolbar)
+                .setOnClickListener(toolbarListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         broadcastManager.registerReceiver(receiver, intentFilter);
-
+        adapter = (RssListAdapter) listView.getAdapter();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -230,6 +93,7 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
 
     @Override
     public void onBackPressed() {
+        adapter = (RssListAdapter) listView.getAdapter();
         if (adapter != null && adapter.isShowDeleteButton()) {
             adapter.setShowDeleteButton(false);
             adapter.notifyDataSetChanged();
@@ -238,14 +102,30 @@ public final class MainActivity extends Activity implements AdapterView.OnItemCl
         }
     }
 
-    private void resetListPosition() {
+    public static void resetListPosition() {
         listPaddingTop = 0;
         listVisiblePosition = 0;
+    }
+
+    public static void setCurrentChannelFilter(final String channelFilter) {
+        currentChannelFilter = channelFilter;
+    }
+
+    public static String getCurrentChannelFilter() {
+        return currentChannelFilter;
     }
 
     private void setListPosition() {
         listVisiblePosition = listView.getFirstVisiblePosition();
         View view = listView.getChildAt(0);
         listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
+    }
+
+    public static int getListVisiblePosition() {
+        return listVisiblePosition;
+    }
+
+    public static int getListPaddingTop() {
+        return listPaddingTop;
     }
 }

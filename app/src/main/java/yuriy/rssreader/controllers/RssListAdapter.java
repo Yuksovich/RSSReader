@@ -20,7 +20,7 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
     private boolean showDeleteButton = false;
 
     public RssListAdapter(final Context context, ArrayList<SingleRSSEntry> entries) {
-        super(context, R.layout.entry_in_list_not_seen, entries);
+        super(context, R.layout.entry_in_list, entries);
     }
 
     @Override
@@ -30,7 +30,7 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
 
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.entry_in_list_not_seen, parent, false);
+            convertView = inflater.inflate(R.layout.entry_in_list, parent, false);
             viewHolder = new ViewHolder();
 
             viewHolder.itemTitle = (TextView) convertView.findViewById(R.id.item_title_listView_entry);
@@ -69,18 +69,15 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
             viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
             viewHolder.itemPubDate.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
             viewHolder.channelTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.item_background_was_read_listView_entry));
         } else {
             viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
             viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
             viewHolder.itemPubDate.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
             viewHolder.channelTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.item_background_not_read_listView_entry));
         }
 
         return convertView;
     }
-
 
     private static class ViewHolder {
         TextView itemTitle;
@@ -89,7 +86,6 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         TextView itemLink;
         ImageButton deleteItem;
     }
-
 
     public void setShowDeleteButton(final boolean showDeleteButton) {
         this.showDeleteButton = showDeleteButton;
