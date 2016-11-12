@@ -2,6 +2,7 @@ package yuriy.rssreader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,33 +11,33 @@ import android.view.View;
 import android.widget.ListView;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
+import yuriy.rssreader.ui.SingleRssView;
 import yuriy.rssreader.ui.activity_controllers.MainActivityReceiver;
 import yuriy.rssreader.ui.activity_controllers.MainActivityReceiverFilter;
 import yuriy.rssreader.ui.activity_controllers.MainActivityToolbarListener;
+import yuriy.rssreader.utils.StateSaver;
 
 public final class MainActivity extends Activity {
 
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
-    private final static String KEY_TO_LIST_POSITION = "yuriy.rssreader.MainActivity.KEY_TO_LIST_POSITION";
-    private static final String KEY_TO_LIST_PADDING = "yuriy.rssreader.MainActivity.KEY_TO_LIST_PADDING";
-    private static final String KEY_TO_LIST_FILTER = "yuriy.rssreader.MainActivity.KEY_TO_LIST_FILTER";
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private MainActivityReceiver receiver;
     private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
     private RssListAdapter adapter;
-    private static int listVisiblePosition = 0;
-    private static int listPaddingTop = 0;
-    private static String currentChannelFilter = DatabaseOperationService.ALL_CHANNELS;
+    private static int listVisiblePosition;
+    private static int listPaddingTop;
+    private static String currentChannelFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            listVisiblePosition = savedInstanceState.getInt(KEY_TO_LIST_POSITION);
-            listPaddingTop = savedInstanceState.getInt(KEY_TO_LIST_PADDING);
-            currentChannelFilter = savedInstanceState.getString(KEY_TO_LIST_FILTER);
-        }
+
+        listVisiblePosition = StateSaver.getSavedPosition(this);
+        listPaddingTop = StateSaver.getSavedPadding(this);
+        currentChannelFilter = StateSaver.getChannelFilter(this);
+        final String itemLink = StateSaver.getSavedLink(this);
+
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.list_view_main_activity);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -45,23 +46,18 @@ public final class MainActivity extends Activity {
         final MainActivityToolbarListener toolbarListener = new MainActivityToolbarListener(this, waitingDialog, listView);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-
         receiver = new MainActivityReceiver(this, listView, waitingDialog);
 
-        findViewById(R.id.refreshButton_toolbar)
-                .setOnClickListener(toolbarListener);
+        findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarListener);
+        findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarListener);
+        findViewById(R.id.filterButton_toolbar).setOnClickListener(toolbarListener);
+        findViewById(R.id.settingsButton_toolbar).setOnClickListener(toolbarListener);
 
-        findViewById(R.id.addUrlButton_toolbar)
-                .setOnClickListener(toolbarListener);
-
-        findViewById(R.id.filterButton_toolbar)
-                .setOnClickListener(toolbarListener);
-
-        findViewById(R.id.settingsButton_toolbar)
-                .setOnClickListener(toolbarListener);
-
-        findViewById(R.id.deleteButton_toolbar)
-                .setOnClickListener(toolbarListener);
+        if (!StateSaver.NO_LINK.equals(itemLink)) {
+            final Intent intent = new Intent(this, SingleRssView.class);
+            intent.putExtra(ITEM_LINK, itemLink);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -81,14 +77,9 @@ public final class MainActivity extends Activity {
         super.onPause();
         broadcastManager.unregisterReceiver(receiver);
         setListPosition();
-    }
-
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_TO_LIST_POSITION, listVisiblePosition);
-        outState.putInt(KEY_TO_LIST_PADDING, listPaddingTop);
-        outState.putString(KEY_TO_LIST_FILTER, currentChannelFilter);
+        StateSaver.saveListPosition(this, listVisiblePosition);
+        StateSaver.saveListPadding(this, listPaddingTop);
+        StateSaver.saveChannelFilter(this, currentChannelFilter);
     }
 
     @Override

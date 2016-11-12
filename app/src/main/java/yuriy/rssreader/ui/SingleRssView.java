@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import yuriy.rssreader.R;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.services.SingleEntryOperationService;
 import yuriy.rssreader.utils.EntrySerializer;
+import yuriy.rssreader.utils.StateSaver;
 
 import static yuriy.rssreader.MainActivity.ITEM_LINK;
 import static yuriy.rssreader.services.SingleEntryOperationService.SINGLE_ENTRY;
@@ -21,6 +23,7 @@ public class SingleRssView extends Activity {
 
     private static final String MIME_TYPE = "text/html";
     private static final String ENCODING = "UTF-8";
+    private String itemLink;
     private BroadcastReceiver receiver;
     private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
     private LocalBroadcastManager broadcastManager;
@@ -32,7 +35,7 @@ public class SingleRssView extends Activity {
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
-        final String itemLink = (String) getIntent().getExtras().get(ITEM_LINK);
+        itemLink = (String) getIntent().getExtras().get(ITEM_LINK);
         if(itemLink==null){
             finish();
         }
@@ -70,5 +73,12 @@ public class SingleRssView extends Activity {
     protected void onPause() {
         super.onPause();
         broadcastManager.unregisterReceiver(receiver);
+        StateSaver.saveLink(this, itemLink);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        StateSaver.resetLink(this);
     }
 }
