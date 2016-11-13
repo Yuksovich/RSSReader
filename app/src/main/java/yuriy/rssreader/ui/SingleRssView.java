@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ public class SingleRssView extends Activity {
     private BroadcastReceiver receiver;
     private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
     private LocalBroadcastManager broadcastManager;
+    private boolean exitActivityFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SingleRssView extends Activity {
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
         itemLink = (String) getIntent().getExtras().get(ITEM_LINK);
-        if(itemLink==null){
+        if (itemLink == null) {
             finish();
         }
 
@@ -73,12 +73,16 @@ public class SingleRssView extends Activity {
     protected void onPause() {
         super.onPause();
         broadcastManager.unregisterReceiver(receiver);
-        StateSaver.saveLink(this, itemLink);
+        if (!exitActivityFlag) {
+            StateSaver.saveLink(this, itemLink);
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         StateSaver.resetLink(this);
+        exitActivityFlag = true;
     }
+
 }

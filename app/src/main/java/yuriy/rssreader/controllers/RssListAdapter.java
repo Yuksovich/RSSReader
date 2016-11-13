@@ -76,6 +76,7 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
             viewHolder.channelTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
         }
 
+        convertView.setHapticFeedbackEnabled(true);
         return convertView;
     }
 

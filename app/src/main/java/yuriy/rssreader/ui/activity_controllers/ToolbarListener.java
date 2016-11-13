@@ -17,7 +17,7 @@ import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.SettingsActivity;
 import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 
-public final class MainActivityToolbarListener implements View.OnClickListener {
+public final class ToolbarListener implements View.OnClickListener {
 
     private final static String DIALOG_NEW_URL = "dialogNewUrl";
     private static final int DIALOG_THEME = 0;
@@ -27,9 +27,9 @@ public final class MainActivityToolbarListener implements View.OnClickListener {
     private final ProgressDialog waitingDialog;
     private final ListView listView;
 
-    public MainActivityToolbarListener(final Activity activity,
-                                       final ProgressDialog waitingDialog,
-                                       final ListView listView) {
+    public ToolbarListener(final Activity activity,
+                           final ProgressDialog waitingDialog,
+                           final ListView listView) {
         this.activity = activity;
         this.waitingDialog = waitingDialog;
         this.listView = listView;

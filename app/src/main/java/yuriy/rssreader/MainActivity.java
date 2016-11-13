@@ -2,7 +2,6 @@ package yuriy.rssreader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,10 +10,9 @@ import android.view.View;
 import android.widget.ListView;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
-import yuriy.rssreader.ui.SingleRssView;
-import yuriy.rssreader.ui.activity_controllers.MainActivityReceiver;
+import yuriy.rssreader.ui.activity_controllers.ListViewAdapterReceiverAndListener;
 import yuriy.rssreader.ui.activity_controllers.MainActivityReceiverFilter;
-import yuriy.rssreader.ui.activity_controllers.MainActivityToolbarListener;
+import yuriy.rssreader.ui.activity_controllers.ToolbarListener;
 import yuriy.rssreader.utils.StateSaver;
 
 public final class MainActivity extends Activity {
@@ -22,7 +20,7 @@ public final class MainActivity extends Activity {
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
-    private MainActivityReceiver receiver;
+    private ListViewAdapterReceiverAndListener receiver;
     private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
     private RssListAdapter adapter;
     private static int listVisiblePosition;
@@ -36,28 +34,22 @@ public final class MainActivity extends Activity {
         listVisiblePosition = StateSaver.getSavedPosition(this);
         listPaddingTop = StateSaver.getSavedPadding(this);
         currentChannelFilter = StateSaver.getChannelFilter(this);
-        final String itemLink = StateSaver.getSavedLink(this);
 
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.list_view_main_activity);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         final ProgressDialog waitingDialog = new ProgressDialog(this);
-        final MainActivityToolbarListener toolbarListener = new MainActivityToolbarListener(this, waitingDialog, listView);
+        final ToolbarListener toolbarListener = new ToolbarListener(this, waitingDialog, listView);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-        receiver = new MainActivityReceiver(this, listView, waitingDialog);
+        receiver = new ListViewAdapterReceiverAndListener(this, listView, waitingDialog);
 
         findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.filterButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.settingsButton_toolbar).setOnClickListener(toolbarListener);
 
-        if (!StateSaver.NO_LINK.equals(itemLink)) {
-            final Intent intent = new Intent(this, SingleRssView.class);
-            intent.putExtra(ITEM_LINK, itemLink);
-            startActivity(intent);
-        }
     }
 
     @Override

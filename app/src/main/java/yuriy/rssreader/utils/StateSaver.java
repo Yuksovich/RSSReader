@@ -58,7 +58,7 @@ public final class StateSaver {
     }
 
     public static void resetLink(final Context context) {
-        getEditor(context).putString(ITEM_LINK, NO_LINK).apply();
+        getEditor(context).remove(ITEM_LINK).apply();
     }
 
 

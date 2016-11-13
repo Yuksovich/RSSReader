@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,21 +17,25 @@ import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.SingleRssView;
 import yuriy.rssreader.utils.ShortToast;
+import yuriy.rssreader.utils.StateSaver;
 
 import java.util.ArrayList;
 
 import static yuriy.rssreader.MainActivity.ITEM_LINK;
 
-public final class MainActivityReceiver extends BroadcastReceiver implements AdapterView.OnItemClickListener {
+public final class ListViewAdapterReceiverAndListener
+        extends BroadcastReceiver
+        implements AdapterView.OnItemClickListener {
 
     private final ListView listView;
     private final ProgressDialog waitingDialog;
     private RssListAdapter adapter;
     private final Context mainActivityContext;
 
-    public MainActivityReceiver(final Context mainActivityContext,
-                                final ListView listView,
-                                final ProgressDialog waitingDialog) {
+    public ListViewAdapterReceiverAndListener(final Context mainActivityContext,
+                                              final ListView listView,
+                                              final ProgressDialog waitingDialog)
+    {
         this.mainActivityContext = mainActivityContext;
         this.listView = listView;
         this.waitingDialog = waitingDialog;
@@ -69,6 +74,14 @@ public final class MainActivityReceiver extends BroadcastReceiver implements Ada
                 listView.setSelectionFromTop(MainActivity.getListVisiblePosition(), MainActivity.getListPaddingTop());
                 listView.setVisibility(View.VISIBLE);
                 emptyText.setVisibility(View.INVISIBLE);
+
+                final String savedLink = StateSaver.getSavedLink(context);
+                if (!StateSaver.NO_LINK.equals(savedLink)) {
+                    final Intent resumeIntent = new Intent(mainActivityContext, SingleRssView.class);
+                    resumeIntent.putExtra(ITEM_LINK, savedLink);
+                    StateSaver.resetLink(mainActivityContext);
+                    mainActivityContext.startActivity(resumeIntent);
+                }
                 break;
             default:
                 break;
@@ -80,6 +93,7 @@ public final class MainActivityReceiver extends BroadcastReceiver implements Ada
         if (adapter == null) {
             return;
         }
+        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         adapter.getItem(position).setBeenViewed();
         final String itemLink = adapter.getItem(position).getItemLink();
         final Intent intent = new Intent(mainActivityContext, SingleRssView.class);
