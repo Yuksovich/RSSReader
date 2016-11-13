@@ -49,7 +49,7 @@ public final class MainActivity extends Activity {
         findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.filterButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.settingsButton_toolbar).setOnClickListener(toolbarListener);
-
+        findViewById(R.id.deleteButton_toolbar).setOnClickListener(toolbarListener);
     }
 
     @Override
