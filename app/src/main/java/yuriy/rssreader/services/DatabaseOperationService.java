@@ -1,11 +1,17 @@
 package yuriy.rssreader.services;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.data_input.DataReceiver;
 import yuriy.rssreader.controllers.data_input.XMLParser;
@@ -24,8 +30,7 @@ import java.util.Set;
 
 public final class DatabaseOperationService extends IntentService {
 
-    private static final String CHANNELS = "channels";
-    private static final String SPACER = " ";
+    public static final String CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.channels";
     public static final String SUCCESS = "yuriy.rssreader.services.DatabaseOperationService.action.SUCCESS";
     public static final String FAIL = "yuriy.rssreader.services.DatabaseOperationService.action.FAIL";
     public static final String DATA = "yuriy.rssreader.services.DatabaseOperationService.extra.DATA";
@@ -37,11 +42,15 @@ public final class DatabaseOperationService extends IntentService {
     private static final String REQUEST_ENTRIES_ACTION = "REQUEST_ENTRIES_ACTION";
     private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
+
+    private static final String SPACER = " ";
     private static final boolean NOTIFY_BY_DEFAULT = true;
     private static final String SET_ENTRY_BEEN_SEEN = "yuriy.rssreader.services.DatabaseOperationService.action.SET_ENTRY_BEEN_SEEN";
     private static final String DELETE_CHANNEL_ENTRIES = "yuriy.rssreader.services.DatabaseOperationService.DELETE_CHANNEL_ENTRIES";
+    private static final String MAKE_NOTIFICATION = "MAKE_NOTIFICATION";
+    private static final int NOTIFICATION_ID = 0;
 
-    private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+    private LocalBroadcastManager broadcastManager;
     private final Intent intent = new Intent();
 
     public DatabaseOperationService() {
@@ -55,10 +64,11 @@ public final class DatabaseOperationService extends IntentService {
         context.startService(requestIntent);
     }
 
-    public static void refreshDatabase(final Context context, boolean notifyIfNothingNew) {
+    public static void refreshDatabase(final Context context, boolean notifyIfNothingNew, boolean makeNotification) {
         final Intent refreshIntent = new Intent(context, DatabaseOperationService.class);
         refreshIntent.setAction(REFRESH_DATABASE_ACTION);
         refreshIntent.putExtra(NOTIFY_IF_NOTHING, notifyIfNothingNew);
+        refreshIntent.putExtra(MAKE_NOTIFICATION, makeNotification);
         context.startService(refreshIntent);
     }
 
@@ -80,7 +90,9 @@ public final class DatabaseOperationService extends IntentService {
     protected void onHandleIntent(final Intent intent) {
         switch (intent.getAction()) {
             case (REFRESH_DATABASE_ACTION):
-                handleActionRefresh(intent.getBooleanExtra(NOTIFY_IF_NOTHING, NOTIFY_BY_DEFAULT));
+                handleActionRefresh(
+                        intent.getBooleanExtra(NOTIFY_IF_NOTHING, NOTIFY_BY_DEFAULT),
+                        intent.getBooleanExtra(MAKE_NOTIFICATION, NOTIFY_BY_DEFAULT));
                 break;
             case (REQUEST_ENTRIES_ACTION):
                 handleActionRequest(intent.getStringExtra(REQUEST_ENTRIES_ACTION));
@@ -96,7 +108,8 @@ public final class DatabaseOperationService extends IntentService {
         }
     }
 
-    private void handleActionRefresh(final boolean notifyIfNothingNew) {
+    private void handleActionRefresh(final boolean notifyIfNothingNew, final boolean makeNotification) {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
         final ArrayList<String> urls = new ArrayList<>();
@@ -158,14 +171,18 @@ public final class DatabaseOperationService extends IntentService {
             }
         }
         if (newEntriesCount != 0 || notifyIfNothingNew) {
+            final String message = getString(R.string.receivedItemCount) + SPACER + newEntriesCount;
+            if (makeNotification) {
+                makeNotification(message);
+            }
             intent.setAction(SUCCESS);
-            intent.putExtra(SUCCESS, getString(R.string.receivedItemCount) + SPACER + newEntriesCount);
+            intent.putExtra(SUCCESS, message);
             broadcastManager.sendBroadcast(intent);
         }
     }
 
     private void handleActionRequest(final String channelDescription) {
-
+        broadcastManager = LocalBroadcastManager.getInstance(this);
         DBReader dbReader = null;
         ArrayList<SingleRSSEntry> entriesArray = null;
         try {
@@ -227,6 +244,23 @@ public final class DatabaseOperationService extends IntentService {
                 dbWriter.close();
             }
         }
+    }
+
+    private void makeNotification(final String message) {
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        final Intent intent = new Intent(this, MainActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        final Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.program_name))
+                .setContentText(message)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.ic_rss_feed_white_24dp)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build();
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 }
 

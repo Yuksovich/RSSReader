@@ -2,32 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              style="@style/AppTheme.dialog">
     <TextView
             android:text="@string/title_todo_dialog"
-            style="@style/AppTheme.todo_dialog.title"
-            android:background="@color/toolbar_color"/>
+            style="@style/AppTheme.dialog.title"/>
 
     <TextView
             android:id="@+id/channel_todo_dialog"
-            style="@style/AppTheme.todo_dialog"/>
+            style="@style/AppTheme.dialog"/>
 
     <Button
             android:id="@+id/remove_channel_button_todo_dialog"
             android:text="@string/remove_channel_todo_dialog"
-            style="@style/AppTheme.todo_dialog"/>
+            style="@style/AppTheme.dialog.button"/>
 
     <Button
             android:id="@+id/remove_entries_button_todo_dialog"
             android:text="@string/remove_channel_news_todo_dialog"
-            style="@style/AppTheme.todo_dialog"/>
+            style="@style/AppTheme.dialog.button"/>
     <Button
             android:id="@+id/remove_channel_and_entries_button_todo_dialog"
             android:text="@string/remove_channel_and_news_todo_dialog"
-            style="@style/AppTheme.todo_dialog"/>
+            style="@style/AppTheme.dialog.button"/>
     <Button
             android:id="@+id/cancel_button_todo_dialog"
             android:text="@string/cancel_todo_dialog"
-            style="@style/AppTheme.todo_dialog"/>
+            style="@style/AppTheme.dialog.button"/>
 
 </LinearLayout>

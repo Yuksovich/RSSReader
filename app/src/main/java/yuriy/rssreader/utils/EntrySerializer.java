@@ -10,11 +10,11 @@ public final class EntrySerializer {
         throw new UnsupportedOperationException();
     }
 
-    public static SerializableEntry getSerializable(SingleRSSEntry entry) {
+    public static SerializableEntry getSerializable(final SingleRSSEntry entry) {
         return new SerializableEntry(entry);
     }
 
-    public static class SerializableEntry implements Serializable {
+    public static final class SerializableEntry implements Serializable {
         private final String channelTitle;
         private final String channelDescription;
         private final String itemTitle;
@@ -22,7 +22,7 @@ public final class EntrySerializer {
         private final String itemPubDate;
         private final boolean itemBeenViewed;
 
-        private SerializableEntry(SingleRSSEntry entry) {
+        private SerializableEntry(final SingleRSSEntry entry) {
             channelTitle = entry.getChannelTitle();
             channelDescription = entry.getChannelDescription();
             itemTitle = entry.getItemTitle();

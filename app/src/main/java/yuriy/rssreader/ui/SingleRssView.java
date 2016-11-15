@@ -18,7 +18,7 @@ import yuriy.rssreader.utils.StateSaver;
 import static yuriy.rssreader.MainActivity.ITEM_LINK;
 import static yuriy.rssreader.services.SingleEntryOperationService.SINGLE_ENTRY;
 
-public class SingleRssView extends Activity {
+public final class SingleRssView extends Activity {
 
     private static final String MIME_TYPE = "text/html";
     private static final String ENCODING = "UTF-8";
@@ -29,7 +29,7 @@ public class SingleRssView extends Activity {
     private boolean exitActivityFlag = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_rss_view_activity);
 
@@ -42,7 +42,7 @@ public class SingleRssView extends Activity {
 
         receiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
+            public void onReceive(final Context context, final Intent intent) {
 
                 final String HTML_STYLE = getString(R.string.html_style_css);
                 final String READ_MORE_STRING = getString(R.string.html_read_more_link);

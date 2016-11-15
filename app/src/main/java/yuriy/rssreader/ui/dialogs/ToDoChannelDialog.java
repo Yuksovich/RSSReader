@@ -13,9 +13,9 @@ import android.widget.TextView;
 import yuriy.rssreader.R;
 import yuriy.rssreader.services.DatabaseOperationService;
 
-public final class ToDoChannelDialog extends DialogFragment {
+import static yuriy.rssreader.services.DatabaseOperationService.CHANNELS;
 
-    private static final String CHANNELS = "channels";
+public final class ToDoChannelDialog extends DialogFragment {
 
     @Nullable
     @Override

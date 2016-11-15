@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="item_background_was_read_listView_entry">#65467C</color>
+    <color name="main_text_color">#FFF</color>
+    <color name="main_background_color">#65467C</color>
     <color name="item_background_not_read_listView_entry">#303F9F</color>
     <color name="item_title_was_read_listView_entry">#FFFFFF</color>
     <color name="item_title_not_read_listView_entry">#FFFFFF</color>

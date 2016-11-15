@@ -22,6 +22,7 @@ public final class ToolbarListener implements View.OnClickListener {
     private final static String DIALOG_NEW_URL = "dialogNewUrl";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
+    private static final boolean MAKE_NOTIFICATION = false;
 
     private final Activity activity;
     private final ProgressDialog waitingDialog;
@@ -37,10 +38,12 @@ public final class ToolbarListener implements View.OnClickListener {
 
     @Override
     public void onClick(final View v) {
-
+        if (activity==null){
+            return;
+        }
         switch (v.getId()) {
             case (R.id.refreshButton_toolbar):
-                DatabaseOperationService.refreshDatabase(activity, NOTIFY_IF_NOTHING_NEW);
+                DatabaseOperationService.refreshDatabase(activity, NOTIFY_IF_NOTHING_NEW, MAKE_NOTIFICATION);
                 DatabaseOperationService.requestEntries(activity, DatabaseOperationService.ALL_CHANNELS);
                 waitingDialog.show();
                 waitingDialog.setCanceledOnTouchOutside(true);
@@ -94,7 +97,7 @@ public final class ToolbarListener implements View.OnClickListener {
 
         Menu menu = popupMenu.getMenu();
         ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(activity, menu);
-        channelSelectionPopup.getMenu();
+        channelSelectionPopup.fillMenu();
         popupMenu.show();
     }
 }

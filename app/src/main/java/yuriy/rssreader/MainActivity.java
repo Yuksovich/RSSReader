@@ -28,7 +28,7 @@ public final class MainActivity extends Activity {
     private static String currentChannelFilter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         listVisiblePosition = StateSaver.getSavedPosition(this);

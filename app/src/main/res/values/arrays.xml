@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="auto_refresh_to_show">
-        <item>@string/refresh_period_1min</item>
+        <item>@string/refresh_period_service_mode</item>
         <item>@string/refresh_period_30min</item>
         <item>@string/refresh_period_1hour</item>
         <item>@string/refresh_period_3hours</item>

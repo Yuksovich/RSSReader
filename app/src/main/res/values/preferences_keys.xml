@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_main_preferences">key_main_preferences</string>
+    <string name="key_general_settings_category">key_general_settings_category</string>
+    <string name="key_autoRefresh_preferences_screen">key_autoRefresh_preferences_screen</string>
+    <string name="key_autoRefresh_period_preferences_screen">key_autoRefresh_period_preferences_screen</string>
+    <string name="key_eraseDatabase_preferences_screen">key_eraseDatabase_preferences_screen</string>
+    <string name="key_channels_list_preferences_screen">key_channels_list_preferences_screen</string>
+</resources>

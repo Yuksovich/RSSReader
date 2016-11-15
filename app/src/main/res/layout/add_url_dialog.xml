@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              style="@style/AppTheme.dialog">
 
     <TextView
             android:text="@string/addUrlDialog"
-            style="@style/AppTheme.url_dialog.title"
-            android:background="@color/toolbar_color"
-    />
+            style="@style/AppTheme.dialog.title"/>
 
     <EditText
             android:id="@+id/urlInput"
             android:text="@string/httpInput"
             android:inputType="textUri"
             android:hint="@string/input_url_hint"
-            style="@style/AppTheme.url_dialog"/>
+            style="@style/AppTheme.dialog"/>
 
     <LinearLayout
-            style="@style/AppTheme.url_dialog"
+            style="@style/AppTheme.dialog"
             android:orientation="horizontal"
             android:layout_gravity="center">
 
         <Button
                 android:id="@+id/addUrlButton"
                 android:text="@string/addUrlButtonText"
-                style="@style/AppTheme.url_dialog"
-                android:textColor="@color/button_selector"/>
+                style="@style/AppTheme.dialog.button"
+                android:visibility="invisible"/>
 
         <Button
                 android:id="@+id/cancelUrlButton"
                 android:text="@string/cancelUrlAddButtonText"
-                style="@style/AppTheme.url_dialog"
-                android:layout_gravity="end"
-                android:textColor="@color/button_selector"/>
+                style="@style/AppTheme.dialog.button"/>
     </LinearLayout>
 
 </LinearLayout>

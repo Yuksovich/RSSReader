@@ -24,7 +24,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:padding">@dimen/text_padding</item>
         <item name="android:textColor">@color/item_title_not_read_listView_entry</item>
-        <item name="android:background">@color/item_background_was_read_listView_entry</item>
+        <item name="android:background">@color/main_background_color</item>
     </style>
 
     <style name="AppTheme.rss_view.item_title">
@@ -39,38 +39,28 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.url_dialog">
+    <style name="AppTheme.dialog">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/main_background_color</item>
         <item name="android:padding">@dimen/inputUrlPadding</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 
-    <style name="AppTheme.url_dialog.title">
+    <style name="AppTheme.dialog.title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/dialog_title</item>
+        <item name="android:background">@color/toolbar_color</item>
         <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="AppTheme.todo_dialog">
+    <style name="AppTheme.dialog.button">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:padding">@dimen/inputUrlPadding</item>
-    </style>
-
-    <style name="AppTheme.todo_dialog.title">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/dialog_title</item>
-        <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
-    <style name="AppTheme.url_dialog.button">
         <item name="android:textColor">@color/button_selector</item>
+
     </style>
 
     <style name="AppTheme.entry_in_list">

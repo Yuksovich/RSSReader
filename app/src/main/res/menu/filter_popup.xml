@@ -3,12 +3,12 @@
     <group
             android:id="@+id/channels_list_filter"
             android:checkableBehavior="all"
-
     />
 
     <group
             android:id="@+id/remove_filters_group"
-            android:checkableBehavior="none">
+            android:checkableBehavior="none"
+    >
 
         <item
                 android:id="@+id/show_all_popup_item"
