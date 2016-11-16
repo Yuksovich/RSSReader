@@ -24,6 +24,7 @@ import java.util.regex.PatternSyntaxException;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.activity_controllers.ToolbarListener";
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
     private final IntentFilter intentFilter = new IntentFilter();
     private UrlSaverReceiver receiver;
@@ -77,6 +78,11 @@ public final class AddNewUrlDialog extends DialogFragment {
             }
         });
 
+        if(!DIALOG_TAG.equals(getTag())){
+            editText.setText(getTag());
+            addUrlButton.setVisibility(View.VISIBLE);
+        }
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,5 +109,7 @@ public final class AddNewUrlDialog extends DialogFragment {
             }
         });
         return view;
+
+
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface Parsable {
 
-    public ArrayList<SingleRSSEntry> receiveAllItems() throws NoRSSContentException, IOException;
-    public String getChannelDescription();
+    ArrayList<SingleRSSEntry> receiveAllItems() throws NoRSSContentException, IOException;
+    String getChannelDescription();
 
 }

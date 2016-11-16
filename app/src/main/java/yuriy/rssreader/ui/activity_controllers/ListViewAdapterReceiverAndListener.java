@@ -43,13 +43,18 @@ public final class ListViewAdapterReceiverAndListener
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        if (listView == null||mainActivityContext==null) {
+            return;
+        }
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) listView.getParent();
         if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
         listView.setFastScrollEnabled(true);
         listView.setOnItemClickListener(this);
-        waitingDialog.dismiss();
+        if (waitingDialog != null) {
+            waitingDialog.dismiss();
+        }
         final String action = intent.getAction();
         final String message = intent.getStringExtra(action);
         final TextView emptyText = (TextView) ((Activity) mainActivityContext).findViewById(R.id.database_is_empty_message_screen);

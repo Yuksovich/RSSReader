@@ -1,7 +1,9 @@
 package yuriy.rssreader;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,23 +16,37 @@ import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.activity_controllers.ListViewAdapterReceiverAndListener;
 import yuriy.rssreader.ui.activity_controllers.MainActivityReceiverFilter;
 import yuriy.rssreader.ui.activity_controllers.ToolbarListener;
+import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 import yuriy.rssreader.utils.StateSaver;
 
 public final class MainActivity extends Activity {
 
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
-    private ListView listView;
-    private LocalBroadcastManager broadcastManager;
-    private ListViewAdapterReceiverAndListener receiver;
-    private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
-    private RssListAdapter adapter;
+    private static final int DIALOG_THEME = 0;
     private static int listVisiblePosition;
     private static int listPaddingTop;
     private static String currentChannelFilter;
+    private static final String LINK_ACTION = "android.intent.action.VIEW";
+
+    private ListView listView;
+    private LocalBroadcastManager broadcastManager;
+    private ListViewAdapterReceiverAndListener receiver;
+    private RssListAdapter adapter;
+    private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent intent = getIntent();
+        if (LINK_ACTION.equals(intent.getAction())) {
+            final String url = intent.getData().toString();
+            if (url != null) {
+                DialogFragment dialog = new AddNewUrlDialog();
+                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, DIALOG_THEME);
+                dialog.show(getFragmentManager(), url);
+            }
+        }
 
         listVisiblePosition = StateSaver.getSavedPosition(this);
         listPaddingTop = StateSaver.getSavedPadding(this);
@@ -46,7 +62,7 @@ public final class MainActivity extends Activity {
         broadcastManager = LocalBroadcastManager.getInstance(this);
         receiver = new ListViewAdapterReceiverAndListener(this, listView, waitingDialog);
 
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.list_view_swipe_refresh);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.list_view_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(toolbarListener);
 
         findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarListener);

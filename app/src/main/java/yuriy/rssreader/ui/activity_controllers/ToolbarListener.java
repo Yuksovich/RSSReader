@@ -20,7 +20,7 @@ import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 
 public final class ToolbarListener implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private final static String DIALOG_NEW_URL = "dialogNewUrl";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.activity_controllers.ToolbarListener";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private static final boolean NO_NOTIFICATION = false;
@@ -53,7 +53,7 @@ public final class ToolbarListener implements View.OnClickListener, SwipeRefresh
             case (R.id.addUrlButton_toolbar):
                 DialogFragment dialog = new AddNewUrlDialog();
                 dialog.setStyle(DialogFragment.STYLE_NO_TITLE, DIALOG_THEME);
-                dialog.show(activity.getFragmentManager(), DIALOG_NEW_URL);
+                dialog.show(activity.getFragmentManager(), DIALOG_TAG);
                 break;
             case (R.id.filterButton_toolbar):
                 showPopupMenu(v);
