@@ -18,12 +18,16 @@
                 android:layout_centerInParent="true"
                 android:visibility="invisible"
         />
-
-        <ListView
-                android:id="@+id/list_view_main_activity"
+        <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/list_view_swipe_refresh"
                 style="@style/AppTheme.list_view">
 
-        </ListView>
+            <ListView
+                    android:id="@+id/list_view_main_activity"
+                    style="@style/AppTheme.list_view">
+
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 </LinearLayout>

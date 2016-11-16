@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,8 +35,7 @@ public final class ListViewAdapterReceiverAndListener
 
     public ListViewAdapterReceiverAndListener(final Context mainActivityContext,
                                               final ListView listView,
-                                              final ProgressDialog waitingDialog)
-    {
+                                              final ProgressDialog waitingDialog) {
         this.mainActivityContext = mainActivityContext;
         this.listView = listView;
         this.waitingDialog = waitingDialog;
@@ -43,6 +43,10 @@ public final class ListViewAdapterReceiverAndListener
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) listView.getParent();
+        if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
         listView.setFastScrollEnabled(true);
         listView.setOnItemClickListener(this);
         waitingDialog.dismiss();

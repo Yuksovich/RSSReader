@@ -52,6 +52,7 @@
     <string name="auto_refresh_off">Автообновление отключено</string>
     <string name="program_name">RSS Reader</string>
     <string name="wait_to_check_dialog_message">Проверка введеного адреса&#8230;</string>
+    <string name="parser_fail">Ошибка при парсинге данных</string>
 
 
 </resources>

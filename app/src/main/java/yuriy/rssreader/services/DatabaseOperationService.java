@@ -11,10 +11,12 @@ import android.database.SQLException;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import org.xmlpull.v1.XmlPullParserException;
 import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.data_input.DataReceiver;
-import yuriy.rssreader.controllers.data_input.XMLParser;
+import yuriy.rssreader.controllers.data_input.Parsable;
+import yuriy.rssreader.controllers.data_input.RssOrAtom;
 import yuriy.rssreader.database.DBReader;
 import yuriy.rssreader.database.DBWriter;
 import yuriy.rssreader.database.SingleRSSEntry;
@@ -129,7 +131,7 @@ public final class DatabaseOperationService extends IntentService {
         DataReceiver dataReceiver;
         String data;
         URL url;
-        XMLParser xmlParser;
+        Parsable parser;
         ArrayList<SingleRSSEntry> entriesArray;
         DBWriter dbWriter = null;
         int newEntriesCount = 0;
@@ -139,8 +141,8 @@ public final class DatabaseOperationService extends IntentService {
                 url = new URL(urlString);
                 dataReceiver = new DataReceiver();
                 data = dataReceiver.getTextFromURL(url);
-                xmlParser = new XMLParser(data);
-                entriesArray = xmlParser.receiveAllItems();
+                parser = RssOrAtom.getParser(data);
+                entriesArray = parser.receiveAllItems();
                 dbWriter = new DBWriter(this);
                 dbWriter.populate(entriesArray, urlString);
                 newEntriesCount += dbWriter.getNewEntriesCount();
@@ -162,6 +164,10 @@ public final class DatabaseOperationService extends IntentService {
             } catch (SQLException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.sqlFail) + SPACER + urlString);
+                broadcastManager.sendBroadcast(intent);
+            }catch (XmlPullParserException e){
+                intent.setAction(FAIL);
+                intent.putExtra(FAIL, getString(R.string.parser_fail) + SPACER + urlString);
                 broadcastManager.sendBroadcast(intent);
 
             } finally {

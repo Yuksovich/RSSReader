@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,12 +18,12 @@ import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.SettingsActivity;
 import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 
-public final class ToolbarListener implements View.OnClickListener {
+public final class ToolbarListener implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private final static String DIALOG_NEW_URL = "dialogNewUrl";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
-    private static final boolean MAKE_NOTIFICATION = false;
+    private static final boolean NO_NOTIFICATION = false;
 
     private final Activity activity;
     private final ProgressDialog waitingDialog;
@@ -43,7 +44,7 @@ public final class ToolbarListener implements View.OnClickListener {
         }
         switch (v.getId()) {
             case (R.id.refreshButton_toolbar):
-                DatabaseOperationService.refreshDatabase(activity, NOTIFY_IF_NOTHING_NEW, MAKE_NOTIFICATION);
+                DatabaseOperationService.refreshDatabase(activity, NOTIFY_IF_NOTHING_NEW, NO_NOTIFICATION);
                 DatabaseOperationService.requestEntries(activity, DatabaseOperationService.ALL_CHANNELS);
                 waitingDialog.show();
                 waitingDialog.setCanceledOnTouchOutside(true);
@@ -99,5 +100,11 @@ public final class ToolbarListener implements View.OnClickListener {
         ChannelSelectionPopup channelSelectionPopup = new ChannelSelectionPopup(activity, menu);
         channelSelectionPopup.fillMenu();
         popupMenu.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        DatabaseOperationService.refreshDatabase(activity, NOTIFY_IF_NOTHING_NEW, NO_NOTIFICATION);
+        DatabaseOperationService.requestEntries(activity, DatabaseOperationService.ALL_CHANNELS);
     }
 }

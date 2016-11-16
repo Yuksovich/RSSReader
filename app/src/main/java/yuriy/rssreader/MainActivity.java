@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ListView;
 import yuriy.rssreader.controllers.RssListAdapter;
@@ -44,6 +45,9 @@ public final class MainActivity extends Activity {
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
         receiver = new ListViewAdapterReceiverAndListener(this, listView, waitingDialog);
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.list_view_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(toolbarListener);
 
         findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarListener);
         findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarListener);

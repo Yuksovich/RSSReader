@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public final class XMLParser {
+final class RssParser implements Parsable {
 
     private final String receivedStringData;
     private String channelTitle;
@@ -39,7 +39,7 @@ public final class XMLParser {
     final private static String EMPTY_STRING = "";
     final private static String SPACER = " ";
 
-    public XMLParser(final String receivedStringData) throws NoRSSContentException, IOException {
+    RssParser(final String receivedStringData) throws NoRSSContentException, IOException {
         this.receivedStringData = receivedStringData;
         getChannelOrThrow();
     }
@@ -104,6 +104,7 @@ public final class XMLParser {
         return "";
     }
 
+    @Override
     public ArrayList<SingleRSSEntry> receiveAllItems() throws NoRSSContentException, IOException {
 
         String itemLink, itemTitle, itemDescription, itemPubDate;
@@ -182,6 +183,7 @@ public final class XMLParser {
         return formattedDate;
     }
 
+    @Override
     public String getChannelDescription() {
         return channelDescription;
     }
