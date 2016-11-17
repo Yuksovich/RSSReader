@@ -18,7 +18,13 @@
                 android:defaultValue="5"
                 android:entries="@array/auto_refresh_to_show"
                 android:entryValues="@array/auto_refresh_values"
-                android:dependency="key_autoRefresh_preferences_screen"/>
+                android:dependency="@string/key_autoRefresh_preferences_screen"/>
+        <CheckBoxPreference
+                android:key="@string/key_autorefresh_if_wifi_preference_screen"
+                android:title="@string/settings_refresh_if_wifi_title"
+                android:summary="@string/settings_refresh_if_wifi_summary"
+                android:defaultValue="true"
+                android:dependency="@string/key_autoRefresh_preferences_screen"/>
         <Preference
                 android:key="@string/key_eraseDatabase_preferences_screen"
                 android:title="@string/erase_all_entries_title"

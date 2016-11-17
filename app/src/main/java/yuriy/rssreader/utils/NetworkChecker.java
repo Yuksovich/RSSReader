@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public final class NetworkChecker {
+
     private NetworkChecker(){
         throw new UnsupportedOperationException();
     }

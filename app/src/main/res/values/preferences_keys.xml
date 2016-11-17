@@ -6,4 +6,5 @@
     <string name="key_autoRefresh_period_preferences_screen">key_autoRefresh_period_preferences_screen</string>
     <string name="key_eraseDatabase_preferences_screen">key_eraseDatabase_preferences_screen</string>
     <string name="key_channels_list_preferences_screen">key_channels_list_preferences_screen</string>
+    <string name="key_autorefresh_if_wifi_preference_screen">key_autorefresh_if_wifi_preference_screen</string>
 </resources>

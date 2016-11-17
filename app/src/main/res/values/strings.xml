@@ -53,6 +53,10 @@
     <string name="program_name">RSS Reader</string>
     <string name="wait_to_check_dialog_message">Проверка введеного адреса&#8230;</string>
     <string name="parser_fail">Ошибка при парсинге данных</string>
+    <string name="settings_refresh_if_wifi_title">Автообновление только по Wifi</string>
+    <string name="settings_refresh_if_wifi_summary">Автоматическое обновление будет происходить только при подключении
+        через Wifi, при отстутствии - обновление будет происходить, когда произойдет следующее подключение к сети Wifi
+    </string>
 
 
 </resources>
