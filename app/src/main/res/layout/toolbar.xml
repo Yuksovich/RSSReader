@@ -16,7 +16,7 @@
                 android:id="@+id/settingsButton_toolbar"
                 android:src="@color/toolbar_settings_button_selector"
                 android:contentDescription="@string/settings_toolbar"
-                style="@style/AppTheme.toolbar"
+                style="@style/MainTheme.toolbar"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 />
@@ -24,14 +24,14 @@
                 android:id="@+id/filterButton_toolbar"
                 android:src="@color/toolbar_filter_button_selector"
                 android:contentDescription="@string/filter_toolbar"
-                style="@style/AppTheme.toolbar"
+                style="@style/MainTheme.toolbar"
                 android:layout_toLeftOf="@+id/addUrlButton_toolbar"
                 android:layout_toStartOf="@+id/addUrlButton_toolbar"/>
         <ImageButton
                 android:id="@+id/addUrlButton_toolbar"
                 android:src="@color/toolbar_add_button_selector"
                 android:contentDescription="@string/add_url_toolbar"
-                style="@style/AppTheme.toolbar"
+                style="@style/MainTheme.toolbar"
                 android:layout_toLeftOf="@+id/refreshButton_toolbar"
                 android:layout_toStartOf="@+id/refreshButton_toolbar"
         />
@@ -39,7 +39,7 @@
                 android:id="@+id/refreshButton_toolbar"
                 android:src="@color/toolbar_refresh_button_selector"
                 android:contentDescription="@string/refresh_toolbar"
-                style="@style/AppTheme.toolbar"
+                style="@style/MainTheme.toolbar"
                 android:layout_toLeftOf="@+id/deleteButton_toolbar"
                 android:layout_toStartOf="@+id/deleteButton_toolbar"
         />
@@ -47,7 +47,7 @@
                 android:id="@+id/deleteButton_toolbar"
                 android:src="@color/toolbar_delete_button_selector"
                 android:contentDescription="@string/delete_toolbar"
-                style="@style/AppTheme.toolbar"
+                style="@style/MainTheme.toolbar"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
         />

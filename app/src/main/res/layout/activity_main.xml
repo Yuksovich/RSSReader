@@ -14,17 +14,17 @@
         <TextView
                 android:id="@+id/database_is_empty_message_screen"
                 android:text="@string/database_is_empty_message_screen"
-                style="@style/AppTheme.entry_in_list.item_title"
+                style="@style/MainTheme.entry_in_list.item_title"
                 android:layout_centerInParent="true"
                 android:visibility="invisible"
         />
         <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/list_view_swipe_refresh"
-                style="@style/AppTheme.list_view">
+                style="@style/MainTheme.list_view">
 
             <ListView
                     android:id="@+id/list_view_main_activity"
-                    style="@style/AppTheme.list_view">
+                    style="@style/MainTheme.list_view">
 
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>

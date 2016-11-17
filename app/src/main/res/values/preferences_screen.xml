@@ -11,7 +11,6 @@
     <string name="channel_category_title">Список каналов</string>
     <string name="channel_category_summary">Выберете канал, который хотите удалить</string>
 
-    <string name="refresh_period_service_mode">режим для отладки</string>
     <string name="refresh_period_30min">30 минут</string>
     <string name="refresh_period_1hour">1 час</string>
     <string name="refresh_period_3hours">3 часа</string>

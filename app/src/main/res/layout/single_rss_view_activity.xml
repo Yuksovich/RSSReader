@@ -12,19 +12,19 @@
             android:orientation="vertical">
 
         <TextView android:id="@+id/item_title_show"
-                  style="@style/AppTheme.rss_view.item_title"/>
+                  style="@style/MainTheme.rss_view.item_title"/>
 
         <TextView android:id="@+id/item_pubDate_show"
-                  style="@style/AppTheme.rss_view"/>
+                  style="@style/MainTheme.rss_view"/>
 
         <TextView android:id="@+id/channel_title_show"
-                  style="@style/AppTheme.rss_view.channel_title"/>
+                  style="@style/MainTheme.rss_view.channel_title"/>
 
         <TextView android:id="@+id/channel_description_show"
-                  style="@style/AppTheme.rss_view"/>
+                  style="@style/MainTheme.rss_view"/>
 
         <WebView android:id="@+id/item_description_show"
-                 style="@style/AppTheme.rss_view"/>
+                 style="@style/MainTheme.rss_view"/>
 
     </LinearLayout>
 </ScrollView>

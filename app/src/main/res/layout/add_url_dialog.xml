@@ -3,34 +3,34 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              style="@style/AppTheme.dialog">
+              style="@style/MainTheme.dialog">
 
     <TextView
             android:text="@string/addUrlDialog"
-            style="@style/AppTheme.dialog.title"/>
+            style="@style/MainTheme.dialog.title"/>
 
     <EditText
             android:id="@+id/urlInput"
             android:text="@string/httpInput"
             android:inputType="textUri"
             android:hint="@string/input_url_hint"
-            style="@style/AppTheme.dialog"/>
+            style="@style/MainTheme.dialog"/>
 
     <LinearLayout
-            style="@style/AppTheme.dialog"
+            style="@style/MainTheme.dialog"
             android:orientation="horizontal"
             android:layout_gravity="center">
 
         <Button
                 android:id="@+id/addUrlButton"
                 android:text="@string/addUrlButtonText"
-                style="@style/AppTheme.dialog.button"
+                style="@style/MainTheme.dialog.button"
                 android:visibility="invisible"/>
 
         <Button
                 android:id="@+id/cancelUrlButton"
                 android:text="@string/cancelUrlAddButtonText"
-                style="@style/AppTheme.dialog.button"/>
+                style="@style/MainTheme.dialog.button"/>
     </LinearLayout>
 
 </LinearLayout>

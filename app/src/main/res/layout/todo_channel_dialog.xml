@@ -3,31 +3,31 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              style="@style/AppTheme.dialog">
+              style="@style/MainTheme.dialog">
     <TextView
             android:text="@string/title_todo_dialog"
-            style="@style/AppTheme.dialog.title"/>
+            style="@style/MainTheme.dialog.title"/>
 
     <TextView
             android:id="@+id/channel_todo_dialog"
-            style="@style/AppTheme.dialog"/>
+            style="@style/MainTheme.dialog"/>
 
     <Button
             android:id="@+id/remove_channel_button_todo_dialog"
             android:text="@string/remove_channel_todo_dialog"
-            style="@style/AppTheme.dialog.button"/>
+            style="@style/MainTheme.dialog.button"/>
 
     <Button
             android:id="@+id/remove_entries_button_todo_dialog"
             android:text="@string/remove_channel_news_todo_dialog"
-            style="@style/AppTheme.dialog.button"/>
+            style="@style/MainTheme.dialog.button"/>
     <Button
             android:id="@+id/remove_channel_and_entries_button_todo_dialog"
             android:text="@string/remove_channel_and_news_todo_dialog"
-            style="@style/AppTheme.dialog.button"/>
+            style="@style/MainTheme.dialog.button"/>
     <Button
             android:id="@+id/cancel_button_todo_dialog"
             android:text="@string/cancel_todo_dialog"
-            style="@style/AppTheme.dialog.button"/>
+            style="@style/MainTheme.dialog.button"/>
 
 </LinearLayout>
