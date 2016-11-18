@@ -35,6 +35,19 @@
             android:key="@string/key_channels_list_preferences_screen"
             android:title="@string/channel_category_title"
             android:summary="@string/channel_category_summary"/>
+    <PreferenceCategory
+        android:key = "@string/key_customization_preferences_screen"
+        android:title="@string/customization_category_title"
+        android:summary="@string/customization_category_summary">
+        <ListPreference
+            android:key="@string/key_theme_preferences_screen"
+            android:title="@string/theme_title"
+            android:summary="@string/theme_summary"
+            android:defaultValue="0"
+            android:entries="@array/theme_names"
+            android:entryValues="@array/theme_values"/>
+
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

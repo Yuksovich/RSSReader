@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="main_preferences_title">Настройки</string>
+    <string name="erase_all_entries_title">Удалить все записи</string>
+    <string name="erase_all_entries_summary">Удалить все загруженные записи</string>
+    <string name="auto_refresh_title">Автообновление</string>
+    <string name="auto_refresh_summary">Автоматическое получение новостей с заданным интервалом</string>
+    <string name="auto_refresh_period_title">Интервал обновления</string>
+    <string name="auto_refresh_period_summary">Устанавливает интервал автоматического обновления новостей</string>
+    <string name="channel_category_title">Список каналов</string>
+    <string name="channel_category_summary">Выберете канал, который хотите удалить</string>
+    <string name="customization_category_title">Дополнительно</string>
+    <string name="customization_category_summary">Дополнительные настройки отображения</string>
+    <string name="theme_title">Цветовая тема</string>
+    <string name="theme_summary">Выберете цветовую схему</string>
+
+    <string name="refresh_period_30min">30 минут</string>
+    <string name="refresh_period_1hour">1 час</string>
+    <string name="refresh_period_3hours">3 часа</string>
+    <string name="refresh_period_6hours">6 часов</string>
+    <string name="refresh_period_12hours">12 часов</string>
+    <string name="refresh_period_24hours">24 часа</string>
+</resources>

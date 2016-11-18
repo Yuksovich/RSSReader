@@ -1,8 +1,8 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="text_padding">5dp</dimen>
-    <dimen name="inputUrlPadding">10dp</dimen>
+    <dimen name="text_padding">15dp</dimen>
+    <dimen name="delete_entry_button_padding">10dp</dimen>
     <dimen name="inputUrlMarginBottom">20dp</dimen>
     <dimen name="buttonToolbarPadding">10dp</dimen>
     <dimen name="divider_height">1dp</dimen>
@@ -12,5 +12,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="button_spacer">50dp</dimen>
+    <dimen name="margin_delete_button">5dp</dimen>
 
 </resources>

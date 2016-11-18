@@ -10,7 +10,7 @@
 
     <TextView
             android:id="@+id/channel_todo_dialog"
-            style="@style/MainTheme.dialog"/>
+            style="@style/MainTheme.dialog.text"/>
 
     <Button
             android:id="@+id/remove_channel_button_todo_dialog"

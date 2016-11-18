@@ -7,11 +7,15 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import yuriy.rssreader.R;
 import yuriy.rssreader.ui.activity_controllers.SettingsListener;
+import yuriy.rssreader.utils.Theme;
 
 public final class SettingsActivity extends PreferenceActivity {
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+        if(Theme.getId()!=0){
+            setTheme(Theme.getId());
+        }
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         final SettingsListener settingsListener = new SettingsListener(this);

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#303F9F</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="read">?colorPrimary</color>
+    <color name="not_read">?colorAccent</color>
 
     <color name="main_text_color">#FFF</color>
-    <color name="main_background_color">#65467C</color>
-    <color name="item_background_not_read_listView_entry">#303F9F</color>
-    <color name="item_title_was_read_listView_entry">#FFFFFF</color>
-    <color name="item_title_not_read_listView_entry">#FFFFFF</color>
+
     <color name="item_text_not_read_listView_entry">#FFF</color>
-    <color name="item_text_was_read_listView_entry">#999</color>
+    <color name="item_text_was_read_listView_entry">#777</color>
 
     <color name="single_item_view_title">#FFF</color>
 
-    <color name="toolbar_color">#ED126F</color>
+    <color name="colorPrimary_main">#ED126F</color>
+    <color name="colorPrimaryDark_main">#65467C</color>
+    <color name="colorAccent_main">#FFF</color>
 
 
     <color name="dialog_button_text">@android:color/black</color>
@@ -22,4 +20,16 @@
     <color name="list_divider_color">#D2D5DD</color>
 
     <color name="dialog_title">#FFFFFF</color>
+
+    <color name="colorPrimary_Orange_Blue">#ca3300</color>
+    <color name="colorPrimaryDark_Orange_Blue">#173886</color>
+    <color name="colorAccent_Orange_Blue">#FFF</color>
+
+    <color name="colorPrimary_Dark">#17123b</color>
+    <color name="colorPrimaryDark_Dark">#000000</color>
+    <color name="colorAccent_Orange_Dark">#FFF</color>
+
+    <color name="colorPrimary_Light">#458b9e</color>
+    <color name="colorPrimaryDark_Light">#ffffff</color>
+    <color name="colorAccent_Orange_Light">#000000</color>
 </resources>

@@ -18,4 +18,18 @@
         <item>1440</item>
     </string-array>
 
+    <string-array name="theme_names">
+        <item>@string/focus_start_theme</item>
+        <item>@string/orange_blue_theme</item>
+        <item>@string/dark_theme</item>
+        <item>@string/light_theme</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>focus</item>
+        <item>orange</item>
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+
 </resources>

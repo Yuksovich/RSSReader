@@ -4,23 +4,27 @@
     <style name="MainTheme" parent="ThemeOverlay.AppCompat.Dark">
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary_main</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_main</item>
+        <item name="colorAccent">@color/colorAccent_main</item>
+
+
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/main_background_color</item>
+        <item name="android:textColor">?colorAccent</item>
         <item name="android:popupMenuStyle">@style/MainTheme.popup</item>
+        <item name="android:textSize">@dimen/text_size</item>
+
 
     </style>
 
     <style name="MainTheme.popup">
-        <item name="android:popupBackground">@color/toolbar_color</item>
+        <item name="android:popupBackground">?colorPrimary</item>
     </style>
 
     <style name="MainTheme.list_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:divider">@color/list_divider_color</item>
+        <item name="android:divider">?colorAccent</item>
         <item name="android:dividerHeight">@dimen/divider_height</item>
     </style>
 
@@ -29,14 +33,19 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:padding">@dimen/text_padding</item>
-        <item name="android:textColor">@color/item_title_not_read_listView_entry</item>
-        <item name="android:background">@color/main_background_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:paddingLeft">@dimen/text_padding</item>
+        <item name="android:paddingRight">@dimen/text_padding</item>
+        <item name="android:textColor">?colorAccent</item>
+        <item name="android:background">?colorPrimaryDark</item>
     </style>
 
     <style name="MainTheme.rss_view.item_title">
-        <item name="android:background">@color/toolbar_color</item>
-        <item name="android:textColor">@color/single_item_view_title</item>
+        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:gravity">left</item>
     </style>
@@ -47,26 +56,34 @@
     </style>
 
     <style name="MainTheme.dialog">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/main_background_color</item>
-        <item name="android:padding">@dimen/inputUrlPadding</item>
-        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:background">?colorPrimaryDark</item>
+        <item name="android:paddingBottom">@dimen/delete_entry_button_padding</item>
+        <item name="android:textColor">?colorAccent</item>
         <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MainTheme.dialog.text">
+        <item name="android:padding">@dimen/text_padding</item>
     </style>
 
     <style name="MainTheme.dialog.title">
-        <item name="android:layout_width">match_parent</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/dialog_title</item>
-        <item name="android:background">@color/toolbar_color</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:padding">@dimen/text_padding</item>
         <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="MainTheme.dialog.button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textColor">@color/button_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?colorAccent</item>
+        <item name="android:padding">@dimen/text_padding</item>
 
     </style>
 
@@ -74,11 +91,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">right</item>
-        <item name="android:textColor">@color/item_text_not_read_listView_entry</item>
+        <item name="android:textColor">@color/list_view_item_selector</item>
     </style>
     <style name="MainTheme.entry_in_list.item_title">
         <item name="android:layout_gravity">left</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_view_item_selector</item>
     </style>
 
 
@@ -86,18 +104,23 @@
         <item name="android:visibility">invisible</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:padding">@dimen/buttonToolbarPadding</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:padding">@dimen/delete_entry_button_padding</item>
+        <item name="android:layout_margin">@dimen/margin_delete_button</item>
     </style>
 
     <style name="MainTheme.toolbar">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">?android:actionBarSize</item>
         <item name="android:layout_gravity">right</item>
         <item name="android:paddingRight">@dimen/buttonToolbarPadding</item>
         <item name="android:paddingLeft">@dimen/buttonToolbarPadding</item>
+        <item name="android:background">?colorPrimary</item>
+    </style>
+    <style name="MainTheme.toolbar.buttons">
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="title_size">20sp</dimen>
 </resources>

@@ -1,0 +1,55 @@
+
+
+<resources>
+<string name="app_name">RSSReader</string>
+<string name="receivedItemCount">Получено новостей:</string>
+<string name="noRss">По данному адресу отсутствует RSS</string>
+<string name="sqlFail">Ошибка доступа к базе данных</string>
+<string name="httpFail">Ошибка подключения по адресу</string>
+<string name="incorrectURL">Некорректный адрес</string>
+<string name="addUrlDialog">Введите адрес RSS</string>
+<string name="httpInput">http://</string>
+<string name="addUrlButtonText">Добавить URL</string>
+<string name="cancelUrlAddButtonText">Отменить</string>
+<string name="correctURL">Добавлен в список каналов</string>
+
+<string name="duplicateURL">Этот URL уже в списке</string>
+
+<string name="databaseIsEmpty">База данных пуста</string>
+<string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
+<string name="input_url_hint">введите URL RSS канала</string>
+<string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Открыть в источнике</a>]]></string>
+<string name="refresh_go">Обновить</string>
+<string name="add_go">Добавить</string>
+<string name="delete_toolbar">Удалить записи</string>
+<string name="wait_dialog_message">Идет обновление списка новостей&#8230;</string>
+<string name="show_all_popup_item">Показать все</string>
+<string name="settings_screen_label">Настройки</string>
+<string name="title_todo_dialog">Выберете действие</string>
+<string name="remove_channel_todo_dialog">Удалить данный канал</string>
+<string name="remove_channel_news_todo_dialog">Удалить все новости данного канала</string>
+<string name="remove_channel_and_news_todo_dialog">Удалить канал и все новости</string>
+<string name="cancel_todo_dialog">Отмена</string>
+<string name="yes_button_confirm_dialog">Да</string>
+<string name="no_button_confirm_dialog">Нет</string>
+<string name="text_confirm_dialog">Вы уверены, что хотите удалить все записи?</string>
+<string name="title_confirm_dialog">Подтверждение удаления</string>
+<string name="database_is_empty_message_screen">Нет сохраненных RSS записей.</string>
+<string name="delete_button_listView_entry_description">Удалить запись</string>
+<string name="current_refresh_period">Текущий интервал обновления, ч:\u0020</string>
+<string name="auto_refresh_off">Автообновление отключено</string>
+<string name="program_name">RSS Reader</string>
+<string name="wait_to_check_dialog_message">Проверка введеного адреса&#8230;</string>
+<string name="parser_fail">Ошибка при парсинге данных</string>
+<string name="settings_refresh_if_wifi_title">Автообновление только по Wifi</string>
+<string name="settings_refresh_if_wifi_summary">Автоматическое обновление будет происходить только при подключении
+    через Wifi, при отстутствии - обновление будет происходить, когда произойдет следующее подключение к сети Wifi
+</string>
+
+    <string name="focus_start_theme">Фокус Старт</string>
+    <string name="orange_blue_theme">Мерзкая оранжево-синяя тема</string>
+    <string name="dark_theme">Черная - очень чОткая</string>
+    <string name="light_theme">Светлая</string>
+
+
+</resources>

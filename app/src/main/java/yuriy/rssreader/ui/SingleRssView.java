@@ -14,6 +14,7 @@ import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.services.SingleEntryOperationService;
 import yuriy.rssreader.utils.EntrySerializer;
 import yuriy.rssreader.utils.StateSaver;
+import yuriy.rssreader.utils.Theme;
 
 import static yuriy.rssreader.MainActivity.ITEM_LINK;
 import static yuriy.rssreader.services.SingleEntryOperationService.SINGLE_ENTRY;
@@ -30,6 +31,9 @@ public final class SingleRssView extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        if(Theme.getId()!=0){
+            setTheme(Theme.getId());
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_rss_view_activity);
 
@@ -44,7 +48,7 @@ public final class SingleRssView extends Activity {
             @Override
             public void onReceive(final Context context, final Intent intent) {
 
-                final String HTML_STYLE = getString(R.string.html_style_css);
+                final String HTML_STYLE = getString(R.string.html_style_css_beginning)+Theme.getHtmlStyleCssMiddle(context)+getString(R.string.html_style_css_ending);
                 final String READ_MORE_STRING = getString(R.string.html_read_more_link);
                 final EntrySerializer.SerializableEntry entry = (EntrySerializer.SerializableEntry) intent.getSerializableExtra(SINGLE_ENTRY);
                 if (entry != null) {

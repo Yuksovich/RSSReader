@@ -14,7 +14,8 @@
             android:text="@string/httpInput"
             android:inputType="textUri"
             android:hint="@string/input_url_hint"
-            style="@style/MainTheme.dialog"/>
+            style="@style/MainTheme.dialog.text"
+            android:gravity="left"/>
 
     <LinearLayout
             style="@style/MainTheme.dialog"

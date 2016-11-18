@@ -1,21 +1,22 @@
 <resources>
     <string name="app_name">RSSReader</string>
-    <string name="receivedItemCount">Получено новостей:</string>
-    <string name="noRss">По данному адресу отсутствует RSS</string>
-    <string name="sqlFail">Ошибка доступа к базе данных</string>
-    <string name="httpFail">Ошибка подключения по адресу</string>
-    <string name="incorrectURL">Некорректный адрес</string>
-    <string name="addUrlDialog">Введите адрес RSS</string>
+    <string name="receivedItemCount">News received:</string>
+    <string name="noRss">No RSS content on this URL</string>
+    <string name="sqlFail">Database connection error</string>
+    <string name="httpFail">Failed to connect to </string>
+    <string name="incorrectURL">Incorrect URL</string>
+    <string name="addUrlDialog">Input RSS address</string>
     <string name="httpInput">http://</string>
-    <string name="addUrlButtonText">Добавить URL</string>
-    <string name="cancelUrlAddButtonText">Отменить</string>
-    <string name="correctURL">Добавлен в список каналов</string>
-    <string name="html_style_css"><![CDATA[
+    <string name="addUrlButtonText">Add new URL</string>
+    <string name="cancelUrlAddButtonText">Cancel</string>
+    <string name="correctURL">Added to channels list</string>
+    <string name="html_style_css_beginning"><![CDATA[
         <style>
             body{
-                text-align: justify;
-                background-color: #65467C;
-                color:#FFFFFF;
+                text-align: justify;]]>
+    </string>
+
+    <string name="html_style_css_ending"><![CDATA[
                 }
             img{
                 max-width: 100%;
@@ -25,37 +26,37 @@
             }
         </style>]]>
     </string>
-    <string name="duplicateURL">Этот URL уже в списке</string>
+    <string name="duplicateURL">This URL is already in list</string>
 
-    <string name="databaseIsEmpty">База данных пуста</string>
-    <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
-    <string name="input_url_hint">введите URL RSS канала</string>
-    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Открыть в источнике</a>]]></string>
-    <string name="refresh_go">Обновить</string>
-    <string name="add_go">Добавить</string>
-    <string name="delete_toolbar">Удалить записи</string>
-    <string name="wait_dialog_message">Идет обновление списка новостей&#8230;</string>
-    <string name="show_all_popup_item">Показать все</string>
-    <string name="settings_screen_label">Настройки</string>
-    <string name="title_todo_dialog">Выберете действие</string>
-    <string name="remove_channel_todo_dialog">Удалить данный канал</string>
-    <string name="remove_channel_news_todo_dialog">Удалить все новости данного канала</string>
-    <string name="remove_channel_and_news_todo_dialog">Удалить канал и все новости</string>
-    <string name="cancel_todo_dialog">Отмена</string>
-    <string name="yes_button_confirm_dialog">Да</string>
-    <string name="no_button_confirm_dialog">Нет</string>
-    <string name="text_confirm_dialog">Вы уверены, что хотите удалить все записи?</string>
-    <string name="title_confirm_dialog">Подтверждение удаления</string>
-    <string name="database_is_empty_message_screen">Нет сохраненных RSS записей.</string>
-    <string name="delete_button_listView_entry_description">Удалить запись</string>
-    <string name="current_refresh_period">Текущий интервал обновления, ч:\u0020</string>
-    <string name="auto_refresh_off">Автообновление отключено</string>
+    <string name="databaseIsEmpty">Database is empty</string>
+    <string name="noChannelsToRead">No saved RSS channels</string>
+    <string name="input_url_hint">input URL of RSS channel</string>
+    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Open source</a>]]></string>
+    <string name="refresh_go">Refresh</string>
+    <string name="add_go">Add</string>
+    <string name="delete_toolbar">Delete entries</string>
+    <string name="wait_dialog_message">Refreshing news list&#8230;</string>
+    <string name="show_all_popup_item">Show all</string>
+    <string name="settings_screen_label">Preferences</string>
+    <string name="title_todo_dialog">Choose action</string>
+    <string name="remove_channel_todo_dialog">Delete this channel</string>
+    <string name="remove_channel_news_todo_dialog">Delete all news of this channel</string>
+    <string name="remove_channel_and_news_todo_dialog">Delete channel and all news of it</string>
+    <string name="cancel_todo_dialog">Cancel</string>
+    <string name="yes_button_confirm_dialog">Yes</string>
+    <string name="no_button_confirm_dialog">No</string>
+    <string name="text_confirm_dialog">Are you sure you want to delete all entries?</string>
+    <string name="title_confirm_dialog">Deletion confirmation</string>
+    <string name="database_is_empty_message_screen">No saved RSS entries.</string>
+    <string name="delete_button_listView_entry_description">Delete entry</string>
+    <string name="current_refresh_period">Current refresh time, h:\u0020</string>
+    <string name="auto_refresh_off">Autorefresh is off</string>
     <string name="program_name">RSS Reader</string>
-    <string name="wait_to_check_dialog_message">Проверка введеного адреса&#8230;</string>
-    <string name="parser_fail">Ошибка при парсинге данных</string>
-    <string name="settings_refresh_if_wifi_title">Автообновление только по Wifi</string>
-    <string name="settings_refresh_if_wifi_summary">Автоматическое обновление будет происходить только при подключении
-        через Wifi, при отстутствии - обновление будет происходить, когда произойдет следующее подключение к сети Wifi
+    <string name="wait_to_check_dialog_message">Checking inputted address&#8230;</string>
+    <string name="parser_fail">Error while parsing data</string>
+    <string name="settings_refresh_if_wifi_title">Autorefresh only via Wifi</string>
+    <string name="settings_refresh_if_wifi_summary">Autorefresh will occur only when connected to Wifi network, if no
+        such connection - refresh will be processed at the time of connection to Wifi
     </string>
 
 

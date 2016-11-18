@@ -18,6 +18,7 @@ import yuriy.rssreader.ui.activity_controllers.MainActivityReceiverFilter;
 import yuriy.rssreader.ui.activity_controllers.ToolbarListener;
 import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
 import yuriy.rssreader.utils.StateSaver;
+import yuriy.rssreader.utils.Theme;
 
 public final class MainActivity extends Activity {
 
@@ -37,6 +38,13 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        if(Theme.getId()==0){
+            Theme.setThemeFromSharedPreferences(this);
+            setTheme(Theme.getId());
+        }
+        else {
+            setTheme(Theme.getId());
+        }
         super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         if (LINK_ACTION.equals(intent.getAction())) {

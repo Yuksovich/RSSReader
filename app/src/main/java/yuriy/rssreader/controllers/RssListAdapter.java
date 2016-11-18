@@ -12,6 +12,7 @@ import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.SingleEntryOperationService;
+import yuriy.rssreader.utils.Theme;
 
 import java.util.ArrayList;
 
@@ -65,15 +66,17 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
         }
 
         if (entry.isBeenViewed()) {
-            viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
-            viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
-            viewHolder.itemPubDate.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
-            viewHolder.channelTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_was_read_listView_entry));
+            viewHolder.itemTitle.setTextColor(Theme.getTextColorSeen(getContext()));
+            viewHolder.itemPubDate.setTextColor(Theme.getTextColorSeen(getContext()));
+            viewHolder.channelTitle.setTextColor(Theme.getTextColorSeen(getContext()));
+            viewHolder.channelTitle.setTextColor(Theme.getTextColorSeen(getContext()));
+
         } else {
-            viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
-            viewHolder.itemTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
-            viewHolder.itemPubDate.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
-            viewHolder.channelTitle.setTextColor(getContext().getResources().getColor(R.color.item_text_not_read_listView_entry));
+            viewHolder.itemTitle.setTextColor(Theme.getTextColor(getContext()));
+            viewHolder.itemPubDate.setTextColor(Theme.getTextColor(getContext()));
+            viewHolder.channelTitle.setTextColor(Theme.getTextColor(getContext()));
+            viewHolder.channelTitle.setTextColor(Theme.getTextColor(getContext()));
+
         }
 
         convertView.setHapticFeedbackEnabled(true);

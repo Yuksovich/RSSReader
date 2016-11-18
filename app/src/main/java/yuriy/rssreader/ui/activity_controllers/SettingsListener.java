@@ -2,14 +2,17 @@ package yuriy.rssreader.ui.activity_controllers;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.support.annotation.NonNull;
+import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.services.Alarm;
 import yuriy.rssreader.ui.SettingsActivity;
 import yuriy.rssreader.ui.dialogs.ConfirmDialog;
 import yuriy.rssreader.ui.dialogs.ToDoChannelDialog;
+import yuriy.rssreader.utils.Theme;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +30,9 @@ public final class SettingsListener implements
     private static final String DELETE_ALL_ENTRIES = "key_eraseDatabase_preferences_screen";
     private static final String AUTO_REFRESH_SWITCH = "key_autoRefresh_preferences_screen";
     private static final String AUTO_REFRESH_PERIOD = "key_autoRefresh_period_preferences_screen";
+    private static final String COLOR_THEME = "key_theme_preferences_screen";
     private static final String DEFAULT_PERIOD = "720";
+    private static final String DEFAULT = "focus";
 
     private final SettingsActivity activity;
     private final PreferenceCategory channelsCategory;
@@ -60,23 +65,21 @@ public final class SettingsListener implements
 
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        final Alarm alarm = new Alarm();
-        if (AUTO_REFRESH_SWITCH.equals(key) || AUTO_REFRESH_PERIOD.equals(key)) {
-            if (sharedPreferences.getBoolean(AUTO_REFRESH_SWITCH, false)) {
-                int period;
-                try {
-                    period = Integer.parseInt(sharedPreferences.getString(AUTO_REFRESH_PERIOD, DEFAULT_PERIOD));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    period = Integer.parseInt(DEFAULT_PERIOD);
-                }
-                alarm.startAlarmService(activity, period);
-            } else {
-                alarm.stopAlarmService(activity);
-            }
-        } else {
-            fillCategory(channelsCategory);
+        switch (key) {
+            case (AUTO_REFRESH_PERIOD):
+                turnOnAlarmService(sharedPreferences);
+                break;
+            case (AUTO_REFRESH_SWITCH):
+                turnOnAlarmService(sharedPreferences);
+                break;
+            case (COLOR_THEME):
+                selectColorTheme(sharedPreferences);
+                break;
+            default:
+                fillCategory(channelsCategory);
+                break;
         }
+
     }
 
     private void fillCategory(final @NonNull PreferenceCategory preferenceCategory) {
@@ -95,6 +98,31 @@ public final class SettingsListener implements
             channelEntry.setOnPreferenceClickListener(this);
             preferenceCategory.addPreference(channelEntry);
         }
+    }
+
+    private void turnOnAlarmService(final SharedPreferences sharedPreferences) {
+        final Alarm alarm = new Alarm();
+
+        if (sharedPreferences.getBoolean(AUTO_REFRESH_SWITCH, false)) {
+            int period;
+            try {
+                period = Integer.parseInt(sharedPreferences.getString(AUTO_REFRESH_PERIOD, DEFAULT_PERIOD));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                period = Integer.parseInt(DEFAULT_PERIOD);
+            }
+            alarm.startAlarmService(activity, period);
+        } else {
+            alarm.stopAlarmService(activity);
+        }
+    }
+
+    private void selectColorTheme(final SharedPreferences sharedPreferences) {
+        final String theme = sharedPreferences.getString(COLOR_THEME, DEFAULT);
+        Theme.setTheme(theme, activity);
+        final Intent intent = new Intent(activity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(intent);
     }
 
 
