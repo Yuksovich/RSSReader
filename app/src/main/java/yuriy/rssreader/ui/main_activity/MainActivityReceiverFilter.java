@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.activity_controllers;
+package yuriy.rssreader.ui.main_activity;
 
 import android.content.IntentFilter;
 import yuriy.rssreader.services.DatabaseOperationService;

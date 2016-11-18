@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import yuriy.rssreader.R;
 
-/**
- * Created by Roman on 18.11.2016.
- */
 public final class Theme {
 
     private static final String FOCUS_THEME = "focus";

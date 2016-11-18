@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.activity_controllers;
+package yuriy.rssreader.ui.main_activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -16,7 +16,7 @@ import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseOperationService;
-import yuriy.rssreader.ui.SingleRssView;
+import yuriy.rssreader.ui.entry_activity.SingleRssView;
 import yuriy.rssreader.utils.ShortToast;
 import yuriy.rssreader.utils.StateSaver;
 

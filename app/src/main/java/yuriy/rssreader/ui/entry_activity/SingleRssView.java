@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui;
+package yuriy.rssreader.ui.entry_activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

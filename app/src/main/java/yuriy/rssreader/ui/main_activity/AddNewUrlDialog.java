@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.dialogs;
+package yuriy.rssreader.ui.main_activity;
 
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -24,7 +24,7 @@ import java.util.regex.PatternSyntaxException;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
-    private final static String DIALOG_TAG = "yuriy.rssreader.ui.activity_controllers.ToolbarListener";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarListener";
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
     private final IntentFilter intentFilter = new IntentFilter();
     private UrlSaverReceiver receiver;

@@ -86,9 +86,9 @@
                         android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SingleRssView"/>
+        <activity android:name=".ui.entry_activity.SingleRssView"/>
         <activity
-                android:name=".ui.SettingsActivity"
+                android:name=".ui.settings_activity.SettingsActivity"
                 android:label="@string/settings_screen_label"/>
 
         <service

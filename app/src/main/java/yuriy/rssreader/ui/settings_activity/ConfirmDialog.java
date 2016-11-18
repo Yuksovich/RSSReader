@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.dialogs;
+package yuriy.rssreader.ui.settings_activity;
 
 import android.app.DialogFragment;
 import android.content.Intent;

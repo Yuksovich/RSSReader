@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui;
+package yuriy.rssreader.ui.settings_activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import yuriy.rssreader.R;
-import yuriy.rssreader.ui.activity_controllers.SettingsListener;
 import yuriy.rssreader.utils.Theme;
 
 public final class SettingsActivity extends PreferenceActivity {

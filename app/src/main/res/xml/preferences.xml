@@ -15,7 +15,7 @@
                 android:key="@string/key_autoRefresh_period_preferences_screen"
                 android:title="@string/auto_refresh_period_title"
                 android:summary="@string/auto_refresh_period_summary"
-                android:defaultValue="4"
+                android:defaultValue="360"
                 android:entries="@array/auto_refresh_to_show"
                 android:entryValues="@array/auto_refresh_values"
                 android:dependency="@string/key_autoRefresh_preferences_screen"/>

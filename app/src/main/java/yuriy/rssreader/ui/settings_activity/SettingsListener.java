@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.activity_controllers;
+package yuriy.rssreader.ui.settings_activity;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -9,9 +9,6 @@ import android.preference.PreferenceCategory;
 import android.support.annotation.NonNull;
 import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.services.Alarm;
-import yuriy.rssreader.ui.SettingsActivity;
-import yuriy.rssreader.ui.dialogs.ConfirmDialog;
-import yuriy.rssreader.ui.dialogs.ToDoChannelDialog;
 import yuriy.rssreader.utils.Theme;
 
 import java.util.Map;
@@ -19,26 +16,26 @@ import java.util.Set;
 
 import static yuriy.rssreader.services.DatabaseOperationService.CHANNELS;
 
-public final class SettingsListener implements
+final class SettingsListener implements
         Preference.OnPreferenceClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int DIALOG_THEME = 0;
     private static final String NO_TAG = "";
-    private static final String CHANNEL_LIST_KEY = "yuriy.rssreader.ui.SettingsActivity.CHANNEL_LIST_KEY";
+    private static final String CHANNEL_LIST_KEY = "yuriy.rssreader.ui.settings_activity.SettingsActivity.CHANNEL_LIST_KEY";
     private static final String CHANNELS_CATEGORY = "key_channels_list_preferences_screen";
     private static final String DELETE_ALL_ENTRIES = "key_eraseDatabase_preferences_screen";
     private static final String AUTO_REFRESH_SWITCH = "key_autoRefresh_preferences_screen";
     private static final String AUTO_REFRESH_PERIOD = "key_autoRefresh_period_preferences_screen";
     private static final String COLOR_THEME = "key_theme_preferences_screen";
-    private static final String DEFAULT_PERIOD = "720";
+    private static final String DEFAULT_PERIOD = "360";
     private static final String DEFAULT = "focus";
 
     private final SettingsActivity activity;
     private final PreferenceCategory channelsCategory;
 
 
-    public SettingsListener(final @NonNull SettingsActivity activity) {
+    SettingsListener(final @NonNull SettingsActivity activity) {
         this.activity = activity;
         channelsCategory = (PreferenceCategory) activity.findPreference(CHANNELS_CATEGORY);
         fillCategory(channelsCategory);
@@ -91,7 +88,7 @@ public final class SettingsListener implements
         final Set<String> channelUrlsSet = channelsMap.keySet();
 
         for (final String channelUrl : channelUrlsSet) {
-            Preference channelEntry = new Preference(activity);
+            final Preference channelEntry = new Preference(activity);
             channelEntry.setTitle(channelsSharedPreferences.getString(channelUrl, channelUrl));
             channelEntry.setKey(CHANNEL_LIST_KEY);
             channelEntry.setSummary(channelUrl);

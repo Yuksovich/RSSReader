@@ -1,4 +1,4 @@
-package yuriy.rssreader.ui.activity_controllers;
+package yuriy.rssreader.ui.main_activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -15,12 +15,11 @@ import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.ChannelSelectionPopup;
 import yuriy.rssreader.controllers.RssListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
-import yuriy.rssreader.ui.SettingsActivity;
-import yuriy.rssreader.ui.dialogs.AddNewUrlDialog;
+import yuriy.rssreader.ui.settings_activity.SettingsActivity;
 
 public final class ToolbarListener implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private final static String DIALOG_TAG = "yuriy.rssreader.ui.activity_controllers.ToolbarListener";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarListener";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private static final boolean NO_NOTIFICATION = false;
