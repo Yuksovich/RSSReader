@@ -21,7 +21,7 @@
         <Button
                 android:id="@+id/yes_button_confirm_dialog"
                 android:text="@string/yes_button_confirm_dialog"
-                style="@style/MainTheme.dialog.button"/>
+                style="@style/MainTheme.button"/>
         <Space
                 android:layout_width="@dimen/button_spacer"
                 android:layout_height="wrap_content"/>
@@ -29,7 +29,7 @@
         <Button
                 android:id="@+id/no_button_confirm_dialog"
                 android:text="@string/no_button_confirm_dialog"
-                style="@style/MainTheme.dialog.button"/>
+                style="@style/MainTheme.button"/>
     </LinearLayout>
 
 </LinearLayout>

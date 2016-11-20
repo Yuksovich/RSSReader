@@ -15,7 +15,7 @@
             android:inputType="textUri"
             android:hint="@string/input_url_hint"
             style="@style/MainTheme.dialog.text"
-            android:gravity="left"/>
+            android:gravity="start"/>
 
     <LinearLayout
             style="@style/MainTheme.dialog"
@@ -25,13 +25,13 @@
         <Button
                 android:id="@+id/addUrlButton"
                 android:text="@string/addUrlButtonText"
-                style="@style/MainTheme.dialog.button"
+                style="@style/MainTheme.button"
                 android:visibility="invisible"/>
 
         <Button
                 android:id="@+id/cancelUrlButton"
                 android:text="@string/cancelUrlAddButtonText"
-                style="@style/MainTheme.dialog.button"/>
+                style="@style/MainTheme.button"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -13,10 +13,10 @@ public final class Theme {
     private static final String LIGHT_THEME = "light";
     private static final String COLOR_THEME = "key_theme_preferences_screen";
 
-    private static int id = 0;
-    private static int textColor = 0;
-    private static int textColorSeen = 0;
-    private static String htmlStyleCssMiddle = null;
+    private static int id;
+    private static int textColor;
+    private static int textColorSeen;
+    private static String htmlStyleCssMiddle;
 
     private Theme() {
         throw new UnsupportedOperationException();

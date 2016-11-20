@@ -47,9 +47,11 @@
 </string>
 
     <string name="focus_start_theme">Фокус Старт</string>
-    <string name="orange_blue_theme">Мерзкая оранжево-синяя тема</string>
-    <string name="dark_theme">Черная - очень чОткая</string>
+    <string name="orange_blue_theme">Оранжево-синяя тема</string>
+    <string name="dark_theme">Темная</string>
     <string name="light_theme">Светлая</string>
+    <string name="refreshing_progress_notification">Обновление</string>
+    <string name="cancel_refresh">Отмена</string>
 
 
 </resources>

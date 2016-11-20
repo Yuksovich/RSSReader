@@ -51,9 +51,20 @@ public final class DatabaseOperationService extends IntentService {
     private static final String DELETE_CHANNEL_ENTRIES = "yuriy.rssreader.services.DatabaseOperationService.DELETE_CHANNEL_ENTRIES";
     private static final String MAKE_NOTIFICATION = "MAKE_NOTIFICATION";
     private static final int NOTIFICATION_ID = 0;
+    private static final int MAX_PROGRESS = 100;
+    private static final int NUMBER_OF_PROGRESS_STEPS = 4;
+    private static final String ACTION_CANCEL_REFRESH = "ACTION_CANCEL_REFRESH";
+
+    private static int notificationCounter = 0;
+    private static boolean stopFlag;
 
     private LocalBroadcastManager broadcastManager;
     private final Intent intent = new Intent();
+    private NotificationManager notificationManager;
+    private NotificationCompat.Builder notificationBuilder;
+
+    private float progress = 0f;
+    private int numberOfChannels = 0;
 
     public DatabaseOperationService() {
         super(SERVICE_NAME);
@@ -111,6 +122,9 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     private void handleActionRefresh(final boolean notifyIfNothingNew, final boolean makeNotification) {
+        stopFlag = false;
+        prepareProgressNotification();
+
         broadcastManager = LocalBroadcastManager.getInstance(this);
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
@@ -122,12 +136,12 @@ public final class DatabaseOperationService extends IntentService {
             broadcastManager.sendBroadcast(intent);
             stopSelf();
         }
+        numberOfChannels = map.size();
 
         final Set<String> set = map.keySet();
         for (String urlAddress : set) {
             urls.add(urlAddress);
         }
-
         DataReceiver dataReceiver;
         String data;
         URL url;
@@ -139,35 +153,64 @@ public final class DatabaseOperationService extends IntentService {
         for (String urlString : urls) {
             try {
                 url = new URL(urlString);
+                if (stopFlag) {
+                    dismissNotification();
+                    break;
+                }
+                incrementProgressInNotification(urlString);
+
                 dataReceiver = new DataReceiver();
                 data = dataReceiver.getTextFromURL(url);
+                if (stopFlag) {
+                    dismissNotification();
+                    break;
+                }
+                incrementProgressInNotification(urlString);
+
                 parser = RssOrAtom.getParser(data);
                 entriesArray = parser.receiveAllItems();
+                if (stopFlag) {
+                    dismissNotification();
+                    break;
+                }
+                incrementProgressInNotification(urlString);
+
                 dbWriter = new DBWriter(this);
                 dbWriter.populate(entriesArray, urlString);
+                if (stopFlag) {
+                    dismissNotification();
+                    break;
+                }
+                incrementProgressInNotification(urlString);
+
                 newEntriesCount += dbWriter.getNewEntriesCount();
             } catch (MalformedURLException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.incorrectURL) + SPACER + urlString);
+                dismissNotification();
                 broadcastManager.sendBroadcast(intent);
 
             } catch (IOException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.httpFail) + SPACER + urlString);
+                dismissNotification();
                 broadcastManager.sendBroadcast(intent);
 
             } catch (NoRSSContentException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.noRss) + SPACER + urlString);
+                dismissNotification();
                 broadcastManager.sendBroadcast(intent);
 
             } catch (SQLException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.sqlFail) + SPACER + urlString);
+                dismissNotification();
                 broadcastManager.sendBroadcast(intent);
-            }catch (XmlPullParserException e){
+            } catch (XmlPullParserException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.parser_fail) + SPACER + urlString);
+                dismissNotification();
                 broadcastManager.sendBroadcast(intent);
 
             } finally {
@@ -179,10 +222,11 @@ public final class DatabaseOperationService extends IntentService {
         if (newEntriesCount != 0 || notifyIfNothingNew) {
             final String message = getString(R.string.receivedItemCount) + SPACER + newEntriesCount;
             if (makeNotification) {
-                makeNotification(message);
+                makeNotification(getString(R.string.receivedItemCount), newEntriesCount);
             }
             intent.setAction(SUCCESS);
             intent.putExtra(SUCCESS, message);
+            dismissNotification();
             broadcastManager.sendBroadcast(intent);
         }
     }
@@ -213,6 +257,7 @@ public final class DatabaseOperationService extends IntentService {
             }
         }
         if (entriesArray != null) {
+            notificationCounter = 0;
             intent.setAction(ON_DATA_RECEIVED);
             intent.putParcelableArrayListExtra(DATA, entriesArray);
             broadcastManager.sendBroadcast(intent);
@@ -252,7 +297,8 @@ public final class DatabaseOperationService extends IntentService {
         }
     }
 
-    private void makeNotification(final String message) {
+    private void makeNotification(final String message, final int count) {
+        notificationCounter += count;
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         final Intent intent = new Intent(this, MainActivity.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -260,14 +306,59 @@ public final class DatabaseOperationService extends IntentService {
         final Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.program_name))
                 .setContentText(message)
+                .setTicker(message)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_rss_feed_white_24dp)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setNumber(notificationCounter)
                 .build();
 
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
+
+    private void incrementProgressInNotification(final String urlString) {
+        progress += (MAX_PROGRESS / numberOfChannels) / NUMBER_OF_PROGRESS_STEPS;
+        notificationProgress((int) progress, urlString);
+    }
+
+    private void notificationProgress(final int mProgress, final String urlString) {
+        notificationBuilder
+                .setProgress(MAX_PROGRESS, mProgress, false)
+                .setContentText(urlString);
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private void prepareProgressNotification() {
+        final Intent cancelIntent = new Intent(this, DatabaseOperationService.class);
+        cancelIntent.setAction(ACTION_CANCEL_REFRESH);
+        final PendingIntent piCancel =
+                PendingIntent.getService(this, 0, cancelIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.refreshing_progress_notification))
+                .setSmallIcon(R.drawable.ic_autorenew_white_24dp)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_clear_white_24dp, getString(R.string.cancel_refresh), piCancel);
+    }
+
+    private void dismissNotification() {
+        if (notificationManager != null) {
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
+    }
+
+    @Override
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
+        if (ACTION_CANCEL_REFRESH.equals(intent.getAction())) {
+            stopSelf();
+            stopFlag = true;
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
 }
 
 

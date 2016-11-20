@@ -8,12 +8,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark_main</item>
         <item name="colorAccent">@color/colorAccent_main</item>
 
-
         <item name="android:windowNoTitle">true</item>
         <item name="android:textColor">?colorAccent</item>
         <item name="android:popupMenuStyle">@style/MainTheme.popup</item>
         <item name="android:textSize">@dimen/text_size</item>
-
 
     </style>
 
@@ -79,11 +77,12 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="MainTheme.dialog.button">
+    <style name="MainTheme.button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?colorAccent</item>
         <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:background">@color/button_selector</item>
 
     </style>
 
@@ -91,12 +90,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">right</item>
-        <item name="android:textColor">@color/list_view_item_selector</item>
     </style>
     <style name="MainTheme.entry_in_list.item_title">
         <item name="android:layout_gravity">left</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/list_view_item_selector</item>
     </style>
 
 

@@ -50,8 +50,7 @@ public final class StateSaver {
     }
 
     public static int getSavedPadding(final Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SAVED_STATE, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(LIST_PADDING, 0);
+        return getSharedPrefs(context).getInt(LIST_PADDING, 0);
     }
 
     public static String getChannelFilter(final Context context) {

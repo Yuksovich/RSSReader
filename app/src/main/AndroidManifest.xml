@@ -17,7 +17,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/MainTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="yuriy.rssreader.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -86,29 +86,29 @@
                         android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.entry_activity.SingleRssView"/>
+        <activity android:name="yuriy.rssreader.ui.entry_activity.SingleRssView"/>
         <activity
-                android:name=".ui.settings_activity.SettingsActivity"
+                android:name="yuriy.rssreader.ui.settings_activity.SettingsActivity"
                 android:label="@string/settings_screen_label"/>
 
         <service
-                android:name=".services.DatabaseOperationService"
+                android:name="yuriy.rssreader.services.DatabaseOperationService"
                 android:enabled="true"
                 android:exported="false"/>
         <service
-                android:name=".services.UrlSaverService"
+                android:name="yuriy.rssreader.services.UrlSaverService"
                 android:enabled="true"
                 android:exported="false"/>
         <service
-                android:name=".services.SingleEntryOperationService"
+                android:name="yuriy.rssreader.services.SingleEntryOperationService"
                 android:enabled="true"
                 android:exported="false">
         </service>
 
-        <receiver android:name=".services.Alarm">
+        <receiver android:name="yuriy.rssreader.services.Alarm">
         </receiver>
         <receiver
-                android:name=".services.receivers.OnBootReceiver"
+                android:name="yuriy.rssreader.services.receivers.OnBootReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
@@ -116,7 +116,7 @@
             </intent-filter>
         </receiver>
         <receiver
-                android:name=".services.receivers.InternetOnReceiver"
+                android:name="yuriy.rssreader.services.receivers.InternetOnReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
@@ -125,7 +125,7 @@
         </receiver>
 
         <receiver
-                android:name=".services.receivers.WifiOnReceiver"
+                android:name="yuriy.rssreader.services.receivers.WifiOnReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>

@@ -49,7 +49,7 @@ public final class MainActivity extends Activity {
         if (LINK_ACTION.equals(intent.getAction())) {
             final String url = intent.getData().toString();
             if (url != null) {
-                DialogFragment dialog = new AddNewUrlDialog();
+                final DialogFragment dialog = new AddNewUrlDialog();
                 dialog.setStyle(DialogFragment.STYLE_NO_TITLE, DIALOG_THEME);
                 dialog.show(getFragmentManager(), url);
             }

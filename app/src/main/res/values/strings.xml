@@ -3,7 +3,7 @@
     <string name="receivedItemCount">News received:</string>
     <string name="noRss">No RSS content on this URL</string>
     <string name="sqlFail">Database connection error</string>
-    <string name="httpFail">Failed to connect to </string>
+    <string name="httpFail">Failed to connect to</string>
     <string name="incorrectURL">Incorrect URL</string>
     <string name="addUrlDialog">Input RSS address</string>
     <string name="httpInput">http://</string>
@@ -20,11 +20,7 @@
                 }
             img{
                 max-width: 100%;
-               }
-            a{
-                color:#FFFFFF;
-            }
-        </style>]]>
+               }</style>]]>
     </string>
     <string name="duplicateURL">This URL is already in list</string>
 
@@ -58,6 +54,8 @@
     <string name="settings_refresh_if_wifi_summary">Autorefresh will occur only when connected to Wifi network, if no
         such connection - refresh will be processed at the time of connection to Wifi
     </string>
+    <string name="refreshing_progress_notification">Refreshing</string>
+    <string name="cancel_refresh">Cancel</string>
 
 
 </resources>

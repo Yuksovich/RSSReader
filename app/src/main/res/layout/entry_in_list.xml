@@ -14,12 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/text_padding">
+            android:paddingLeft="@dimen/text_padding"
+            android:paddingRight="@dimen/text_padding">
 
         <TextView
                 android:id="@+id/item_title_listView_entry"
                 style="@style/MainTheme.entry_in_list.item_title"
-                android:textColor="@color/list_view_item_selector"
         />
         <TextView
                 android:id="@+id/item_pubDate_listView_entry"

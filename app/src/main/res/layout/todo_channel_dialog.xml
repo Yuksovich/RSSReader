@@ -15,19 +15,19 @@
     <Button
             android:id="@+id/remove_channel_button_todo_dialog"
             android:text="@string/remove_channel_todo_dialog"
-            style="@style/MainTheme.dialog.button"/>
+            style="@style/MainTheme.button"/>
 
     <Button
             android:id="@+id/remove_entries_button_todo_dialog"
             android:text="@string/remove_channel_news_todo_dialog"
-            style="@style/MainTheme.dialog.button"/>
+            style="@style/MainTheme.button"/>
     <Button
             android:id="@+id/remove_channel_and_entries_button_todo_dialog"
             android:text="@string/remove_channel_and_news_todo_dialog"
-            style="@style/MainTheme.dialog.button"/>
+            style="@style/MainTheme.button"/>
     <Button
             android:id="@+id/cancel_button_todo_dialog"
             android:text="@string/cancel_todo_dialog"
-            style="@style/MainTheme.dialog.button"/>
+            style="@style/MainTheme.button"/>
 
 </LinearLayout>
