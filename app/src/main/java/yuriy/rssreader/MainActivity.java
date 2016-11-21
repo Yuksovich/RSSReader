@@ -45,6 +45,7 @@ public final class MainActivity extends Activity {
             setTheme(Theme.getId());
         }
         super.onCreate(savedInstanceState);
+
         final Intent intent = getIntent();
         if (LINK_ACTION.equals(intent.getAction())) {
             final String url = intent.getData().toString();

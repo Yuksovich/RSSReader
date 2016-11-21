@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="focus_css_middle_web_view">"background-color: #65467C; color:#FFFFFF"</string>
-    <string name="orange_css_middle_web_view">"background-color: #173886; color:#FFFFFF"</string>
+     <string name="orange_css_middle_web_view">"background-color: #173886; color:#FFFFFF"</string>
     <string name="dark_css_middle_web_view">"background-color: #000000; color:#FFFFFF"</string>
     <string name="light_css_middle_web_view">"background-color: #ffffff; color:#000000"</string>
 

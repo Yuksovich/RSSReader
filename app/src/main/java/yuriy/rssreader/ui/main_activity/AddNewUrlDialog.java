@@ -52,7 +52,7 @@ public final class AddNewUrlDialog extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.add_url_dialog, container);
         final EditText editText = (EditText) view.findViewById(R.id.urlInput);
-
+        editText.setSelection(editText.getText().toString().length());
 
         final ProgressDialog waitToCheckDialog = new ProgressDialog(getActivity());
 
