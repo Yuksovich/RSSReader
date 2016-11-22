@@ -26,7 +26,6 @@ public final class SingleViewFragment extends Fragment {
 
     private static final String MIME_TYPE = "text/html";
     private static final String ENCODING = "UTF-8";
-    private static final String EMPTY_STRING = "";
     private static final String HISTORY_URL = null;
     private static final String BASE_URL = null;
     private String itemLink;
@@ -81,7 +80,7 @@ public final class SingleViewFragment extends Fragment {
                             MIME_TYPE,
                             ENCODING,
                             HISTORY_URL);
-                    if (!entry.isItemBeenViewed()) {
+                    if (entry.isItemUnseen()) {
                         DatabaseOperationService.setEntryBeenViewed(getActivity(), itemLink);
                     }
                 }
@@ -103,18 +102,8 @@ public final class SingleViewFragment extends Fragment {
 
     public void setItemLink(final String itemLink) {
         this.itemLink = itemLink;
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             SingleEntryOperationService.singleEntryRequest(getActivity(), itemLink);
         }
     }
-
-    public String getItemLink() {
-        if (itemLink != null) {
-            return itemLink;
-        } else {
-            return EMPTY_STRING;
-        }
-    }
-
-
 }

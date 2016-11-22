@@ -51,8 +51,8 @@ public final class EntrySerializer {
             return itemPubDate;
         }
 
-        public boolean isItemBeenViewed() {
-            return itemBeenViewed;
+        public boolean isItemUnseen() {
+            return !itemBeenViewed;
         }
     }
 }

@@ -26,6 +26,7 @@
                   style="@style/MainTheme.rss_view"/>
 
         <WebView android:id="@+id/item_description_show"
+                 android:paddingTop="@dimen/text_padding"
                  style="@style/MainTheme.rss_view"/>
 
     </LinearLayout>

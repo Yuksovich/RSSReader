@@ -27,8 +27,6 @@
     <string name="noChannelsToRead">No saved RSS channels</string>
     <string name="input_url_hint">input URL of RSS channel</string>
     <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Open in source</a>]]></string>
-    <string name="refresh_go">Refresh</string>
-    <string name="add_go">Add</string>
     <string name="delete_toolbar">Delete entries</string>
     <string name="wait_dialog_message">Refreshing news list&#8230;</string>
     <string name="show_all_popup_item">Show all</string>

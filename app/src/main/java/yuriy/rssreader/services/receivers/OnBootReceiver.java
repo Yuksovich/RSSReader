@@ -14,6 +14,10 @@ public final class OnBootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        final String action = intent.getAction();
+        if(action==null||!action.equals(Intent.ACTION_BOOT_COMPLETED)){
+            return;
+        }
         final SharedPreferences sPrefs =
                 PreferenceManager.getDefaultSharedPreferences(context);
         if (sPrefs.getBoolean(AUTO_REFRESH_SWITCH, false)) {

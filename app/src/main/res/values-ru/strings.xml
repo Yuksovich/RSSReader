@@ -19,8 +19,6 @@
 <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>
 <string name="input_url_hint">введите URL RSS канала</string>
 <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Открыть в источнике</a>]]></string>
-<string name="refresh_go">Обновить</string>
-<string name="add_go">Добавить</string>
 <string name="delete_toolbar">Удалить записи</string>
 <string name="wait_dialog_message">Идет обновление списка новостей&#8230;</string>
 <string name="show_all_popup_item">Показать все</string>
