@@ -18,29 +18,32 @@ import java.util.Locale;
 
 final class RssParser implements Parsable {
 
-    private final String receivedStringData;
+    private static final String ITEM_TITLE_TAG = "title";
+    private static final String ITEM_LINK_TAG = "link";
+    private static final String ITEM_PUBLIC_DATE_TAG = "pubDate";
+    private static final String ITEM_DESCRIPTION_TAG = "description";
+    private static final String ITEM_TAG = "item";
+    private static final String ITEM_BEEN_VIEWED_FALSE = "false";
+    private static final String CHANNEL_TITLE_TAG = "title";
+    private static final String CHANNEL_DESCRIPTION = "description";
+    private static final String RSS_TAG = "rss";
+    private static final String CHANNEL_TAG = "channel";
+    private static final String CHANNEL_IMAGE_TAG = "image";
+    private static final String CHANNEL_IMAGE_URL_TAG = "url";
+    private static final String INPUT_DATE_PATTERN = "EEE, dd MMM yyyy HH:mm:ss Z";
+    private static final String EMPTY_STRING = "";
+    private static final String SPACER = " ";
+
     private String channelTitle;
     private String channelImageURL;
     private String channelDescription;
+    private final String url;
+    private final String receivedStringData;
 
-    final private static String ITEM_TITLE_TAG = "title";
-    final private static String ITEM_LINK_TAG = "link";
-    final private static String ITEM_PUBLIC_DATE_TAG = "pubDate";
-    final private static String ITEM_DESCRIPTION_TAG = "description";
-    final private static String ITEM_TAG = "item";
-    final private static String ITEM_BEEN_VIEWED_FALSE = "false";
-    final private static String CHANNEL_TITLE_TAG = "title";
-    final private static String CHANNEL_DESCRIPTION = "description";
-    final private static String RSS_TAG = "rss";
-    final private static String CHANNEL_TAG = "channel";
-    final private static String CHANNEL_IMAGE_TAG = "image";
-    final private static String CHANNEL_IMAGE_URL_TAG = "url";
-    final private static String INPUT_DATE_PATTERN = "EEE, dd MMM yyyy HH:mm:ss Z";
-    final private static String EMPTY_STRING = "";
-    final private static String SPACER = " ";
 
-    RssParser(final String receivedStringData) throws NoRSSContentException, IOException {
+    RssParser(final String receivedStringData, final String url) throws NoRSSContentException, IOException {
         this.receivedStringData = receivedStringData;
+        this.url = url;
         getChannelOrThrow();
     }
 
@@ -50,6 +53,12 @@ final class RssParser implements Parsable {
 
             channelTitle = getChannelInfo(CHANNEL_TITLE_TAG);
             channelDescription = getChannelInfo(CHANNEL_DESCRIPTION);
+            if (EMPTY_STRING.equals(channelDescription)) {
+                channelDescription = channelTitle;
+            }
+            if (EMPTY_STRING.equals(channelDescription)) {
+                channelDescription = url;
+            }
             channelImageURL = getChannelInfo(CHANNEL_IMAGE_TAG);
 
         } catch (XmlPullParserException e) {
@@ -101,7 +110,7 @@ final class RssParser implements Parsable {
             eventType = xmlParser.next();
 
         }
-        return "";
+        return EMPTY_STRING;
     }
 
     @Override

@@ -18,29 +18,31 @@ import java.util.Locale;
 
 final class AtomParser implements Parsable {
 
+    private static final String ITEM_TITLE_TAG = "title";
+    private static final String ITEM_LINK_TAG = "link";
+    private static final String ITEM_PUBLIC_DATE_TAG = "published";
+    private static final String ITEM_DESCRIPTION_TAG = "summary";
+    private static final String ITEM_TAG = "entry";
+    private static final String ITEM_BEEN_VIEWED_FALSE = "false";
+    private static final String CHANNEL_TITLE_TAG = "title";
+    private static final String CHANNEL_DESCRIPTION = "subtitle";
+    private static final String ATOM_TAG = "feed";
+    private static final String CHANNEL_IMAGE_TAG = "logo";
+    private static final String INPUT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final String EMPTY_STRING = "";
+    private static final String SPACER = " ";
     private static final String HREF = "href";
     private static final String NAMESPACE = null;
-    private final String receivedStringData;
+
     private String channelTitle;
     private String channelImageURL;
     private String channelDescription;
+    private final String url;
+    private final String receivedStringData;
 
-    final private static String ITEM_TITLE_TAG = "title";
-    final private static String ITEM_LINK_TAG = "link";
-    final private static String ITEM_PUBLIC_DATE_TAG = "published";
-    final private static String ITEM_DESCRIPTION_TAG = "summary";
-    final private static String ITEM_TAG = "entry";
-    final private static String ITEM_BEEN_VIEWED_FALSE = "false";
-    final private static String CHANNEL_TITLE_TAG = "title";
-    final private static String CHANNEL_DESCRIPTION = "subtitle";
-    final private static String ATOM_TAG = "feed";
-    final private static String CHANNEL_IMAGE_TAG = "logo";
-    final private static String INPUT_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    final private static String EMPTY_STRING = "";
-    final private static String SPACER = " ";
-
-    AtomParser(final String receivedStringData) throws NoRSSContentException, IOException {
+    AtomParser(final String receivedStringData, final String url) throws NoRSSContentException, IOException {
         this.receivedStringData = receivedStringData;
+        this.url = url;
         getChannelOrThrow();
     }
 
@@ -50,6 +52,12 @@ final class AtomParser implements Parsable {
 
             channelTitle = getChannelInfo(CHANNEL_TITLE_TAG);
             channelDescription = getChannelInfo(CHANNEL_DESCRIPTION);
+            if (EMPTY_STRING.equals(channelDescription)) {
+                channelDescription = channelTitle;
+            }
+            if (EMPTY_STRING.equals(channelDescription)) {
+                channelDescription = url;
+            }
             channelImageURL = getChannelInfo(CHANNEL_IMAGE_TAG);
 
         } catch (XmlPullParserException e) {
@@ -70,9 +78,9 @@ final class AtomParser implements Parsable {
         }
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
-            if(eventType == XmlPullParser.START_TAG&&xmlParser.getName().equals(tagType)){
+            if (eventType == XmlPullParser.START_TAG && xmlParser.getName().equals(tagType)) {
                 eventType = xmlParser.next();
-                if(eventType==XmlPullParser.TEXT) {
+                if (eventType == XmlPullParser.TEXT) {
                     return xmlParser.getText();
                 }
             }

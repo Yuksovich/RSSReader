@@ -167,7 +167,7 @@ public final class DatabaseOperationService extends IntentService {
                 }
                 incrementProgressInNotification(urlString);
 
-                parser = RssOrAtom.getParser(data);
+                parser = RssOrAtom.getParser(data, urlString);
                 entriesArray = parser.receiveAllItems();
                 if (stopFlag) {
                     dismissNotification();

@@ -13,7 +13,7 @@
 <string name="cancelUrlAddButtonText">Отменить</string>
 <string name="correctURL">Добавлен в список каналов</string>
 
-<string name="duplicateURL">Этот URL уже в списке</string>
+<string name="duplicateURL">Этот канал уже есть в списке</string>
 
 <string name="databaseIsEmpty">База данных пуста</string>
 <string name="noChannelsToRead">Нет сохраненных каналов RSS</string>

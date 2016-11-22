@@ -16,20 +16,21 @@ public final class RssOrAtom{
     private RssOrAtom(){
         throw new UnsupportedOperationException();
     }
-    public static Parsable getParser(final String inputData) throws NoRSSContentException, IOException, XmlPullParserException {
+
+    public static Parsable getParser(final String inputData, final String url) throws NoRSSContentException, IOException, XmlPullParserException {
         final XmlPullParser xmlPullParser = Xml.newPullParser();
         xmlPullParser.setInput(new StringReader(inputData));
         xmlPullParser.next();
         switch (xmlPullParser.getName()){
             case (ATOM):
                 if(xmlPullParser.getNamespace().equals(ATOM_NAMESPACE)) {
-                    return new AtomParser(inputData);
+                    return new AtomParser(inputData, url);
                 }
                 else {
                     throw new NoRSSContentException();
                 }
             case (RSS):
-                return new RssParser(inputData);
+                return new RssParser(inputData, url);
             default:
                 throw new NoRSSContentException();
             

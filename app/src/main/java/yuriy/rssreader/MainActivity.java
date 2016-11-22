@@ -36,7 +36,6 @@ public final class MainActivity extends Activity {
     private RssEntriesListAdapter adapter;
     private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         if (Theme.getId() == 0) {

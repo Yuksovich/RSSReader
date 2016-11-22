@@ -73,6 +73,7 @@ public final class SingleViewFragment extends Fragment {
                     ((TextView) getActivity()
                             .findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
                     WebView webView = (WebView) getActivity().findViewById(R.id.item_description_show);
+
                     final String readMoreLink = String.format(READ_MORE_STRING, itemLink);
                     webView.loadDataWithBaseURL(
                             BASE_URL,

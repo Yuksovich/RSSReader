@@ -48,7 +48,9 @@ public final class UrlSaverService extends IntentService {
 
             final URL url = new URL(inputUrl);
             final InternetDataReceiver internetDataReceiver = new InternetDataReceiver();
-            final String channelDescription = RssOrAtom.getParser(internetDataReceiver.getTextFromURL(url)).getChannelDescription();
+            final String channelDescription =
+                    RssOrAtom.getParser(internetDataReceiver.getTextFromURL(url), inputUrl)
+                            .getChannelDescription();
 
             saveUrl(inputUrl, channelDescription);
             intent.setAction(SUCCESS);
@@ -69,7 +71,8 @@ public final class UrlSaverService extends IntentService {
 
     }
 
-    private void saveUrl(final String inputUrl, final String channelDescription) throws DuplicateChannelUrlException {
+    private void saveUrl(final String inputUrl, final String channelDescription)
+            throws DuplicateChannelUrlException {
         sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
         if (map != null) {

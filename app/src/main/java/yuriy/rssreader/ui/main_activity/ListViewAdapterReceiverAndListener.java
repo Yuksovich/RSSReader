@@ -110,7 +110,6 @@ public final class ListViewAdapterReceiverAndListener
     private void assignDataToList(final ArrayList<SingleRSSEntry> entriesList) {
 
         adapter = new RssEntriesListAdapter(mainActivityContext, entriesList);
-        adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
         listView.setSelectionFromTop(MainActivity.getListVisiblePosition(), MainActivity.getListPaddingTop());
         listView.setVisibility(View.VISIBLE);

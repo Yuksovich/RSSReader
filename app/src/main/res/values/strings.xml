@@ -15,7 +15,6 @@
             body{
                 text-align: justify;]]>
     </string>
-
     <string name="html_style_css_ending"><![CDATA[
                 }
             img{
@@ -27,7 +26,7 @@
     <string name="databaseIsEmpty">Database is empty</string>
     <string name="noChannelsToRead">No saved RSS channels</string>
     <string name="input_url_hint">input URL of RSS channel</string>
-    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Open source</a>]]></string>
+    <string name="html_read_more_link"><![CDATA[<br><br><a href=\"%s\">Open in source</a>]]></string>
     <string name="refresh_go">Refresh</string>
     <string name="add_go">Add</string>
     <string name="delete_toolbar">Delete entries</string>
@@ -45,7 +44,7 @@
     <string name="title_confirm_dialog">Deletion confirmation</string>
     <string name="database_is_empty_message_screen">No saved RSS entries.</string>
     <string name="delete_button_listView_entry_description">Delete entry</string>
-    <string name="current_refresh_period">Current refresh time: %.3f h.</string>
+    <string name="current_refresh_period">Current refresh time: %.1f h.</string>
     <string name="auto_refresh_off">Autorefresh is off</string>
     <string name="program_name">RSS Reader</string>
     <string name="wait_to_check_dialog_message">Checking inputted address&#8230;</string>
