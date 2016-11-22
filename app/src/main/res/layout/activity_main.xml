@@ -21,12 +21,12 @@
         <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/list_view_swipe_refresh"
                 style="@style/MainTheme.list_view">
-
-            <ListView
-                    android:id="@+id/list_view_main_activity"
-                    style="@style/MainTheme.list_view">
-
-            </ListView>
+            <fragment
+                    class="yuriy.rssreader.ui.main_activity.EntriesListFragment"
+                    android:id="@+id/entries_list_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
         </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 

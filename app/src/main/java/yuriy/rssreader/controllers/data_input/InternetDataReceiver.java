@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-public final class DataReceiver {
+public final class InternetDataReceiver {
 
     private static final int CONNECT_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 5000;
@@ -100,7 +100,7 @@ public final class DataReceiver {
     }
 
     private byte[] getByteArrayFromReceivedData(final Integer[] receivedData) {
-        byte[] outputBytes = new byte[receivedData.length];
+        final byte[] outputBytes = new byte[receivedData.length];
 
         for (int i = 0; i < receivedData.length; i++) {
             outputBytes[i] = receivedData[i].byteValue();

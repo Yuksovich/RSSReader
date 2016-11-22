@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import yuriy.rssreader.R;
-import yuriy.rssreader.controllers.data_input.DataReceiver;
+import yuriy.rssreader.controllers.data_input.InternetDataReceiver;
 import yuriy.rssreader.controllers.data_input.RssOrAtom;
 import yuriy.rssreader.rssexceptions.DuplicateChannelUrlException;
 
@@ -47,8 +47,8 @@ public final class UrlSaverService extends IntentService {
         try {
 
             final URL url = new URL(inputUrl);
-            final DataReceiver dataReceiver = new DataReceiver();
-            final String channelDescription = RssOrAtom.getParser(dataReceiver.getTextFromURL(url)).getChannelDescription();
+            final InternetDataReceiver internetDataReceiver = new InternetDataReceiver();
+            final String channelDescription = RssOrAtom.getParser(internetDataReceiver.getTextFromURL(url)).getChannelDescription();
 
             saveUrl(inputUrl, channelDescription);
             intent.setAction(SUCCESS);

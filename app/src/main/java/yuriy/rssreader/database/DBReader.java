@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
-
 import java.io.Closeable;
 import java.util.ArrayList;
 
@@ -51,14 +50,14 @@ public final class DBReader implements Closeable {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
 
-                String channelTitle = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_TITLE));
-                String channelImageURL = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_IMAGE_URL));
-                String channelDescription = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION));
-                String itemLink = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_LINK));
-                String itemTitle = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_TITLE));
-                String itemDescription = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_DESCRIPTION));
-                String itemPubDate = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_PUB_DATE));
-                String itemBeenViewed = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_BEEN_VIEWED));
+                final String channelTitle = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_TITLE));
+                final String channelImageURL = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_IMAGE_URL));
+                final String channelDescription = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION));
+                final String itemLink = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_LINK));
+                final String itemTitle = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_TITLE));
+                final String itemDescription = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_DESCRIPTION));
+                final String itemPubDate = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_ITEM_PUB_DATE));
+                final String itemBeenViewed = cursor.getString(cursor.getColumnIndex(TableColumns.COLUMN_NAME_BEEN_VIEWED));
 
                 listOfEntries.add(new SingleRSSEntry.Builder()
                         .channelTitle(channelTitle)
@@ -82,7 +81,7 @@ public final class DBReader implements Closeable {
         }
     }
 
-    public SingleRSSEntry readSingleEntry(String itemLink) throws SQLException, DatabaseIsEmptyException {
+    public SingleRSSEntry readSingleEntry(final String itemLink) throws SQLException, DatabaseIsEmptyException {
 
         cursor = getCursor(itemLink);
         if (cursor.moveToFirst()) {

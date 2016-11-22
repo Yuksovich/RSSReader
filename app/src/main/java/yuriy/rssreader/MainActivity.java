@@ -2,6 +2,7 @@ package yuriy.rssreader;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,7 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ListView;
-import yuriy.rssreader.controllers.RssListAdapter;
+import yuriy.rssreader.controllers.RssEntriesListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.main_activity.AddNewUrlDialog;
 import yuriy.rssreader.ui.main_activity.ListViewAdapterReceiverAndListener;
@@ -32,7 +33,7 @@ public final class MainActivity extends Activity {
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private ListViewAdapterReceiverAndListener receiver;
-    private RssListAdapter adapter;
+    private RssEntriesListAdapter adapter;
     private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
 
 
@@ -61,7 +62,9 @@ public final class MainActivity extends Activity {
         currentChannelFilter = StateSaver.getChannelFilter(this);
 
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.list_view_main_activity);
+        listView = ((ListFragment) getFragmentManager().findFragmentById(R.id.entries_list_fragment))
+                .getListView();
+
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         final ProgressDialog waitingDialog = new ProgressDialog(this);
@@ -84,7 +87,7 @@ public final class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         broadcastManager.registerReceiver(receiver, intentFilter);
-        adapter = (RssListAdapter) listView.getAdapter();
+        adapter = (RssEntriesListAdapter) listView.getAdapter();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -104,7 +107,7 @@ public final class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        adapter = (RssListAdapter) listView.getAdapter();
+        adapter = (RssEntriesListAdapter) listView.getAdapter();
         if (adapter != null && adapter.isShowDeleteButton()) {
             adapter.setShowDeleteButton(false);
             adapter.notifyDataSetChanged();

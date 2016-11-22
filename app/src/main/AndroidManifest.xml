@@ -29,15 +29,12 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:scheme="itpc"/>
-                <data android:scheme="pcast"/>
                 <data android:scheme="feed"/>
                 <data android:scheme="rss"/>
                 <data android:scheme="atom"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -54,12 +51,6 @@
                         android:pathPattern=".*feed.*"/>
                 <data
                         android:host="*"
-                        android:pathPattern=".*podcast.*"/>
-                <data
-                        android:host="*"
-                        android:pathPattern=".*Podcast.*"/>
-                <data
-                        android:host="*"
                         android:pathPattern=".*rss.*"/>
                 <data
                         android:host="*"
@@ -73,7 +64,6 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -86,7 +76,7 @@
                         android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name="yuriy.rssreader.ui.entry_activity.SingleRssView"/>
+        <activity android:name=".ui.entry_activity.SingleRssViewActivity"/>
         <activity
                 android:name="yuriy.rssreader.ui.settings_activity.SettingsActivity"
                 android:label="@string/settings_screen_label"/>

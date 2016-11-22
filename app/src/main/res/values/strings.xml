@@ -45,7 +45,7 @@
     <string name="title_confirm_dialog">Deletion confirmation</string>
     <string name="database_is_empty_message_screen">No saved RSS entries.</string>
     <string name="delete_button_listView_entry_description">Delete entry</string>
-    <string name="current_refresh_period">Current refresh time, h:\u0020</string>
+    <string name="current_refresh_period">Current refresh time: %.3f h.</string>
     <string name="auto_refresh_off">Autorefresh is off</string>
     <string name="program_name">RSS Reader</string>
     <string name="wait_to_check_dialog_message">Checking inputted address&#8230;</string>

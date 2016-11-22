@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <include layout="@layout/toolbar"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal"
+                  android:background="?colorPrimaryDark"
+                  android:baselineAligned="false"
+    >
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+            <TextView
+                    android:id="@+id/database_is_empty_message_screen"
+                    android:text="@string/database_is_empty_message_screen"
+                    style="@style/MainTheme.entry_in_list.item_title"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible"
+            />
+            <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/list_view_swipe_refresh"
+                    style="@style/MainTheme.list_view">
+
+                <fragment
+                        class="yuriy.rssreader.ui.main_activity.EntriesListFragment"
+                        android:id="@+id/entries_list_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                />
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/entry_view_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

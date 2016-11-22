@@ -28,8 +28,8 @@ public final class DBWriter implements Closeable {
     }
 
     public void populate(final ArrayList<SingleRSSEntry> dataArrayList, final String channelUrl) throws SQLException {
-        final DuplicateChecker duplicateChecker = new DuplicateChecker(context);
 
+        final DuplicateChecker duplicateChecker = new DuplicateChecker(context);
         final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
         final ContentValues values = new ContentValues();
         database = dbOpenHelper.getWritableDatabase();
@@ -46,8 +46,11 @@ public final class DBWriter implements Closeable {
             values.put(TableColumns.COLUMN_NAME_BEEN_VIEWED, FALSE_FLAG);
             try {
                 database.beginTransaction();
-                database.insert(TableColumns.TABLE_NAME, TableColumns.COLUMN_NAME_NULLABLE, values);
-                newEntriesCount++;
+
+                long n = database.insert(TableColumns.TABLE_NAME, TableColumns.COLUMN_NAME_NULLABLE, values);
+                if (n != -1) {
+                    newEntriesCount++;
+                }
                 database.setTransactionSuccessful();
             } finally {
                 database.endTransaction();
@@ -58,7 +61,7 @@ public final class DBWriter implements Closeable {
     }
 
     public void setEntryBeenViewed(String itemLink) throws SQLException {
-        ContentValues value = new ContentValues();
+        final ContentValues value = new ContentValues();
         value.put(TableColumns.COLUMN_NAME_BEEN_VIEWED, TRUE_FLAG);
         database = dbOpenHelper.getWritableDatabase();
         database.update(TableColumns.TABLE_NAME, value, WHERE_CLAUSE_ITEM_LINK, new String[]{itemLink});
@@ -74,7 +77,7 @@ public final class DBWriter implements Closeable {
 
     public void deleteEntry(final String itemLink) throws SQLException {
         try {
-            String[] whereArgs = {itemLink};
+            final String[] whereArgs = {itemLink};
             database = dbOpenHelper.getWritableDatabase();
             database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_ITEM_LINK, whereArgs);
         } finally {
@@ -94,7 +97,7 @@ public final class DBWriter implements Closeable {
 
     public void deleteAllEntriesOfChannel(final String channel) throws SQLException {
         try {
-            String[] whereArgs = {channel};
+            final String[] whereArgs = {channel};
             database = dbOpenHelper.getWritableDatabase();
             database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_CHANNEL_LINK, whereArgs);
         } finally {

@@ -16,7 +16,7 @@ public final class SingleEntryOperationService extends IntentService {
     private static final String ENTRY_QUERY = "yuriy.rssreader.services.SingleEntryOperationService.ENTRY_QUERY";
     public static final String SINGLE_ENTRY = "yuriy.rssreader.services.SingleEntryOperationService.SINGLE_ENTRY";
     private static final String ENTRY_DELETE = "yuriy.rssreader.services.SingleEntryOperationService.ENTRY_DELETE";
-    private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+
     private final Intent intent = new Intent();
 
     public SingleEntryOperationService() {
@@ -30,7 +30,7 @@ public final class SingleEntryOperationService extends IntentService {
         context.startService(intentQuery);
     }
 
-    public static void deleteEntry(final Context context, final String itemLink){
+    public static void singleEntryDelete(final Context context, final String itemLink){
         final Intent intentDelete = new Intent(context, SingleEntryOperationService.class);
         intentDelete.setAction(ENTRY_DELETE);
         intentDelete.putExtra(ENTRY_DELETE, itemLink);
@@ -38,26 +38,26 @@ public final class SingleEntryOperationService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(final Intent intent) {
         final String action = intent.getAction();
         switch (action) {
             case (ENTRY_QUERY):
                 handleSingleEntryQuery(intent.getStringExtra(ENTRY_QUERY));
                 break;
             case (ENTRY_DELETE):
-                handleDeleteSingleEntry(intent.getStringExtra(ENTRY_DELETE));
+                handleSingleEntryDelete(intent.getStringExtra(ENTRY_DELETE));
                 break;
             default:
                 break;
         }
     }
 
-    private void handleSingleEntryQuery(String itemLink) {
-
+    private void handleSingleEntryQuery(final String itemLink) {
+        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         DBReader dbReader = null;
         try {
             dbReader = new DBReader(this);
-            SingleRSSEntry entry = dbReader.readSingleEntry(itemLink);
+            final SingleRSSEntry entry = dbReader.readSingleEntry(itemLink);
             intent.setAction(SINGLE_ENTRY);
             intent.putExtra(SINGLE_ENTRY, EntrySerializer.getSerializable(entry));
             broadcastManager.sendBroadcast(intent);
@@ -71,7 +71,7 @@ public final class SingleEntryOperationService extends IntentService {
         }
     }
 
-    private void handleDeleteSingleEntry(final String itemLink){
+    private void handleSingleEntryDelete(final String itemLink){
         DBWriter dbWriter = null;
         try {
             dbWriter = new DBWriter(this);

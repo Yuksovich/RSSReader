@@ -14,7 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import org.xmlpull.v1.XmlPullParserException;
 import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
-import yuriy.rssreader.controllers.data_input.DataReceiver;
+import yuriy.rssreader.controllers.data_input.InternetDataReceiver;
 import yuriy.rssreader.controllers.data_input.Parsable;
 import yuriy.rssreader.controllers.data_input.RssOrAtom;
 import yuriy.rssreader.database.DBReader;
@@ -142,7 +142,7 @@ public final class DatabaseOperationService extends IntentService {
         for (String urlAddress : set) {
             urls.add(urlAddress);
         }
-        DataReceiver dataReceiver;
+        InternetDataReceiver internetDataReceiver;
         String data;
         URL url;
         Parsable parser;
@@ -159,8 +159,8 @@ public final class DatabaseOperationService extends IntentService {
                 }
                 incrementProgressInNotification(urlString);
 
-                dataReceiver = new DataReceiver();
-                data = dataReceiver.getTextFromURL(url);
+                internetDataReceiver = new InternetDataReceiver();
+                data = internetDataReceiver.getTextFromURL(url);
                 if (stopFlag) {
                     dismissNotification();
                     break;
@@ -219,6 +219,7 @@ public final class DatabaseOperationService extends IntentService {
                 }
             }
         }
+        dismissNotification();
         if (newEntriesCount != 0 || notifyIfNothingNew) {
             final String message = getString(R.string.receivedItemCount) + SPACER + newEntriesCount;
             if (makeNotification) {
@@ -226,7 +227,6 @@ public final class DatabaseOperationService extends IntentService {
             }
             intent.setAction(SUCCESS);
             intent.putExtra(SUCCESS, message);
-            dismissNotification();
             broadcastManager.sendBroadcast(intent);
         }
     }

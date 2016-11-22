@@ -17,10 +17,10 @@ import yuriy.rssreader.utils.Theme;
 import java.util.ArrayList;
 
 
-public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
+public final class RssEntriesListAdapter extends ArrayAdapter<SingleRSSEntry> {
     private boolean showDeleteButton = false;
 
-    public RssListAdapter(final Context context, ArrayList<SingleRSSEntry> entries) {
+    public RssEntriesListAdapter(final Context context, ArrayList<SingleRSSEntry> entries) {
         super(context, R.layout.entry_in_list, entries);
     }
 
@@ -55,7 +55,7 @@ public final class RssListAdapter extends ArrayAdapter<SingleRSSEntry> {
                 @Override
                 public void onClick(View v) {
                     remove(entry);
-                    SingleEntryOperationService.deleteEntry(getContext(), entry.getItemLink());
+                    SingleEntryOperationService.singleEntryDelete(getContext(), entry.getItemLink());
                     if(isEmpty()){
                        getContext().startActivity(new Intent(getContext(), MainActivity.class));
                     }

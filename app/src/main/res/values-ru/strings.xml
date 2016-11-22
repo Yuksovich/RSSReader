@@ -36,7 +36,7 @@
 <string name="title_confirm_dialog">Подтверждение удаления</string>
 <string name="database_is_empty_message_screen">Нет сохраненных RSS записей.</string>
 <string name="delete_button_listView_entry_description">Удалить запись</string>
-<string name="current_refresh_period">Текущий интервал обновления, ч:\u0020</string>
+<string name="current_refresh_period">Текущий интервал обновления: %.1f ч.</string>
 <string name="auto_refresh_off">Автообновление отключено</string>
 <string name="program_name">RSS Reader</string>
 <string name="wait_to_check_dialog_message">Проверка введеного адреса&#8230;</string>

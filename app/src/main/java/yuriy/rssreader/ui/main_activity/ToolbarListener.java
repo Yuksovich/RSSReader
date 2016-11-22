@@ -13,7 +13,7 @@ import android.widget.PopupMenu;
 import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.ChannelSelectionPopup;
-import yuriy.rssreader.controllers.RssListAdapter;
+import yuriy.rssreader.controllers.RssEntriesListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.settings_activity.SettingsActivity;
 
@@ -61,7 +61,7 @@ public final class ToolbarListener implements View.OnClickListener, SwipeRefresh
                 activity.startActivity(new Intent(activity, SettingsActivity.class));
                 break;
             case (R.id.deleteButton_toolbar):
-                RssListAdapter adapter = (RssListAdapter) listView.getAdapter();
+                RssEntriesListAdapter adapter = (RssEntriesListAdapter) listView.getAdapter();
                 if (adapter != null) {
                     if (adapter.isShowDeleteButton()) {
                         adapter.setShowDeleteButton(false);

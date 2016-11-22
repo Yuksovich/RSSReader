@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import yuriy.rssreader.services.Alarm;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.utils.NetworkChecker;
@@ -36,7 +35,7 @@ public class InternetOnReceiver extends BroadcastReceiver {
                 connectionCounter=0;
             }
             else {
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + PAUSE * connectionCounter, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + PAUSE * connectionCounter, pendingIntent);
             }
 
         }
