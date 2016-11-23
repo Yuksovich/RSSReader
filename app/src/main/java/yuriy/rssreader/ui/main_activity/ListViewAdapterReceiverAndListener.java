@@ -136,7 +136,8 @@ public final class ListViewAdapterReceiverAndListener
 
         if (mainActivityContext.findViewById(R.id.entry_view_fragment) != null) {
             final SingleViewFragment entryFragment = SingleViewFragment.getInstance(itemLink);
-            final FragmentTransaction fragmentTransaction = mainActivityContext.getFragmentManager().beginTransaction();
+            final FragmentTransaction fragmentTransaction =
+                    mainActivityContext.getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.entry_view_fragment, entryFragment);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();

@@ -13,10 +13,10 @@
     <string name="html_style_css_beginning"><![CDATA[
         <style>
             body{
-                text-align: justify;]]>
+                text-align: justify;}]]>
     </string>
     <string name="html_style_css_ending"><![CDATA[
-                }
+
             img{
                 max-width: 100%;
                }</style>]]>
