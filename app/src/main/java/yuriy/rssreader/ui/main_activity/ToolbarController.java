@@ -17,9 +17,9 @@ import yuriy.rssreader.controllers.RssEntriesListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.settings_activity.SettingsActivity;
 
-public final class ToolbarListener implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public final class ToolbarController implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarListener";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarController";
     private static final int DIALOG_THEME = 0;
     private static final boolean NOTIFY_IF_NOTHING_NEW = true;
     private static final boolean NO_NOTIFICATION = false;
@@ -28,9 +28,9 @@ public final class ToolbarListener implements View.OnClickListener, SwipeRefresh
     private final ProgressDialog waitingDialog;
     private final ListView listView;
 
-    public ToolbarListener(final Activity activity,
-                           final ProgressDialog waitingDialog,
-                           final ListView listView) {
+    public ToolbarController(final Activity activity,
+                             final ProgressDialog waitingDialog,
+                             final ListView listView) {
         this.activity = activity;
         this.waitingDialog = waitingDialog;
         this.listView = listView;
@@ -38,7 +38,7 @@ public final class ToolbarListener implements View.OnClickListener, SwipeRefresh
 
     @Override
     public void onClick(final View v) {
-        if (activity==null){
+        if (activity == null) {
             return;
         }
         switch (v.getId()) {

@@ -24,7 +24,7 @@ import java.util.regex.PatternSyntaxException;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
-    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarListener";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarController";
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
     private final IntentFilter intentFilter = new IntentFilter();
     private UrlSaverReceiver receiver;

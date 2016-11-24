@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import static yuriy.rssreader.MainActivity.ITEM_LINK;
 
-public final class ListViewAdapterReceiverAndListener
+public final class ListViewAdapterController
         extends BroadcastReceiver
         implements AdapterView.OnItemClickListener {
 
@@ -36,9 +36,9 @@ public final class ListViewAdapterReceiverAndListener
     private RssEntriesListAdapter adapter;
     private TextView emptyText;
 
-    public ListViewAdapterReceiverAndListener(final Activity mainActivityContext,
-                                              final ListView listView,
-                                              final ProgressDialog waitingDialog) {
+    public ListViewAdapterController(final Activity mainActivityContext,
+                                     final ListView listView,
+                                     final ProgressDialog waitingDialog) {
         this.mainActivityContext = mainActivityContext;
         this.listView = listView;
         this.waitingDialog = waitingDialog;

@@ -15,9 +15,9 @@ import android.widget.ListView;
 import yuriy.rssreader.controllers.RssEntriesListAdapter;
 import yuriy.rssreader.services.DatabaseOperationService;
 import yuriy.rssreader.ui.main_activity.AddNewUrlDialog;
-import yuriy.rssreader.ui.main_activity.ListViewAdapterReceiverAndListener;
+import yuriy.rssreader.ui.main_activity.ListViewAdapterController;
 import yuriy.rssreader.ui.main_activity.MainActivityReceiverFilter;
-import yuriy.rssreader.ui.main_activity.ToolbarListener;
+import yuriy.rssreader.ui.main_activity.ToolbarController;
 import yuriy.rssreader.utils.StateSaver;
 import yuriy.rssreader.utils.Theme;
 
@@ -32,7 +32,7 @@ public final class MainActivity extends Activity {
 
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
-    private ListViewAdapterReceiverAndListener receiver;
+    private ListViewAdapterController receiver;
     private RssEntriesListAdapter adapter;
     private final IntentFilter intentFilter = MainActivityReceiverFilter.getInstance();
 
@@ -67,19 +67,19 @@ public final class MainActivity extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         final ProgressDialog waitingDialog = new ProgressDialog(this);
-        final ToolbarListener toolbarListener = new ToolbarListener(this, waitingDialog, listView);
+        final ToolbarController toolbarController = new ToolbarController(this, waitingDialog, listView);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-        receiver = new ListViewAdapterReceiverAndListener(this, listView, waitingDialog);
+        receiver = new ListViewAdapterController(this, listView, waitingDialog);
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.list_view_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(toolbarListener);
+        swipeRefreshLayout.setOnRefreshListener(toolbarController);
 
-        findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarListener);
-        findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarListener);
-        findViewById(R.id.filterButton_toolbar).setOnClickListener(toolbarListener);
-        findViewById(R.id.settingsButton_toolbar).setOnClickListener(toolbarListener);
-        findViewById(R.id.deleteButton_toolbar).setOnClickListener(toolbarListener);
+        findViewById(R.id.refreshButton_toolbar).setOnClickListener(toolbarController);
+        findViewById(R.id.addUrlButton_toolbar).setOnClickListener(toolbarController);
+        findViewById(R.id.filterButton_toolbar).setOnClickListener(toolbarController);
+        findViewById(R.id.settingsButton_toolbar).setOnClickListener(toolbarController);
+        findViewById(R.id.deleteButton_toolbar).setOnClickListener(toolbarController);
     }
 
     @Override
