@@ -29,12 +29,18 @@ final class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(final SQLiteDatabase db) {
+        if (db == null) {
+            return;
+        }
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+        if (db == null) {
+            return;
+        }
         db.execSQL(DELETE_TABLE);
         onCreate(db);
     }

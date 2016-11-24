@@ -3,20 +3,28 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <ImageButton
+            android:id="@+id/refreshButton_widget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@color/widget_refresh_button_selector"
+            android:background="@android:color/transparent"/>
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    <TextView
-            android:id="@+id/empty_text_view_widget"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#AFF5"
-    />
+        <TextView
+                android:id="@+id/empty_text_view_widget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/no_rss_widget"
+        />
 
-    <ListView
-            android:id="@+id/list_view_widget"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <ListView
+                android:id="@+id/list_view_widget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
     </FrameLayout>
 
 </LinearLayout>

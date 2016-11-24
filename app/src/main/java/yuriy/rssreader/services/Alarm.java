@@ -26,6 +26,9 @@ public final class Alarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        if (context == null || intent == null) {
+            return;
+        }
         ServiceReceiversSwitchers.switchOff(WifiOnReceiver.class, context);
         ServiceReceiversSwitchers.switchOff(InternetOnReceiver.class, context);
 
@@ -49,6 +52,9 @@ public final class Alarm extends BroadcastReceiver {
     }
 
     public void startAlarmService(final Context context, int period) {
+        if (context == null) {
+            return;
+        }
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         final Intent intent = new Intent(context, Alarm.class);
         final PendingIntent pendingIntent =
@@ -70,6 +76,9 @@ public final class Alarm extends BroadcastReceiver {
     }
 
     public void stopAlarmService(final Context context) {
+        if (context == null) {
+            return;
+        }
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         final Intent intent = new Intent(context, Alarm.class);
         final PendingIntent pendingIntent =

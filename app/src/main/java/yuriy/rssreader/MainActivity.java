@@ -3,7 +3,6 @@ package yuriy.rssreader;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ListFragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -25,11 +24,12 @@ public final class MainActivity extends Activity {
 
     public static final String ITEM_LINK = "yuriy.rssreader.MainActivity.itemLink";
     private static final int DIALOG_THEME = 0;
-    private static int listVisiblePosition;
-    private static int listPaddingTop;
-    private static String currentChannelFilter;
+
     private static final String LINK_ACTION = "android.intent.action.VIEW";
 
+    private int listVisiblePosition;
+    private int listPaddingTop;
+    private String currentChannelFilter;
     private ListView listView;
     private LocalBroadcastManager broadcastManager;
     private ListViewAdapterController receiver;
@@ -66,11 +66,10 @@ public final class MainActivity extends Activity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        final ProgressDialog waitingDialog = new ProgressDialog(this);
-        final ToolbarController toolbarController = new ToolbarController(this, waitingDialog, listView);
+        final ToolbarController toolbarController = new ToolbarController(this, listView);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
-        receiver = new ListViewAdapterController(this, listView, waitingDialog);
+        receiver = new ListViewAdapterController(this, listView);
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.list_view_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(toolbarController);
@@ -115,30 +114,10 @@ public final class MainActivity extends Activity {
         }
     }
 
-    public static void resetListPosition() {
-        listPaddingTop = 0;
-        listVisiblePosition = 0;
-    }
-
-    public static void setCurrentChannelFilter(final String channelFilter) {
-        currentChannelFilter = channelFilter;
-    }
-
-    public static String getCurrentChannelFilter() {
-        return currentChannelFilter;
-    }
-
     private void setListPosition() {
         listVisiblePosition = listView.getFirstVisiblePosition();
         View view = listView.getChildAt(0);
         listPaddingTop = (view == null) ? 0 : (view.getTop() - listView.getPaddingTop());
     }
 
-    public static int getListVisiblePosition() {
-        return listVisiblePosition;
-    }
-
-    public static int getListPaddingTop() {
-        return listPaddingTop;
-    }
 }

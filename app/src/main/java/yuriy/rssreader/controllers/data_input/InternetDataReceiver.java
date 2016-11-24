@@ -21,7 +21,9 @@ public final class InternetDataReceiver {
     private static final char QUOTE_SIGN = '"';
 
     public String getTextFromURL(final URL url) throws IOException {
-
+        if(url==null){
+            throw new MalformedURLException();
+        }
         final Integer[] receivedData = getData(url);
         final Charset charset = getCharset(receivedData);
         final byte[] outputReadyData = getByteArrayFromReceivedData(receivedData);
@@ -34,9 +36,7 @@ public final class InternetDataReceiver {
         BufferedInputStream bufferedInputStream = null;
         ArrayList<Integer> byteData;
         try {
-            if(url==null){
-                throw new MalformedURLException();
-            }
+
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);

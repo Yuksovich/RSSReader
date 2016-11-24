@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public final class SingleViewFragment extends Fragment {
     private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
     private LocalBroadcastManager broadcastManager;
 
-    public static SingleViewFragment getInstance(final String itemLink) {
+    public static SingleViewFragment getInstance(@NonNull final String itemLink) {
         final SingleViewFragment singleViewFragment = new SingleViewFragment();
         singleViewFragment.setItemLink(itemLink);
         return singleViewFragment;
@@ -41,7 +42,9 @@ public final class SingleViewFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, final @Nullable ViewGroup container, final @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             final @Nullable ViewGroup container,
+                             final @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.entry_view, container, false);
     }
 
@@ -101,6 +104,9 @@ public final class SingleViewFragment extends Fragment {
     }
 
     public void setItemLink(final String itemLink) {
+        if(itemLink==null){
+            return;
+        }
         this.itemLink = itemLink;
         if (getActivity() != null) {
             SingleEntryOperationService.singleEntryRequest(getActivity(), itemLink);

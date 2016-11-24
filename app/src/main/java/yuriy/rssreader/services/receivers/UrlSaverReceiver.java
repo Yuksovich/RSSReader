@@ -19,10 +19,12 @@ public final class UrlSaverReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-
+        if (context == null || intent == null) {
+            return;
+        }
         final String action = intent.getAction();
         final String message = intent.getStringExtra(action);
-        if (message == null) {
+        if (message == null||action==null) {
             return;
         }
         switch (action) {
@@ -37,7 +39,7 @@ public final class UrlSaverReceiver extends BroadcastReceiver {
                 if (waitToCheckDialog != null) {
                     waitToCheckDialog.dismiss();
                 }
-                if(dialog!=null) {
+                if (dialog != null) {
                     dialog.dismiss();
                 }
                 break;

@@ -22,12 +22,12 @@ public final class SingleRssViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_rss_view_activity);
 
-        final Intent intent =getIntent();
+        final Intent intent = getIntent();
         itemLink = intent.getStringExtra(ITEM_LINK);
 
         final SingleViewFragment viewFragment =
                 (SingleViewFragment) getFragmentManager().findFragmentById(R.id.single_view_activity_fragment);
-        if(viewFragment!=null&&itemLink!=null) {
+        if (viewFragment != null && itemLink != null) {
             viewFragment.setItemLink(itemLink);
         }
     }
@@ -42,7 +42,7 @@ public final class SingleRssViewActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(notExiting&&itemLink!=null) {
+        if (notExiting && itemLink != null) {
             StateSaver.saveLink(this, itemLink);
         }
     }

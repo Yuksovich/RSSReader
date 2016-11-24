@@ -19,6 +19,9 @@ public class WifiOnReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        if (context == null || intent == null) {
+            return;
+        }
         final String action = intent.getAction();
         if (action == null || !action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
             return;

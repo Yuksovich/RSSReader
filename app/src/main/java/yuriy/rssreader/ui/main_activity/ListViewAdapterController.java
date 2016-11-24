@@ -2,20 +2,20 @@ package yuriy.rssreader.ui.main_activity;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import yuriy.rssreader.MainActivity;
 import yuriy.rssreader.R;
 import yuriy.rssreader.controllers.RssEntriesListAdapter;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.services.DatabaseOperationService;
+import yuriy.rssreader.services.UrlSaverService;
 import yuriy.rssreader.ui.entry_activity.SingleRssViewActivity;
 import yuriy.rssreader.ui.entry_activity.SingleViewFragment;
 import yuriy.rssreader.utils.ShortToast;
@@ -30,23 +30,26 @@ public final class ListViewAdapterController
         implements AdapterView.OnItemClickListener {
 
     private static final String EMPTY_STRING = "";
+    private static final boolean DO_NOT_NOTIFY = false;
+    private static final boolean DO_NOT_MAKE_NOTIFICATION = false;
     private final ListView listView;
-    private final ProgressDialog waitingDialog;
     private final Activity mainActivityContext;
     private RssEntriesListAdapter adapter;
     private TextView emptyText;
 
     public ListViewAdapterController(final Activity mainActivityContext,
-                                     final ListView listView,
-                                     final ProgressDialog waitingDialog) {
+                                     final ListView listView) {
         this.mainActivityContext = mainActivityContext;
         this.listView = listView;
-        this.waitingDialog = waitingDialog;
     }
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        if (listView == null || mainActivityContext == null) {
+        if (
+                listView == null
+                || mainActivityContext == null
+                || context == null
+                || intent == null) {
             return;
         }
         removeUpdateSigns();
@@ -76,7 +79,7 @@ public final class ListViewAdapterController
                 break;
             case (DatabaseOperationService.SUCCESS):
                 ShortToast.makeText(context, message);
-                MainActivity.resetListPosition();
+                StateSaver.resetListPosition(context);
                 break;
             case (DatabaseOperationService.ON_DATA_RECEIVED):
                 final ArrayList<SingleRSSEntry> entriesList
@@ -85,6 +88,10 @@ public final class ListViewAdapterController
                     return;
                 }
                 assignDataToList(entriesList);
+                break;
+            case (UrlSaverService.SUCCESS):
+                DatabaseOperationService.refreshDatabase(context, DO_NOT_NOTIFY, DO_NOT_MAKE_NOTIFICATION);
+                DatabaseOperationService.requestEntries(context, DatabaseOperationService.ALL_CHANNELS);
                 break;
             default:
                 break;
@@ -102,23 +109,26 @@ public final class ListViewAdapterController
         if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
-        if (waitingDialog != null) {
-            waitingDialog.dismiss();
-        }
     }
 
-    private void assignDataToList(final ArrayList<SingleRSSEntry> entriesList) {
-
-        adapter = new RssEntriesListAdapter(mainActivityContext, entriesList);
+    private void assignDataToList(@NonNull final ArrayList<SingleRSSEntry> entriesList) {
+        final int listVisiblePosition = StateSaver.getSavedPosition(mainActivityContext);
+        final int listPaddingTop = StateSaver.getSavedPadding(mainActivityContext);
+        try {
+            adapter = new RssEntriesListAdapter(mainActivityContext, entriesList);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            return;
+        }
         listView.setAdapter(adapter);
-        listView.setSelectionFromTop(MainActivity.getListVisiblePosition(), MainActivity.getListPaddingTop());
+        listView.setSelectionFromTop(listVisiblePosition, listPaddingTop);
         listView.setVisibility(View.VISIBLE);
         if (emptyText != null) {
             emptyText.setVisibility(View.INVISIBLE);
         }
         final String savedLink = StateSaver.getSavedLink(mainActivityContext);
         if (!StateSaver.NO_LINK.equals(savedLink)) {
-           openEntry(savedLink);
+            openEntry(savedLink);
         }
     }
 
@@ -129,10 +139,12 @@ public final class ListViewAdapterController
         adapter.getItem(position).setBeenViewed();
         adapter.notifyDataSetChanged();
         final String itemLink = adapter.getItem(position).getItemLink();
-        openEntry(itemLink);
+        if(itemLink!=null) {
+            openEntry(itemLink);
+        }
     }
 
-    private void openEntry(final String itemLink) {
+    private void openEntry(@NonNull final String itemLink) {
 
         if (mainActivityContext.findViewById(R.id.entry_view_fragment) != null) {
             final SingleViewFragment entryFragment = SingleViewFragment.getInstance(itemLink);

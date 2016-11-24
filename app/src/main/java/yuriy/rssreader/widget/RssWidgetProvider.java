@@ -20,20 +20,31 @@ public final class RssWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
+
 
         for (int widgetId : appWidgetIds) {
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             final Intent serviceIntent = new Intent(context, ListWidgetService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
             remoteViews.setRemoteAdapter(R.id.list_view_widget, serviceIntent);
             remoteViews.setEmptyView(R.id.list_view_widget, R.id.empty_text_view_widget);
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
+
+            setOnRefreshButton(remoteViews);
+
+
         }
 
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
 
+    private void setOnRefreshButton(final RemoteViews remoteViews){
+        /*final Intent intent = new
+        final PendingIntent pendingIntent = new PendingIntent()
+        remoteViews.setOnClickPendingIntent(R.id.refreshButton_widget, pendingIntent);*/
     }
 
 }

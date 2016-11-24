@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
 import java.io.Closeable;
@@ -19,7 +21,7 @@ public final class DBReader implements Closeable {
 
     private static final String[] WITHOUT_ARGUMENTS = null;
     private final static String SELECTION_BY_ITEM_LINK = TableColumns.COLUMN_NAME_ITEM_LINK + " = ?";
-    private static final String SELECTION_BY_CHANNEL_DESCRIPTION = TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION+" = ?";
+    private static final String SELECTION_BY_CHANNEL_DESCRIPTION = TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION + " = ?";
     private final static String SORT_ORDER = TableColumns.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
     private final static String[] COLUMNS_ALL = null;
     private final static String SELECTION_ALL = null;
@@ -29,21 +31,20 @@ public final class DBReader implements Closeable {
     private final static String LIMIT_ALL = null;
     private final static String ALL_CHANNELS = "ALL_CHANNELS";
 
-    public DBReader(final Context context) throws SQLException {
+    public DBReader(@NonNull final Context context) throws SQLException {
         dbOpenHelper = new DatabaseOpenHelper(context);
         listOfEntries = new ArrayList<>();
         database = dbOpenHelper.getReadableDatabase();
     }
 
-    public ArrayList<SingleRSSEntry> read() throws SQLException, DatabaseIsEmptyException{
+    public ArrayList<SingleRSSEntry> read() throws SQLException, DatabaseIsEmptyException {
         return read(ALL_CHANNELS);
     }
 
-    public ArrayList<SingleRSSEntry> read(final String channels) throws SQLException, DatabaseIsEmptyException {
-        if(ALL_CHANNELS.equals(channels)) {
+    public ArrayList<SingleRSSEntry> read(@Nullable final String channels) throws SQLException, DatabaseIsEmptyException {
+        if (ALL_CHANNELS.equals(channels)) {
             cursor = getCursor(WITHOUT_ARGUMENTS);
-        }
-        else {
+        } else {
             cursor = getChannelFilteredCursor(channels);
         }
 
@@ -81,7 +82,7 @@ public final class DBReader implements Closeable {
         }
     }
 
-    public SingleRSSEntry readSingleEntry(final String itemLink) throws SQLException, DatabaseIsEmptyException {
+    public SingleRSSEntry readSingleEntry(@Nullable final String itemLink) throws SQLException, DatabaseIsEmptyException {
 
         cursor = getCursor(itemLink);
         if (cursor.moveToFirst()) {
@@ -103,7 +104,7 @@ public final class DBReader implements Closeable {
 
     }
 
-    Cursor getCursor(final String... selectionArgs) throws DatabaseIsEmptyException {
+    Cursor getCursor(@Nullable final String... selectionArgs) throws DatabaseIsEmptyException {
 
         if (selectionArgs == null) {
             final Cursor currentCursor = database.query(TableColumns.TABLE_NAME, COLUMNS_ALL, SELECTION_ALL, SELECTION_ARGS_ALL, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
@@ -118,11 +119,19 @@ public final class DBReader implements Closeable {
 
     }
 
-    private Cursor getChannelFilteredCursor(final String...channels) throws DatabaseIsEmptyException{
-        final Cursor currentCursor = database.query(TableColumns.TABLE_NAME, COLUMNS_ALL, SELECTION_BY_CHANNEL_DESCRIPTION, channels, GROUP_BY_ALL, HAVING_ALL, SORT_ORDER, LIMIT_ALL);
+    private Cursor getChannelFilteredCursor(@Nullable final String... channels) throws DatabaseIsEmptyException {
+        final Cursor currentCursor = database.query(
+                TableColumns.TABLE_NAME,
+                COLUMNS_ALL,
+                SELECTION_BY_CHANNEL_DESCRIPTION,
+                channels,
+                GROUP_BY_ALL,
+                HAVING_ALL,
+                SORT_ORDER,
+                LIMIT_ALL);
         if (currentCursor.moveToFirst()) {
             return currentCursor;
-        }else{
+        } else {
             throw new DatabaseIsEmptyException();
         }
     }
@@ -134,6 +143,8 @@ public final class DBReader implements Closeable {
     }
 
     public void close() {
-        dbOpenHelper.close();
+        if (dbOpenHelper != null) {
+            dbOpenHelper.close();
+        }
     }
 }

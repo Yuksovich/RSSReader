@@ -53,6 +53,7 @@
     </string>
     <string name="refreshing_progress_notification">Refreshing</string>
     <string name="cancel_refresh">Cancel</string>
+    <string name="no_rss_widget">No new entries</string>
 
 
 </resources>

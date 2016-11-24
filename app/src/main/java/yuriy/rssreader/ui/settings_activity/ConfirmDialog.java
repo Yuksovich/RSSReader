@@ -19,7 +19,6 @@ public final class ConfirmDialog extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.confirm_dialog, container);
 
-
         final Button yesButton = (Button) view.findViewById(R.id.yes_button_confirm_dialog);
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override

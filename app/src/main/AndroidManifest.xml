@@ -131,7 +131,7 @@
                     android:name="android.appwidget.provider"
                     android:resource="@xml/rss_widget"/>
         </receiver>
-        <service android:name=".widget.services.ListWidgetService"
+        <service android:name="yuriy.rssreader.widget.services.ListWidgetService"
                  android:permission="android.permission.BIND_REMOTEVIEWS"
                  android:exported="false"/>
     </application>
