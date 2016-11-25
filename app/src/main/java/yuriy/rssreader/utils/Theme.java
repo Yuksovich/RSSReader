@@ -23,6 +23,9 @@ public final class Theme {
     }
 
     public static void setTheme(final String themeName, final Context context) {
+        if (themeName == null || context == null) {
+            return;
+        }
         switch (themeName) {
             case (FOCUS_THEME):
                 id = R.style.MainTheme;
@@ -58,34 +61,43 @@ public final class Theme {
         return id;
     }
 
-    public static String getHtmlStyleCssMiddle(final Context context){
-        if (htmlStyleCssMiddle==null){
-            return context.getString(R.string.focus_css_middle_web_view);
+    public static String getHtmlStyleCssMiddle(final Context context) {
+        if (context == null) {
+            return "";
         }
-        else {
+        if (htmlStyleCssMiddle == null) {
+            return context.getString(R.string.focus_css_middle_web_view);
+        } else {
             return htmlStyleCssMiddle;
         }
     }
 
-    public static int getTextColor(final Context context){
-        if(textColor==0){
-            return context.getResources().getColor(R.color.focus_font_color_list_entry_not_seen);
+    public static int getTextColor(final Context context) {
+        if (context == null) {
+            return 0;
         }
-        else{
+        if (textColor == 0) {
+            return context.getResources().getColor(R.color.focus_font_color_list_entry_not_seen);
+        } else {
             return textColor;
         }
     }
 
-    public static int getTextColorSeen(final Context context){
-        if(textColorSeen==0){
-            return context.getResources().getColor(R.color.focus_font_color_list_entry_was_seen);
+    public static int getTextColorSeen(final Context context) {
+        if (context == null) {
+            return 0;
         }
-        else{
+        if (textColorSeen == 0) {
+            return context.getResources().getColor(R.color.focus_font_color_list_entry_was_seen);
+        } else {
             return textColorSeen;
         }
     }
 
-    public static void setThemeFromSharedPreferences(final Context context){
+    public static void setThemeFromSharedPreferences(final Context context) {
+        if (context == null) {
+            return;
+        }
         final SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         setTheme(sPrefs.getString(COLOR_THEME, FOCUS_THEME), context);
     }
