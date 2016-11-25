@@ -12,6 +12,8 @@ public final class Theme {
     private static final String DARK_THEME = "dark";
     private static final String LIGHT_THEME = "light";
     private static final String COLOR_THEME = "key_theme_preferences_screen";
+    private static final String EMPTY_STRING ="";
+    private static final int DEFAULT_COLOR = -8947849;
 
     private static int id;
     private static int textColor;
@@ -63,7 +65,7 @@ public final class Theme {
 
     public static String getHtmlStyleCssMiddle(final Context context) {
         if (context == null) {
-            return "";
+            return EMPTY_STRING;
         }
         if (htmlStyleCssMiddle == null) {
             return context.getString(R.string.focus_css_middle_web_view);
@@ -74,7 +76,7 @@ public final class Theme {
 
     public static int getTextColor(final Context context) {
         if (context == null) {
-            return 0;
+            return DEFAULT_COLOR;
         }
         if (textColor == 0) {
             return context.getResources().getColor(R.color.focus_font_color_list_entry_not_seen);
@@ -85,7 +87,7 @@ public final class Theme {
 
     public static int getTextColorSeen(final Context context) {
         if (context == null) {
-            return 0;
+            return DEFAULT_COLOR;
         }
         if (textColorSeen == 0) {
             return context.getResources().getColor(R.color.focus_font_color_list_entry_was_seen);
