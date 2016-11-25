@@ -22,8 +22,17 @@
         <TextView android:id="@+id/channel_title_show"
                   style="@style/MainTheme.rss_view.channel_title"/>
 
-        <TextView android:id="@+id/channel_description_show"
-                  style="@style/MainTheme.rss_view"/>
+        <ViewStub android:id="@+id/entry_view_stub_text_view"
+                  android:inflatedId="@+id/text_view_description_single_rss_entry"
+                  android:layout="@layout/text_view_description_single_rss_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"/>
+
+        <ViewStub android:id="@+id/entry_view_stub_web_view"
+                  android:inflatedId="@+id/web_view_description_single_rss_entry"
+                  android:layout="@layout/web_view_description_single_rss_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"/>
 
         <WebView android:id="@+id/item_description_show"
                  android:paddingTop="@dimen/text_padding_left_right"

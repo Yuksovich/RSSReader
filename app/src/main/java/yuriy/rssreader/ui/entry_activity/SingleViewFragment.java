@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.WebView;
 import android.widget.TextView;
 import yuriy.rssreader.R;
@@ -29,10 +30,13 @@ public final class SingleViewFragment extends Fragment {
     private static final String ENCODING = "UTF-8";
     private static final String HISTORY_URL = null;
     private static final String BASE_URL = null;
+    private static final String EMPTY_STRING = "";
+    private static final CharSequence TAG = "<";
     private String itemLink;
     private BroadcastReceiver receiver;
     private final IntentFilter intentFilter = new IntentFilter(SINGLE_ENTRY);
     private LocalBroadcastManager broadcastManager;
+    private String htmlStyle;
 
     public static SingleViewFragment getInstance(@NonNull final String itemLink) {
         final SingleViewFragment singleViewFragment = new SingleViewFragment();
@@ -58,10 +62,10 @@ public final class SingleViewFragment extends Fragment {
             @Override
             public void onReceive(final Context context, final Intent intent) {
 
-                final String HTML_STYLE = getString(R.string.html_style_css_beginning)
+                htmlStyle = getString(R.string.html_style_css_beginning)
                         + Theme.getHtmlStyleCssMiddle(context)
                         + getString(R.string.html_style_css_ending);
-                final String READ_MORE_STRING = getString(R.string.html_read_more_link);
+                final String readMoreString = getString(R.string.html_read_more_link);
                 final EntrySerializer.SerializableEntry entry =
                         (EntrySerializer.SerializableEntry) intent.getSerializableExtra(SINGLE_ENTRY);
                 if (entry != null) {
@@ -72,14 +76,14 @@ public final class SingleViewFragment extends Fragment {
                             .findViewById(R.id.item_pubDate_show)).setText(entry.getItemPubDate());
                     ((TextView) getActivity()
                             .findViewById(R.id.channel_title_show)).setText(entry.getChannelTitle());
-                    ((TextView) getActivity()
-                            .findViewById(R.id.channel_description_show)).setText(entry.getChannelDescription());
                     WebView webView = (WebView) getActivity().findViewById(R.id.item_description_show);
 
-                    final String readMoreLink = String.format(READ_MORE_STRING, itemLink);
+                    setViewForDescription(entry.getChannelDescription());
+
+                    final String readMoreLink = String.format(readMoreString, itemLink);
                     webView.loadDataWithBaseURL(
                             BASE_URL,
-                            HTML_STYLE + entry.getItemDescription() + readMoreLink,
+                            htmlStyle + entry.getItemDescription() + readMoreLink,
                             MIME_TYPE,
                             ENCODING,
                             HISTORY_URL);
@@ -104,12 +108,43 @@ public final class SingleViewFragment extends Fragment {
     }
 
     public void setItemLink(final String itemLink) {
-        if(itemLink==null){
+        if (itemLink == null) {
             return;
         }
         this.itemLink = itemLink;
         if (getActivity() != null) {
             SingleEntryOperationService.singleEntryRequest(getActivity(), itemLink);
         }
+    }
+
+    private void setViewForDescription(final String channelDescription) {
+        if (EMPTY_STRING.equals(channelDescription) || channelDescription == null) {
+            return;
+        }
+        if (channelDescription.contains(TAG)) {
+            makeWebViewDescription(channelDescription);
+        } else {
+            makeTextViewDescription(channelDescription);
+        }
+    }
+
+    private void makeWebViewDescription(final String channelDescription) {
+        final ViewStub webViewStub = (ViewStub) getActivity().findViewById(R.id.entry_view_stub_web_view);
+        final WebView webView = (WebView) webViewStub.inflate();
+        if (htmlStyle == null) {
+            htmlStyle = EMPTY_STRING;
+        }
+        webView.loadDataWithBaseURL(
+                BASE_URL,
+                htmlStyle + channelDescription,
+                MIME_TYPE,
+                ENCODING,
+                HISTORY_URL);
+    }
+
+    private void makeTextViewDescription(final String channelDescription) {
+        final ViewStub textViewStub = (ViewStub) getActivity().findViewById(R.id.entry_view_stub_text_view);
+        final TextView textView = (TextView) textViewStub.inflate();
+        textView.setText(channelDescription);
     }
 }

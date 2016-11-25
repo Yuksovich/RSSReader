@@ -196,8 +196,8 @@ final class RssParser implements Parsable {
     }
 
     @Override
-    public String getChannelDescription() {
-        return channelDescription;
+    public String getChannelTitle() {
+        return channelTitle;
     }
 }
 

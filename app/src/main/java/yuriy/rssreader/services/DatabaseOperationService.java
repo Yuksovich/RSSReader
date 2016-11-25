@@ -39,9 +39,9 @@ public final class DatabaseOperationService extends IntentService {
     public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
     public static final String DATABASE_EMPTY = "yuriy.rssreader.services.DatabaseOperationService.DATABASE_EMPTY";
     public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
+    public static final String REQUEST_ENTRIES_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REQUEST_ENTRIES_ACTION";
 
     private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseOperationService";
-    private static final String REQUEST_ENTRIES_ACTION = "REQUEST_ENTRIES_ACTION";
     private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
 
