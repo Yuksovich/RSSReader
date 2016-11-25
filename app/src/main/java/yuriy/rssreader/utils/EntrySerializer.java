@@ -1,6 +1,7 @@
 package yuriy.rssreader.utils;
 
 
+import android.support.annotation.NonNull;
 import yuriy.rssreader.database.SingleRSSEntry;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ public final class EntrySerializer {
         throw new UnsupportedOperationException();
     }
 
-    public static SerializableEntry getSerializable(final SingleRSSEntry entry) {
+    public static SerializableEntry getSerializable(@NonNull final SingleRSSEntry entry) {
         return new SerializableEntry(entry);
     }
 

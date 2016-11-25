@@ -43,6 +43,7 @@ final class SettingsListener implements
 
     @Override
     public boolean onPreferenceClick(final Preference preference) {
+
         DialogFragment dialog;
         switch (preference.getKey()) {
             case (DELETE_ALL_ENTRIES):
@@ -79,7 +80,7 @@ final class SettingsListener implements
 
     }
 
-    private void fillCategory(final @NonNull PreferenceCategory preferenceCategory) {
+    private void fillCategory(@NonNull final PreferenceCategory preferenceCategory) {
         preferenceCategory.removeAll();
         final SharedPreferences channelsSharedPreferences =
                 activity.getSharedPreferences(CHANNELS, Context.MODE_PRIVATE);
@@ -97,7 +98,7 @@ final class SettingsListener implements
         }
     }
 
-    private void turnOnAlarmService(final SharedPreferences sharedPreferences) {
+    private void turnOnAlarmService(@NonNull final SharedPreferences sharedPreferences) {
         final Alarm alarm = new Alarm();
 
         if (sharedPreferences.getBoolean(AUTO_REFRESH_SWITCH, false)) {
@@ -114,7 +115,7 @@ final class SettingsListener implements
         }
     }
 
-    private void selectColorTheme(final SharedPreferences sharedPreferences) {
+    private void selectColorTheme(@NonNull final SharedPreferences sharedPreferences) {
         final String theme = sharedPreferences.getString(COLOR_THEME, DEFAULT);
         Theme.setTheme(theme, activity);
         final Intent intent = new Intent(activity, MainActivity.class);

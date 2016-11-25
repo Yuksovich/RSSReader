@@ -30,6 +30,9 @@ public final class UrlSaverService extends IntentService {
     }
 
     public static void checkAndSave(final Context context, final String inputUrl) {
+        if (context == null || inputUrl == null) {
+            return;
+        }
         final Intent intentToHandle = new Intent(context, UrlSaverService.class);
         intentToHandle.setAction(inputUrl);
         context.startService(intentToHandle);
@@ -37,6 +40,9 @@ public final class UrlSaverService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intentToHandle) {
+        if (intentToHandle == null) {
+            return;
+        }
         final String inputUrl = intentToHandle.getAction();
         handleCheckAndSave(inputUrl);
     }
@@ -65,7 +71,6 @@ public final class UrlSaverService extends IntentService {
         } catch (Exception e) {
             intent.setAction(FAIL);
             intent.putExtra(FAIL, getString(R.string.incorrectURL));
-
             broadcastManager.sendBroadcast(intent);
         }
 

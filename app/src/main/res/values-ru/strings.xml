@@ -50,6 +50,7 @@
     <string name="light_theme">Светлая</string>
     <string name="refreshing_progress_notification">Обновление</string>
     <string name="cancel_refresh">Отмена</string>
+    <string name="no_rss_widget">Нет новых записей</string>
 
 
 </resources>

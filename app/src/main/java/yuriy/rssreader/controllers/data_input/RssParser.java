@@ -44,6 +44,9 @@ final class RssParser implements Parsable {
     RssParser(final String receivedStringData, final String url) throws NoRSSContentException, IOException {
         this.receivedStringData = receivedStringData;
         this.url = url;
+        if(receivedStringData==null||url==null) {
+            throw new NullPointerException();
+        }
         getChannelOrThrow();
     }
 

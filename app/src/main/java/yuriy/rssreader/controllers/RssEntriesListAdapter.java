@@ -22,6 +22,9 @@ public final class RssEntriesListAdapter extends ArrayAdapter<SingleRSSEntry> {
 
     public RssEntriesListAdapter(final Context context, ArrayList<SingleRSSEntry> entries) {
         super(context, R.layout.entry_in_list, entries);
+        if (context == null) {
+            throw new NullPointerException();
+        }
     }
 
     @Override
@@ -56,8 +59,8 @@ public final class RssEntriesListAdapter extends ArrayAdapter<SingleRSSEntry> {
                 public void onClick(View v) {
                     remove(entry);
                     SingleEntryOperationService.singleEntryDelete(getContext(), entry.getItemLink());
-                    if(isEmpty()){
-                       getContext().startActivity(new Intent(getContext(), MainActivity.class));
+                    if (isEmpty()) {
+                        getContext().startActivity(new Intent(getContext(), MainActivity.class));
                     }
                 }
             });

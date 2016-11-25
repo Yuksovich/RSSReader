@@ -4,6 +4,7 @@ package yuriy.rssreader.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.support.annotation.NonNull;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 
 import java.util.ArrayList;
@@ -13,11 +14,14 @@ final class DuplicateChecker {
 
     private final Context context;
 
-    DuplicateChecker(final Context context) throws SQLException {
+    DuplicateChecker(@NonNull final Context context) throws SQLException {
         this.context = context;
     }
 
     ArrayList<SingleRSSEntry> cropDuplicateEntries(final ArrayList<SingleRSSEntry> entriesList) throws SQLException {
+        if(entriesList==null||entriesList.isEmpty()){
+            return new ArrayList<>();
+        }
 
         Cursor cursor = null;
         DBReader dbReader = null;

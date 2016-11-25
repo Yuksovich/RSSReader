@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -21,16 +22,20 @@ public final class DBWriter implements Closeable {
     private int newEntriesCount = 0;
     private SQLiteDatabase database;
 
-    public DBWriter(final Context context) {
+    public DBWriter(@NonNull final Context context) {
         this.context = context;
         dbOpenHelper = new DatabaseOpenHelper(context);
-
     }
 
     public void populate(final ArrayList<SingleRSSEntry> dataArrayList, final String channelUrl) throws SQLException {
-
+        if (channelUrl == null || dataArrayList == null || dataArrayList.isEmpty()) {
+            return;
+        }
         final DuplicateChecker duplicateChecker = new DuplicateChecker(context);
         final ArrayList<SingleRSSEntry> croppedDataArrayList = duplicateChecker.cropDuplicateEntries(dataArrayList);
+        if(croppedDataArrayList.isEmpty()){
+            return;
+        }
         final ContentValues values = new ContentValues();
         database = dbOpenHelper.getWritableDatabase();
 
@@ -56,11 +61,16 @@ public final class DBWriter implements Closeable {
                 database.endTransaction();
             }
         }
-        database.close();
+        if (database != null) {
+            database.close();
+        }
 
     }
 
-    public void setEntryBeenViewed(String itemLink) throws SQLException {
+    public void setEntryBeenViewed(final String itemLink) throws SQLException {
+        if (itemLink == null) {
+            return;
+        }
         final ContentValues value = new ContentValues();
         value.put(TableColumns.COLUMN_NAME_BEEN_VIEWED, TRUE_FLAG);
         database = dbOpenHelper.getWritableDatabase();
@@ -76,12 +86,17 @@ public final class DBWriter implements Closeable {
     }
 
     public void deleteEntry(final String itemLink) throws SQLException {
+        if (itemLink == null) {
+            return;
+        }
         try {
             final String[] whereArgs = {itemLink};
             database = dbOpenHelper.getWritableDatabase();
             database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_ITEM_LINK, whereArgs);
         } finally {
-            database.close();
+            if (database != null) {
+                database.close();
+            }
         }
 
     }
@@ -91,17 +106,24 @@ public final class DBWriter implements Closeable {
             database = dbOpenHelper.getWritableDatabase();
             database.delete(TableColumns.TABLE_NAME, null, null);
         } finally {
-            database.close();
+            if (database != null) {
+                database.close();
+            }
         }
     }
 
     public void deleteAllEntriesOfChannel(final String channel) throws SQLException {
+        if (channel == null) {
+            return;
+        }
         try {
             final String[] whereArgs = {channel};
             database = dbOpenHelper.getWritableDatabase();
             database.delete(TableColumns.TABLE_NAME, WHERE_CLAUSE_CHANNEL_LINK, whereArgs);
         } finally {
-            database.close();
+            if (database != null) {
+                database.close();
+            }
         }
     }
 

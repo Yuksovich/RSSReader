@@ -71,6 +71,9 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     public static void requestEntries(final Context context, String channel) {
+        if (context == null || channel == null) {
+            return;
+        }
         final Intent requestIntent = new Intent(context, DatabaseOperationService.class);
         requestIntent.setAction(REQUEST_ENTRIES_ACTION);
         requestIntent.putExtra(REQUEST_ENTRIES_ACTION, channel);
@@ -78,6 +81,9 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     public static void refreshDatabase(final Context context, boolean notifyIfNothingNew, boolean makeNotification) {
+        if (context == null) {
+            return;
+        }
         final Intent refreshIntent = new Intent(context, DatabaseOperationService.class);
         refreshIntent.setAction(REFRESH_DATABASE_ACTION);
         refreshIntent.putExtra(NOTIFY_IF_NOTHING, notifyIfNothingNew);
@@ -86,6 +92,9 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     public static void setEntryBeenViewed(final Context context, final String itemLink) {
+        if (context == null || itemLink == null) {
+            return;
+        }
         final Intent setSeenIntent = new Intent(context, DatabaseOperationService.class);
         setSeenIntent.setAction(SET_ENTRY_BEEN_SEEN);
         setSeenIntent.putExtra(SET_ENTRY_BEEN_SEEN, itemLink);
@@ -93,6 +102,9 @@ public final class DatabaseOperationService extends IntentService {
     }
 
     public static void deleteChannelsEntries(final Context context, final String channel) {
+        if (context == null || channel == null) {
+            return;
+        }
         final Intent deleteEntriesIntent = new Intent(context, DatabaseOperationService.class);
         deleteEntriesIntent.setAction(DELETE_CHANNEL_ENTRIES);
         deleteEntriesIntent.putExtra(DELETE_CHANNEL_ENTRIES, channel);
@@ -101,6 +113,9 @@ public final class DatabaseOperationService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
+        if (intent == null) {
+            return;
+        }
         switch (intent.getAction()) {
             case (REFRESH_DATABASE_ACTION):
                 handleActionRefresh(
@@ -166,8 +181,12 @@ public final class DatabaseOperationService extends IntentService {
                     break;
                 }
                 incrementProgressInNotification(urlString);
+                try {
+                    parser = RssOrAtom.getParser(data, urlString);
+                } catch (NullPointerException e) {
 
-                parser = RssOrAtom.getParser(data, urlString);
+                    continue;
+                }
                 entriesArray = parser.receiveAllItems();
                 if (stopFlag) {
                     dismissNotification();

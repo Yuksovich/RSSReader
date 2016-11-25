@@ -2,20 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/rss_entry"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/list_entry_height">
+                android:layout_height="wrap_content">
     <ImageButton
             android:id="@+id/delete_button_listView_entry"
             android:contentDescription="@string/delete_button_listView_entry_description"
             android:src="@color/list_view_entry_delete_button_selector"
             style="@style/MainTheme.entry_in_list.delete_button"
     />
+    <TextView
+            android:id="@+id/item_link_listView_entry"
+            style="@style/MainTheme.entry_in_list"
+            android:visibility="invisible"
+    />
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/text_padding"
-            android:paddingRight="@dimen/text_padding">
+            android:paddingLeft="@dimen/text_padding_left_right"
+            android:paddingRight="@dimen/text_padding_left_right"
+            android:paddingTop="@dimen/text_padding_top_bottom"
+            android:paddingBottom="@dimen/text_padding_top_bottom">
 
         <TextView
                 android:id="@+id/item_title_listView_entry"
@@ -29,10 +36,6 @@
                 android:id="@+id/channel_title__listView_entry"
                 style="@style/MainTheme.entry_in_list"
         />
-        <TextView
-                android:id="@+id/item_link_listView_entry"
-                style="@style/MainTheme.entry_in_list"
-                android:visibility="invisible"
-        />
+
     </LinearLayout>
 </RelativeLayout>

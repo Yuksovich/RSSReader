@@ -24,7 +24,7 @@ import java.util.regex.PatternSyntaxException;
 
 public final class AddNewUrlDialog extends DialogFragment {
 
-    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarListener";
+    private final static String DIALOG_TAG = "yuriy.rssreader.ui.main_activity.ToolbarController";
     private final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
     private final IntentFilter intentFilter = new IntentFilter();
     private UrlSaverReceiver receiver;
@@ -49,65 +49,69 @@ public final class AddNewUrlDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater,
+                             @Nullable final ViewGroup container,
+                             final Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.add_url_dialog, container);
         final EditText editText = (EditText) view.findViewById(R.id.urlInput);
-        editText.setSelection(editText.getText().toString().length());
-
         final ProgressDialog waitToCheckDialog = new ProgressDialog(getActivity());
-
+        final Button cancelButton = (Button) view.findViewById(R.id.cancelUrlButton);
+        final Button addUrlButton = (Button) view.findViewById(R.id.addUrlButton);
         receiver = new UrlSaverReceiver(this, waitToCheckDialog);
 
-        final Button cancelButton = (Button) view.findViewById(R.id.cancelUrlButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                dismiss();
-            }
-        });
+        if (editText != null && cancelButton != null && addUrlButton != null) {
+            editText.setSelection(editText.getText().toString().length());
 
-        final Button addUrlButton = (Button) view.findViewById(R.id.addUrlButton);
-        addUrlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final String inputUrl = String.valueOf(editText.getText());
-                UrlSaverService.checkAndSave(getActivity(), inputUrl);
-                waitToCheckDialog.setMessage(getString(R.string.wait_to_check_dialog_message));
-                waitToCheckDialog.setCanceledOnTouchOutside(true);
-                waitToCheckDialog.show();
-            }
-        });
-
-        if(!DIALOG_TAG.equals(getTag())){
-            editText.setText(getTag());
-            addUrlButton.setVisibility(View.VISIBLE);
-        }
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                try {
-                    final Pattern pattern = Patterns.WEB_URL;
-                    final Matcher matcher = pattern.matcher(s);
-
-                    if (matcher.matches()) {
-                        addUrlButton.setVisibility(View.VISIBLE);
-                    } else {
-                        addUrlButton.setVisibility(View.INVISIBLE);
-                    }
-                } catch (PatternSyntaxException e) {
-                    e.printStackTrace();
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    dismiss();
                 }
+            });
+
+            addUrlButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final String inputUrl = String.valueOf(editText.getText());
+                    UrlSaverService.checkAndSave(getActivity(), inputUrl);
+                    waitToCheckDialog.setMessage(getString(R.string.wait_to_check_dialog_message));
+                    waitToCheckDialog.setCanceledOnTouchOutside(true);
+                    waitToCheckDialog.show();
+                }
+            });
+
+            if (!DIALOG_TAG.equals(getTag())) {
+                editText.setText(getTag());
+                addUrlButton.setVisibility(View.VISIBLE);
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try {
+                        final Pattern pattern = Patterns.WEB_URL;
+                        final Matcher matcher = pattern.matcher(s);
+
+                        if (matcher.matches()) {
+                            addUrlButton.setVisibility(View.VISIBLE);
+                        } else {
+                            addUrlButton.setVisibility(View.INVISIBLE);
+                        }
+                    } catch (PatternSyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
         return view;
 
 
