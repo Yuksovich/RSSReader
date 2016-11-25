@@ -10,17 +10,15 @@ public final class ListWidgetService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(final Intent intent) {
-        return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new ListRemoteViewsFactory(this.getApplicationContext());
     }
 }
 
 final class ListRemoteViewsFactory extends RemoteViewsFactoryAdapter {
     private final Context context;
-    private final Intent intent;
 
-    ListRemoteViewsFactory(final Context context, final Intent intent) {
+    ListRemoteViewsFactory(final Context context) {
         this.context = context;
-        this.intent = intent;
     }
 
     @Override

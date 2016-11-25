@@ -43,7 +43,7 @@
             android:key="@string/key_theme_preferences_screen"
             android:title="@string/theme_title"
             android:summary="@string/theme_summary"
-            android:defaultValue="0"
+            android:defaultValue="focus"
             android:entries="@array/theme_names"
             android:entryValues="@array/theme_values"/>
 

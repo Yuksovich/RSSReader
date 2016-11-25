@@ -1,7 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="text_padding">15dp</dimen>
+    <dimen name="text_padding_left_right">15dp</dimen>
+    <dimen name="text_padding_top_bottom">5dp</dimen>
+
     <dimen name="delete_entry_button_padding">10dp</dimen>
     <dimen name="inputUrlMarginBottom">20dp</dimen>
     <dimen name="buttonToolbarPadding">10dp</dimen>

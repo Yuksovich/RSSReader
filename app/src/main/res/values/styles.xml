@@ -32,14 +32,14 @@
         <item name="android:gravity">right</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textSize">@dimen/text_size</item>
-        <item name="android:paddingLeft">@dimen/text_padding</item>
-        <item name="android:paddingRight">@dimen/text_padding</item>
+        <item name="android:paddingLeft">@dimen/text_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/text_padding_left_right</item>
         <item name="android:textColor">?colorAccent</item>
         <item name="android:background">?colorPrimaryDark</item>
     </style>
 
     <style name="MainTheme.rss_view.item_title">
-        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:padding">@dimen/text_padding_left_right</item>
         <item name="android:background">?colorPrimary</item>
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:textSize">@dimen/title_size</item>
@@ -64,7 +64,7 @@
     </style>
 
     <style name="MainTheme.dialog.text">
-        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:padding">@dimen/text_padding_left_right</item>
     </style>
 
     <style name="MainTheme.dialog.title">
@@ -72,7 +72,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:background">?colorPrimary</item>
-        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:padding">@dimen/text_padding_left_right</item>
         <item name="android:layout_marginBottom">@dimen/inputUrlMarginBottom</item>
         <item name="android:layout_gravity">center</item>
     </style>
@@ -81,7 +81,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?colorAccent</item>
-        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:padding">@dimen/text_padding_left_right</item>
         <item name="android:background">@color/button_selector</item>
 
     </style>
