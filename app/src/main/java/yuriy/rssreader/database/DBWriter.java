@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public final class DBWriter implements Closeable {
     private final Context context;
     private int newEntriesCount = 0;
     private SQLiteDatabase database;
+    private ArrayList<SingleRSSEntry> newEntries;
 
     public DBWriter(@NonNull final Context context) {
         this.context = context;
@@ -36,6 +38,7 @@ public final class DBWriter implements Closeable {
         if(croppedDataArrayList.isEmpty()){
             return;
         }
+        newEntries = new ArrayList<>(croppedDataArrayList.size());
         final ContentValues values = new ContentValues();
         database = dbOpenHelper.getWritableDatabase();
 
@@ -55,6 +58,7 @@ public final class DBWriter implements Closeable {
                 long n = database.insert(TableColumns.TABLE_NAME, TableColumns.COLUMN_NAME_NULLABLE, values);
                 if (n != -1) {
                     newEntriesCount++;
+                    newEntries.add(entry);
                 }
                 database.setTransactionSuccessful();
             } finally {
@@ -125,6 +129,10 @@ public final class DBWriter implements Closeable {
                 database.close();
             }
         }
+    }
+
+    public @Nullable ArrayList<SingleRSSEntry> getNewEntries(){
+        return newEntries;
     }
 
 }

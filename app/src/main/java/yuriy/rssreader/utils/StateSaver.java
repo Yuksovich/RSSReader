@@ -26,19 +26,19 @@ public final class StateSaver {
         return getSharedPrefs(context).edit();
     }
 
-    public static void saveLink(@NonNull final Context context, @NonNull final String itemLink) {
+    public static void saveLink(@NonNull final Context context, final String itemLink) {
         getEditor(context).putString(ITEM_LINK, itemLink).apply();
     }
 
-    public static void saveListPosition(@NonNull final Context context, @NonNull final int position) {
+    public static void saveListPosition(@NonNull final Context context, final int position) {
         getEditor(context).putInt(LIST_POSITION, position).apply();
     }
 
-    public static void saveListPadding(@NonNull final Context context, @NonNull final int padding) {
+    public static void saveListPadding(@NonNull final Context context, final int padding) {
         getEditor(context).putInt(LIST_PADDING, padding).apply();
     }
 
-    public static void saveChannelFilter(@NonNull final Context context, @NonNull final String listFilter) {
+    public static void saveChannelFilter(@NonNull final Context context, final String listFilter) {
         getEditor(context).putString(CHANNEL_FILTER, listFilter).apply();
     }
 

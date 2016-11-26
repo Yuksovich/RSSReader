@@ -22,6 +22,7 @@ import yuriy.rssreader.database.DBWriter;
 import yuriy.rssreader.database.SingleRSSEntry;
 import yuriy.rssreader.rssexceptions.DatabaseIsEmptyException;
 import yuriy.rssreader.rssexceptions.NoRSSContentException;
+import yuriy.rssreader.widget.NewEntriesReceiver;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,10 +40,11 @@ public final class DatabaseOperationService extends IntentService {
     public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
     public static final String DATABASE_EMPTY = "yuriy.rssreader.services.DatabaseOperationService.DATABASE_EMPTY";
     public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
-    public static final String REQUEST_ENTRIES_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REQUEST_ENTRIES_ACTION";
 
+    private static final String REFRESH_DATABASE_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REFRESH_DATABASE";
+
+    private static final String REQUEST_ENTRIES_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REQUEST_ENTRIES_ACTION";
     private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseOperationService";
-    private static final String REFRESH_DATABASE_ACTION = "REFRESH_DATABASE";
     private static final String NOTIFY_IF_NOTHING = "NOTIFY_IF_NOTHING_NEW";
 
     private static final String SPACER = " ";
@@ -144,6 +146,7 @@ public final class DatabaseOperationService extends IntentService {
         final SharedPreferences sharedPreferences = getSharedPreferences(CHANNELS, MODE_PRIVATE);
         final Map<String, ?> map = sharedPreferences.getAll();
         final ArrayList<String> urls = new ArrayList<>();
+        final ArrayList<SingleRSSEntry> newEntries = new ArrayList<>();
 
         if (map.isEmpty()) {
             intent.setAction(FAIL);
@@ -162,6 +165,7 @@ public final class DatabaseOperationService extends IntentService {
         URL url;
         Parsable parser;
         ArrayList<SingleRSSEntry> entriesArray;
+
         DBWriter dbWriter = null;
         int newEntriesCount = 0;
 
@@ -184,7 +188,6 @@ public final class DatabaseOperationService extends IntentService {
                 try {
                     parser = RssOrAtom.getParser(data, urlString);
                 } catch (NullPointerException e) {
-
                     continue;
                 }
                 entriesArray = parser.receiveAllItems();
@@ -203,6 +206,9 @@ public final class DatabaseOperationService extends IntentService {
                 incrementProgressInNotification(urlString);
 
                 newEntriesCount += dbWriter.getNewEntriesCount();
+                if (dbWriter.getNewEntries() != null) {
+                    newEntries.addAll(dbWriter.getNewEntries());
+                }
             } catch (MalformedURLException e) {
                 intent.setAction(FAIL);
                 intent.putExtra(FAIL, getString(R.string.incorrectURL) + SPACER + urlString);
@@ -247,6 +253,10 @@ public final class DatabaseOperationService extends IntentService {
             intent.setAction(SUCCESS);
             intent.putExtra(SUCCESS, message);
             broadcastManager.sendBroadcast(intent);
+
+            if (newEntries.size() != 0) {
+                refreshWidget(newEntries);
+            }
         }
     }
 
@@ -376,6 +386,23 @@ public final class DatabaseOperationService extends IntentService {
             stopFlag = true;
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void refreshWidget(final ArrayList<SingleRSSEntry> newEntries) {
+        final Intent widgetIntent = new Intent(this, NewEntriesReceiver.class);
+        widgetIntent.setAction(NewEntriesReceiver.WIDGET_NEW_ENTRIES);
+        widgetIntent.putParcelableArrayListExtra(NewEntriesReceiver.WIDGET_NEW_ENTRIES, newEntries);
+        final PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        this,
+                        0,
+                        widgetIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+        try {
+            pendingIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
     }
 
 }

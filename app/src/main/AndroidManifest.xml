@@ -11,13 +11,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
+
     <application
             android:allowBackup="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/MainTheme">
-        <activity android:name="yuriy.rssreader.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -35,6 +36,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -64,6 +66,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -78,27 +81,27 @@
         </activity>
         <activity android:name=".ui.entry_activity.SingleRssViewActivity"/>
         <activity
-                android:name="yuriy.rssreader.ui.settings_activity.SettingsActivity"
+                android:name=".ui.settings_activity.SettingsActivity"
                 android:label="@string/settings_screen_label"/>
 
         <service
-                android:name="yuriy.rssreader.services.DatabaseOperationService"
+                android:name=".services.DatabaseOperationService"
                 android:enabled="true"
                 android:exported="false"/>
         <service
-                android:name="yuriy.rssreader.services.UrlSaverService"
+                android:name=".services.UrlSaverService"
                 android:enabled="true"
                 android:exported="false"/>
         <service
-                android:name="yuriy.rssreader.services.SingleEntryOperationService"
+                android:name=".services.SingleEntryOperationService"
                 android:enabled="true"
                 android:exported="false">
         </service>
 
-        <receiver android:name="yuriy.rssreader.services.Alarm">
+        <receiver android:name=".services.Alarm">
         </receiver>
         <receiver
-                android:name="yuriy.rssreader.services.receivers.OnBootReceiver"
+                android:name=".services.receivers.OnBootReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
@@ -106,33 +109,41 @@
             </intent-filter>
         </receiver>
         <receiver
-                android:name="yuriy.rssreader.services.receivers.InternetOnReceiver"
+                android:name=".services.receivers.InternetOnReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-
         <receiver
-                android:name="yuriy.rssreader.services.receivers.WifiOnReceiver"
+                android:name=".services.receivers.WifiOnReceiver"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
-
-        <receiver android:name="yuriy.rssreader.widget.RssWidgetProvider">
+        <receiver android:name=".widget.RssWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
+
             <meta-data
                     android:name="android.appwidget.provider"
                     android:resource="@xml/rss_widget"/>
         </receiver>
-        <service android:name="yuriy.rssreader.widget.services.ListWidgetService"
-                 android:permission="android.permission.BIND_REMOTEVIEWS"
-                 android:exported="false"/>
+
+        <service
+                android:name=".widget.services.ListWidgetService"
+                android:exported="false"
+                android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <receiver
+                android:name=".widget.NewEntriesReceiver"
+                android:enabled="true"
+                android:exported="false">
+        </receiver>
     </application>
+
 </manifest>
