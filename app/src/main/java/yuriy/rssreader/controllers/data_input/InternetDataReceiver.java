@@ -1,94 +1,81 @@
 package yuriy.rssreader.controllers.data_input;
 
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.nio.charset.IllegalCharsetNameException;
 
 
 public final class InternetDataReceiver {
 
     private static final int CONNECT_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 5000;
-    private static final String ENCODING_ATTRIBUTE = "encoding";
-    private static final String START_XML_TAG = "<?xml";
-    private static final String EMPTY_STRING = "";
-    private static final char TAG_CLOSING_BRACKET = '>';
-    private static final char QUOTE_SIGN = '"';
+    private static final String ENCODING_ATTRIBUTE = "charset=";
+    private static final char SEMICOLON = ';';
 
     public String getTextFromURL(final URL url) throws IOException {
-        if(url==null){
+        if (url == null) {
             throw new MalformedURLException();
         }
-        final Integer[] receivedData = getData(url);
-        final Charset charset = getCharset(receivedData);
-        final byte[] outputReadyData = getByteArrayFromReceivedData(receivedData);
-        return new String(outputReadyData, charset);
-
+        return getData(url);
     }
 
-    private Integer[] getData(final URL url) throws IOException{
+    private String getData(final URL url) throws IOException {
+        final StringBuilder data = new StringBuilder();
         HttpURLConnection connection = null;
-        BufferedInputStream bufferedInputStream = null;
-        ArrayList<Integer> byteData;
-        try {
+        BufferedReader bufferedReader = null;
 
+        try {
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);
             connection.connect();
+            Charset charset;
 
-
-            byteData = new ArrayList<>();
-            bufferedInputStream = new BufferedInputStream(connection.getInputStream());
-            int readByte;
-
-            while ((readByte = bufferedInputStream.read()) != -1) {
-                byteData.add(readByte);
+            final  String contentType = connection.getContentType();
+            try {
+                charset = getCharset(contentType);
+            }catch (IllegalCharsetNameException e){
+                charset = Charset.defaultCharset();
             }
+
+            bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                data.append(line);
+            }
+
+
         } finally {
 
             if (connection != null) {
                 connection.disconnect();
             }
-            if (bufferedInputStream != null) {
-                bufferedInputStream.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
         }
 
-
-        return byteData.toArray(new Integer[byteData.size()]);
+        return data.toString();
     }
 
-    private Charset getCharset(final Integer[] receivedByteData) {
+    private Charset getCharset(final String contentType) {
 
-        String data = EMPTY_STRING;
-
-        for (int currentByte : receivedByteData) {
-            if ((char) currentByte == TAG_CLOSING_BRACKET) {
-                data += (char) currentByte;
-                break;
-            } else {
-                data += (char) currentByte;
-            }
-        }
-
-        if (data.contains(ENCODING_ATTRIBUTE) && data.contains(START_XML_TAG)) {
-            int index = data.indexOf(ENCODING_ATTRIBUTE);
+        if (contentType.contains(ENCODING_ATTRIBUTE)) {
+            int index = contentType.indexOf(ENCODING_ATTRIBUTE);
             StringBuilder encoding = new StringBuilder();
 
-            while (data.charAt(++index) != TAG_CLOSING_BRACKET) {
-
-                if (data.charAt(index) == QUOTE_SIGN) {
-                    while (data.charAt(++index) != QUOTE_SIGN) {
-                        encoding.append(data.charAt(index));
-                    }
-
+            for(index+=ENCODING_ATTRIBUTE.length();index<contentType.length();index++){
+                if(contentType.charAt(index)==SEMICOLON){
+                    break;
                 }
+                encoding.append(contentType.charAt(index));
             }
 
             return Charset.forName(encoding.toString());
@@ -98,14 +85,4 @@ public final class InternetDataReceiver {
             return Charset.defaultCharset();
         }
     }
-
-    private byte[] getByteArrayFromReceivedData(final Integer[] receivedData) {
-        final byte[] outputBytes = new byte[receivedData.length];
-
-        for (int i = 0; i < receivedData.length; i++) {
-            outputBytes[i] = receivedData[i].byteValue();
-        }
-        return outputBytes;
-    }
-
 }

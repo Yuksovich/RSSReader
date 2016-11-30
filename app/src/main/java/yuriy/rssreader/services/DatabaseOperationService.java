@@ -72,7 +72,7 @@ public final class DatabaseOperationService extends IntentService {
         super(SERVICE_NAME);
     }
 
-    public static void requestEntries(final Context context, String channel) {
+    public static void requestEntries(final Context context, final String channel) {
         if (context == null || channel == null) {
             return;
         }
@@ -260,16 +260,16 @@ public final class DatabaseOperationService extends IntentService {
         }
     }
 
-    private void handleActionRequest(final String channelDescription) {
+    private void handleActionRequest(final String channel) {
         broadcastManager = LocalBroadcastManager.getInstance(this);
         DBReader dbReader = null;
         ArrayList<SingleRSSEntry> entriesArray = null;
         try {
             dbReader = new DBReader(this);
-            if (ALL_CHANNELS.equals(channelDescription)) {
+            if (ALL_CHANNELS.equals(channel)) {
                 entriesArray = dbReader.read();
             } else {
-                entriesArray = dbReader.read(channelDescription);
+                entriesArray = dbReader.read(channel);
             }
 
         } catch (DatabaseIsEmptyException e) {

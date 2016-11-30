@@ -19,7 +19,6 @@ public final class ListWidgetService extends RemoteViewsService {
         return new ListRemoteViewsFactory(this.getApplicationContext());
     }
 
-
     final class ListRemoteViewsFactory extends RemoteViewsFactoryAdapter {
         private final Context context;
 

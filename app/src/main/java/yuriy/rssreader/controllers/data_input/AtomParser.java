@@ -66,13 +66,11 @@ final class AtomParser implements Parsable {
         } catch (XmlPullParserException e) {
             throw new NoRSSContentException();
         }
-
     }
 
     private String getChannelInfo(final String tagType) throws XmlPullParserException, IOException, NoRSSContentException {
 
-
-        XmlPullParser xmlParser = Xml.newPullParser();
+        final XmlPullParser xmlParser = Xml.newPullParser();
         xmlParser.setInput(new StringReader(receivedStringData));
         int eventType = xmlParser.next();
 

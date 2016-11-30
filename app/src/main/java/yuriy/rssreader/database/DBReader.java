@@ -21,7 +21,7 @@ public final class DBReader implements Closeable {
 
     private static final String[] WITHOUT_ARGUMENTS = null;
     private final static String SELECTION_BY_ITEM_LINK = TableColumns.COLUMN_NAME_ITEM_LINK + " = ?";
-    private static final String SELECTION_BY_CHANNEL_DESCRIPTION = TableColumns.COLUMN_NAME_CHANNEL_DESCRIPTION + " = ?";
+    private static final String SELECTION_BY_CHANNEL_TITLE = TableColumns.COLUMN_NAME_CHANNEL_TITLE + " = ?";
     private final static String SORT_ORDER = TableColumns.COLUMN_NAME_ITEM_PUB_DATE + " DESC";
     private final static String[] COLUMNS_ALL = null;
     private final static String SELECTION_ALL = null;
@@ -123,7 +123,7 @@ public final class DBReader implements Closeable {
         final Cursor currentCursor = database.query(
                 TableColumns.TABLE_NAME,
                 COLUMNS_ALL,
-                SELECTION_BY_CHANNEL_DESCRIPTION,
+                SELECTION_BY_CHANNEL_TITLE,
                 channels,
                 GROUP_BY_ALL,
                 HAVING_ALL,

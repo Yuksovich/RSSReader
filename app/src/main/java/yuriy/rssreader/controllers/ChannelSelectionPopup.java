@@ -24,9 +24,10 @@ public final class ChannelSelectionPopup {
         final Map<String, ?> channelsMap = sharedPreferences.getAll();
         final Set<String> channelUrlsSet = channelsMap.keySet();
         for (String channelUrl : channelUrlsSet) {
-            menu.add(R.id.channels_list_filter, Menu.NONE, Menu.NONE, sharedPreferences.getString(channelUrl, channelUrl));
+            menu.add(R.id.channels_list_filter,
+                    Menu.NONE, Menu.NONE,
+                    sharedPreferences.getString(channelUrl, channelUrl));
         }
-
     }
 
     public static void fillMenuWithChannelsFromSPrefs(final Context context, final Menu menu) {

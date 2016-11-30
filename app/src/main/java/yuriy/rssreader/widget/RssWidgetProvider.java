@@ -17,24 +17,20 @@ import java.util.ArrayList;
 
 public final class RssWidgetProvider extends AppWidgetProvider {
 
-
-
     @Override
     public void onReceive(final Context context, final Intent intent) {
         super.onReceive(context, intent);
-
     }
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
 
         updateWidget(context, null);
-
-
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     static void updateWidget(final Context context, @Nullable final ArrayList<SingleRSSEntry> newEntries) {
+
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         final Intent serviceIntent = new Intent(context, ListWidgetService.class);
         if (newEntries != null) {
