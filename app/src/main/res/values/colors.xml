@@ -32,4 +32,5 @@
     <color name="colorPrimary_Light">#458b9e</color>
     <color name="colorPrimaryDark_Light">#ffffff</color>
     <color name="colorAccent_Orange_Light">#000000</color>
+    <color name="widget_list_background">#77000000</color>
 </resources>

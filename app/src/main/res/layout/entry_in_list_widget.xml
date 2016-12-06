@@ -6,7 +6,12 @@
         android:id="@+id/rss_entry_widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/widget_list_background"
+        android:paddingLeft="@dimen/text_padding_left_right"
+        android:paddingRight="@dimen/text_padding_left_right"
+        android:paddingBottom="@dimen/text_padding_top_bottom"
+        android:paddingTop="@dimen/text_padding_top_bottom">
 
     <TextView
             android:id="@+id/item_title_listView_entry_widget"

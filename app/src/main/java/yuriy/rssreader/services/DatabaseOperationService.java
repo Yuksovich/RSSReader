@@ -40,8 +40,7 @@ public final class DatabaseOperationService extends IntentService {
     public static final String ON_DATA_RECEIVED = "yuriy.rssreader.services.action.ON_DATA_RECEIVED";
     public static final String DATABASE_EMPTY = "yuriy.rssreader.services.DatabaseOperationService.DATABASE_EMPTY";
     public static final String ALL_CHANNELS = "yuriy.rssreader.services.DatabaseOperationService.filter.ALL_CHANNELS";
-
-    private static final String REFRESH_DATABASE_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REFRESH_DATABASE";
+    public static final String REFRESH_DATABASE_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REFRESH_DATABASE";
 
     private static final String REQUEST_ENTRIES_ACTION = "yuriy.rssreader.services.DatabaseOperationService.action.REQUEST_ENTRIES_ACTION";
     private static final String SERVICE_NAME = "yuriy.rssreader.services.DatabaseOperationService";
@@ -115,13 +114,13 @@ public final class DatabaseOperationService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
-        if (intent == null) {
+        if (intent == null || intent.getAction() == null) {
             return;
         }
         switch (intent.getAction()) {
             case (REFRESH_DATABASE_ACTION):
                 handleActionRefresh(
-                        intent.getBooleanExtra(NOTIFY_IF_NOTHING, NOTIFY_BY_DEFAULT),
+                        intent.getBooleanExtra(NOTIFY_IF_NOTHING, false),
                         intent.getBooleanExtra(MAKE_NOTIFICATION, NOTIFY_BY_DEFAULT));
                 break;
             case (REQUEST_ENTRIES_ACTION):
