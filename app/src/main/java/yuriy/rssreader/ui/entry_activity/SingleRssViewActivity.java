@@ -16,7 +16,10 @@ public final class SingleRssViewActivity extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        if (Theme.getId() != 0) {
+        if (Theme.getId() == 0) {
+            Theme.setThemeFromSharedPreferences(this);
+            setTheme(Theme.getId());
+        } else {
             setTheme(Theme.getId());
         }
         super.onCreate(savedInstanceState);
